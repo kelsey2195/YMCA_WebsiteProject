@@ -29,9 +29,8 @@ body,h1,h2,h3,h4,h5,h6 {font-family: "Lato", sans-serif}
 
 /* Modal Content/Box */
 .modal-content {
-  background-color: #fefefe;
+  background-color: white;
   margin: 5px auto; /* 15% from the top and centered */
-  border: 1px solid #888;
   width: 80%; /* Could be more or less, depending on screen size */
 }
 
@@ -75,14 +74,12 @@ body,h1,h2,h3,h4,h5,h6 {font-family: "Lato", sans-serif}
 <div class="w3-top">
   <div class="w3-bar w3-red w3-card w3-left-align w3-large">
     <a class="w3-bar-item w3-button w3-hide-medium w3-hide-large w3-right w3-padding-large w3-hover-white w3-large w3-red" href="javascript:void(0);" onclick="myFunction()" title="Toggle Navigation Menu"><i class="fa fa-bars"></i></a>
-    <a href="#" class="w3-bar-item w3-button w3-padding-large w3-white">Home</a>
-    <a href="#" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white">Register</a>
-    <a href="#" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white">Program Search</a>
-    <a href="#" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white">Staff</a>
-    <a href="#" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white">Help</a>
+    <a href="{{ url_for('main') }}" class="w3-bar-item w3-button w3-padding-large w3-white">Home</a>
+    <a href="{{ url_for('register') }}" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white">Register</a>
+    <a href="{{ url_for('program_search') }}" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white">Program Search</a>
     
     <!-- Button to open the modal login form -->
-    <button onclick="document.getElementById('id01').style.display='block'">Login</button>
+    <button onclick="document.getElementById('id01').style.display='block'" style="background-color: white; border: 0px; height: 51px; width: 75px;">Login</button>
 
     <!-- The Modal -->
     <div id="id01" class="modal">
@@ -120,8 +117,6 @@ body,h1,h2,h3,h4,h5,h6 {font-family: "Lato", sans-serif}
   <div id="navDemo" class="w3-bar-block w3-white w3-hide w3-hide-large w3-hide-medium w3-large">
     <a href="#" class="w3-bar-item w3-button w3-padding-large">Register</a>
     <a href="#" class="w3-bar-item w3-button w3-padding-large">Program Search</a>
-    <a href="#" class="w3-bar-item w3-button w3-padding-large">Staff</a>
-    <a href="#" class="w3-bar-item w3-button w3-padding-large">Help</a>
   </div>
 </div>
 
@@ -136,14 +131,13 @@ body,h1,h2,h3,h4,h5,h6 {font-family: "Lato", sans-serif}
 <div class="w3-row-padding w3-padding-64 w3-container">
   <div class="w3-content">
     <div class="w3-twothird">
-      <h1>Header 1</h1>
-      <h5 class="w3-padding-32">Text</h5>
+      <h1>Register for a program!</h1>
 
-      <p class="w3-text-grey">More text</p>
+      <p class="w3-text-grey">We offer a variety of programs at various difficulty levels so that anyone can get involved, learn, and have fun! Visit the Register tab to be able to sign-up for a program. YMCA membership holders will have reduced fees compared to other guests. We hope that you will be able to find a program that you will love!</p>
     </div>
 
     <div class="w3-third w3-center">
-      <i class="fa w3-padding-64 w3-text-red"><img src="https://seeklogo.com/images/Y/ymca-logo-E1E8BBF636-seeklogo.com.png" alt="alternatetext"></i>
+      <i class="fa w3-text-red"><img src="https://svgsilh.com/svg/308894.svg" alt="alternatetext" style="height: 35%; width: 35%;"></i>
     </div>
   </div>
 </div>
@@ -152,14 +146,13 @@ body,h1,h2,h3,h4,h5,h6 {font-family: "Lato", sans-serif}
 <div class="w3-row-padding w3-light-grey w3-padding-64 w3-container">
   <div class="w3-content">
     <div class="w3-third w3-center">
-      <i class="fa w3-padding-64 w3-text-red w3-margin-right"><img src="https://seeklogo.com/images/Y/ymca-logo-E1E8BBF636-seeklogo.com.png" alt="alternatetext"></i>
+      <i class="fa w3-text-red w3-margin-right"><img src="https://freeyourmindexperience.com/wp-content/uploads/person-icon-person-icon-clipart-image-from-our-icon-clipart-category-9-copy-500x337.png" alt="alternatetext" style="height: 70%; width: 70%;"></i>
     </div>
 
     <div class="w3-twothird">
-      <h1>Header 2</h1>
-      <h5 class="w3-padding-32">Text</h5>
+      <h1>Our Staff</h1>
 
-      <p class="w3-text-grey">More text</p>
+      <p class="w3-text-grey">Our staff members are working every day to lead programs, and make the YMCA a place where anyone can come and enjoy their time! If you have any questions regarding specific staff members or programs, we would love to assist you in any way possible!</p>
     </div>
   </div>
 </div>
