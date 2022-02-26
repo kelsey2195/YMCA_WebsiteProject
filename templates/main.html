@@ -8,70 +8,68 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <style>
-  body,h1,h2,h3,h4,h5,h6 {font-family: "Lato", sans-serif}
-  .w3-bar,h1,button {font-family: "Montserrat", sans-serif}
-  .fa-anchor,.fa-coffee {font-size:200px}
+body,h1,h2,h3,h4,h5,h6 {font-family: "Lato", sans-serif}
+.w3-bar,h1,button {font-family: "Montserrat", sans-serif}
+.fa-anchor,.fa-coffee {font-size:200px}
 
-  /* The Modal (background) */
-  .modal {
-    display: none; /* Hidden by default */
-    position: fixed; /* Stay in place */
-    z-index: 1; /* Sit on top */
-    left: 0;
-    top: 0;
-    width: 100%; /* Full width */
-    height: 100%; /* Full height */
-    overflow: auto; /* Enable scroll if needed */
-    background-color: rgb(0,0,0); /* Fallback color */
-    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
-    padding-top: 60px;
-  }
+/* The Modal (background) */
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+  padding-top: 60px;
+}
 
-  /* Modal Content/Box */
-  .modal-content {
-    background-color: white;
-    margin: 5px auto; /* 15% from the top and centered */
-    width: 80%; /* Could be more or less, depending on screen size */
-  }
+/* Modal Content/Box */
+.modal-content {
+  background-color: white;
+  margin: 5px auto; /* 15% from the top and centered */
+  width: 80%; /* Could be more or less, depending on screen size */
+}
 
-  /* The Close Button */
-  .close {
-    /* Position it in the top right corner outside of the modal */
-    background-color: #f1f1f1;
-    position:  absolute;
-    padding: 10px;
-    right: 15px;
-    top: 0;
-    color: #000;
-    font-size: 50px;
-    font-weight: bold;
-  }
+/* The Close Button */
+.close {
+  /* Position it in the top right corner outside of the modal */
+  position: absolute;
+  right: 25px;
+  top: 0;
+  color: #000;
+  font-size: 50px;
+  font-weight: bold;
+}
 
-  /* Close button on hover */
-  .close:hover,
-  .close:focus {
-    color: red;
-    cursor: pointer;
-  }
+/* Close button on hover */
+.close:hover,
+.close:focus {
+  color: red;
+  cursor: pointer;
+}
 
-  /* Add Zoom Animation */
-  .animate {
-    -webkit-animation: animatezoom 0.6s;
-    animation: animatezoom 0.6s
-  }
+/* Add Zoom Animation */
+.animate {
+  -webkit-animation: animatezoom 0.6s;
+  animation: animatezoom 0.6s
+}
 
-  @-webkit-keyframes animatezoom {
-    from {-webkit-transform: scale(0)}
-    to {-webkit-transform: scale(1)}
-  }
+@-webkit-keyframes animatezoom {
+  from {-webkit-transform: scale(0)}
+  to {-webkit-transform: scale(1)}
+}
 
-  @keyframes animatezoom {
-    from {transform: scale(0)}
-    to {transform: scale(1)}
-  }
+@keyframes animatezoom {
+  from {transform: scale(0)}
+  to {transform: scale(1)}
+}
 </style>
-
 <body>
+
 <!-- Navbar -->
 <div class="w3-top">
   <div class="w3-bar w3-red w3-card w3-left-align w3-large">
@@ -81,7 +79,7 @@
     <a href="{{ url_for('program_search') }}" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white">Program Search</a>
     
     <!-- Button to open the modal login form -->
-    <button onclick="document.getElementById('id01').style.display='block'" style="background-color: white; border: 0px; height: 51px; width: 75px; position:absolute; top:0; right:0;">Login</button>
+    <button onclick="document.getElementById('id01').style.display='block'" style="background-color: white; border: 0px; height: 51px; width: 75px;">Login</button>
 
     <!-- The Modal -->
     <div id="id01" class="modal">
@@ -101,14 +99,14 @@
           <label for="psw" style="padding: 10px; color: black;"><b>Password</b></label>
           <input type="password" placeholder="Enter Password" name="psw" required>
 
-          <button type="submit" style="background-color: #f84434; border: 0px; padding: 5px;">Login</button>
+          <button type="submit">Login</button>
           <label style="padding: 10px; color: black;">
             <!-- <input type="checkbox" checked="checked" name="remember"> Remember me -->
           </label>
         </div>
 
         <div class="container" style="background-color:#f1f1f1">
-          <button type="button" onclick="document.getElementById('id01').style.display='none'" class="cancelbtn" style="background-color: #f84434; border: 0px; padding: 5px;">Cancel</button>
+          <button type="button" onclick="document.getElementById('id01').style.display='none'" class="cancelbtn">Cancel</button>
           <!-- <span class="psw" style="padding: 10px; color: black;"><a href="#">Forgot password?</a></span> -->
         </div>
       </form>
