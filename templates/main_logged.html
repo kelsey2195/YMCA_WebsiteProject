@@ -1,9 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
-<title>YMCA Web App</title>
+<title>YMCA Companion</title>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link  rel="stylesheet" href="standardPage.css">
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
@@ -69,21 +68,6 @@ body,h1,h2,h3,h4,h5,h6 {font-family: "Lato", sans-serif}
   to {transform: scale(1)}
 }
 </style>
-
-<style>
-  th, td {
-    padding: 8px;
-    text-align: left;
-    border-bottom: 1px solid #DDDDDD;
-    font-family: Arial;
-  }
-
- table {
-  margin-left:auto; 
-  margin-right:auto;
-  width: 100%;
- }
-</style>
 <body>
 
 <!-- Navbar -->
@@ -93,120 +77,54 @@ body,h1,h2,h3,h4,h5,h6 {font-family: "Lato", sans-serif}
     <a href="{{ url_for('main') }}" class="w3-bar-item w3-button w3-padding-large w3-white">Home</a>
     <a href="{{ url_for('register') }}" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white">Login</a>
     <a href="{{ url_for('program_search') }}" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white">Program Search</a>
-    <a href="{{ url_for('create_program') }}" class="w3-bar-item w3-button w3-padding-large">Create Program</a>
-
+    <a href="{{ url_for('create_program') }}" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white">Create Program</a>
   </div>
 
   <!-- Navbar on small screens -->
   <div id="navDemo" class="w3-bar-block w3-white w3-hide w3-hide-large w3-hide-medium w3-large">
-    <a href="#" class="w3-bar-item w3-button w3-padding-large">Login</a>
-    <a href="#" class="w3-bar-item w3-button w3-padding-large">Program Search</a>
+    <a href="{{ url_for('register') }}" class="w3-bar-item w3-button w3-padding-large">Login</a>
+    <a href="{{ url_for('program_search') }}" class="w3-bar-item w3-button w3-padding-large">Program Search</a>
     <a href="{{ url_for('create_program') }}" class="w3-bar-item w3-button w3-padding-large">Create Program</a>
   </div>
 </div>
-<!--Menu-->
-<nav class="menu">
 
-  <a class="menuitem" href="/">Home</a>
-
-</nav>
-<!--Program Information-->
-
-
-</form>
 <!-- Header -->
 <header class="w3-container w3-red w3-center" style="padding:128px 16px">
-  <div class="dropdown">
-    <button class="dropbtn">Programs</button>
-    <div class="dropdown-content">
-      <a href="/swimming">Swimming Lessons</a>
-      <a href="#">Basketball Lessons</a>
-      <a href="#">Personal Trainers</a>
-    </div>
-  </div>
-  
-  <style>
-    /* Dropdown Button */
-.dropbtn {
-    background-color: #0c0c0c;
-    color: white;
-    padding: 16px;
-    font-size: 16px;
-    border: none;
-  }
-  
-  /* The container <div> - needed to position the dropdown content */
-  .dropdown {
-    position: relative;
-    display: inline-block;
-  }
-  
-  /* Dropdown Content (Hidden by Default) */
-  .dropdown-content {
-    display: none;
-    position: absolute;
-    background-color: #f1f1f1;
-    min-width: 160px;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-    z-index: 1;
-  }
-  
-  /* Links inside the dropdown */
-  .dropdown-content a {
-    color: black;
-    padding: 12px 16px;
-    text-decoration: none;
-    display: block;
-  }
-  
-  /* Change color of dropdown links on hover */
-  .dropdown-content a:hover {background-color: #ddd;}
-  
-  /* Show the dropdown menu on hover */
-  .dropdown:hover .dropdown-content {display: block;}
-  
-  /* Change the background color of the dropdown button when the dropdown content is shown */
-  .dropdown:hover .dropbtn {background-color: #5f5954;}
-  </style>
+  <img src="https://seeklogo.com/images/Y/ymca-logo-E1E8BBF636-seeklogo.com.png" alt="alternatetext">
+  <p class="w3-xlarge">Welcome to the YMCA! Register for one of our programs!</p>
 </header>
 
+<!-- First Grid -->
+<div class="w3-row-padding w3-padding-64 w3-container">
+  <div class="w3-content">
+    <div class="w3-twothird">
+      <h1>Register for a program!</h1>
+
+      <p class="w3-text-grey">We offer a variety of programs at various difficulty levels so that anyone can get involved, learn, and have fun! Visit the Register tab to be able to sign-up for a program. YMCA membership holders will have reduced fees compared to other guests. We hope that you will be able to find a program that you will love!</p>
+    </div>
+
+    <div class="w3-third w3-center">
+      <i class="fa w3-text-red"><img src="https://svgsilh.com/svg/308894.svg" alt="alternatetext" style="height: 35%; width: 35%;"></i>
+    </div>
+  </div>
+</div>
+
+<!-- Second Grid -->
+<div class="w3-row-padding w3-light-grey w3-padding-64 w3-container">
+  <div class="w3-content">
+    <div class="w3-third w3-center">
+      <i class="fa w3-text-red w3-margin-right"><img src="https://freeyourmindexperience.com/wp-content/uploads/person-icon-person-icon-clipart-image-from-our-icon-clipart-category-9-copy-500x337.png" alt="alternatetext" style="height: 70%; width: 70%;"></i>
+    </div>
+
+    <div class="w3-twothird">
+      <h1>Our Staff</h1>
+
+      <p class="w3-text-grey">Our staff members are working every day to lead programs, and make the YMCA a place where anyone can come and enjoy their time! If you have any questions regarding specific staff members or programs, we would love to assist you in any way possible!</p>
+    </div>
+  </div>
+</div>
+
 <div class="w3-container w3-black w3-center w3-opacity w3-padding-64">
-  <table>
-    <tr>
-     <td id = pName>Program: </td>
-    </tr>
-    <tr>
-     <td id = pDate>Date: </td>
-    </tr>
-    <tr>
-    <td id = pDay>Day(s): </td>
-    </tr>
-    <tr>
-     <td id = pTime>Time: </td>
-    </tr>
-    <tr>
-     <td id = pPric>Price(Member/Non-Member): </td>
-    </tr>
-    <tr>
-     <td id = pLoca>Location: </td>
-    </tr>
-    <tr>
-     <td id = pDesc>Description: </td>
-    </tr>
-    <tr>
-     <td id = pAvai>Available Seats: </td>
-    </tr>
-    </table>
-    <form action="/pReg" method="POST">
-    <input id="pId" type = "hidden" name="pId" >
-    <div id="pReg" class="button">
-      Register for class
-    </div></form>
-    <form action ="/pCan" method="POST">
-      <input id="pcId" type = "hidden" name="pId" >
-      <div id="pCan" class="button">
-        Cancel Program
-      </div>
 </div>
 
 <!-- Footer -->

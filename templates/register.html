@@ -69,60 +69,36 @@ body,h1,h2,h3,h4,h5,h6 {font-family: "Lato", sans-serif}
 }
 </style>
 <body>
-
 <!-- Navbar -->
 <div class="w3-top">
   <div class="w3-bar w3-red w3-card w3-left-align w3-large">
     <a class="w3-bar-item w3-button w3-hide-medium w3-hide-large w3-right w3-padding-large w3-hover-white w3-large w3-red" href="javascript:void(0);" onclick="myFunction()" title="Toggle Navigation Menu"><i class="fa fa-bars"></i></a>
     <a href="{{ url_for('main') }}" class="w3-bar-item w3-button w3-padding-large w3-white">Home</a>
-    <a href="{{ url_for('register') }}" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white">Register</a>
+    <a href="{{ url_for('register') }}" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white">Login</a>
     <a href="{{ url_for('program_search') }}" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white">Program Search</a>
-    
-    <!-- Button to open the modal login form -->
-    <button onclick="document.getElementById('id01').style.display='block'" style="background-color: white; border: 0px; height: 51px; width: 75px;">Login</button>
-
-    <!-- The Modal -->
-    <div id="id01" class="modal">
-      <span onclick="document.getElementById('id01').style.display='none'"
-    class="close" title="Close Modal">&times;</span>
-
-      <!-- Modal Content -->
-      <form class="modal-content animate" action="/action_page.php">
-        <div>
-          <header style="font-size: 24px; padding: 20px; color: black;">Login</h3>
-        </div>
-
-        <div class="container">
-          <label for="uname" style="padding: 10px; color: black;"><b>Username</b></label>
-          <input type="text" placeholder="Enter Username" name="uname" required>
-
-          <label for="psw" style="padding: 10px; color: black;"><b>Password</b></label>
-          <input type="password" placeholder="Enter Password" name="psw" required>
-
-          <button type="submit">Login</button>
-          <label style="padding: 10px; color: black;">
-            <input type="checkbox" checked="checked" name="remember"> Remember me
-          </label>
-        </div>
-
-        <div class="container" style="background-color:#f1f1f1">
-          <button type="button" onclick="document.getElementById('id01').style.display='none'" class="cancelbtn">Cancel</button>
-          <span class="psw" style="padding: 10px; color: black;"><a href="#">Forgot password?</a></span>
-        </div>
-      </form>
-    </div>
-  </div>
+    <a href="{{ url_for('create_program') }}" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white">Create Program</a>
 
   <!-- Navbar on small screens -->
   <div id="navDemo" class="w3-bar-block w3-white w3-hide w3-hide-large w3-hide-medium w3-large">
-    <a href="#" class="w3-bar-item w3-button w3-padding-large">Register</a>
+    <a href="#" class="w3-bar-item w3-button w3-padding-large">Login</a>
     <a href="#" class="w3-bar-item w3-button w3-padding-large">Program Search</a>
+    <a href="{{ url_for('create_program') }}" class="w3-bar-item w3-button w3-padding-large">Create Program</a>
   </div>
 </div>
 
 <!-- Header -->
 <header class="w3-container w3-red w3-center" style="padding:128px 16px">
+
+  <form action = "/validate_login" method = "POST">
+    <label for="email">Email:</label><br>
+    <input type="text" id="email" name="email"><br>
+    <label for="password">Password:</label><br>
+    <input type="text" id="password" name="password"><br><br>
+
+    <input type = "submit" value = "Submit" />
     
+ </form>
+  
 </header>
 
 <div class="w3-container w3-black w3-center w3-opacity w3-padding-64">
