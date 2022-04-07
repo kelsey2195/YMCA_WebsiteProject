@@ -1,25 +1,37 @@
-<!DOCTYPE html>
-<html>
-   <body>
-   
-      <h3>Sign In</h3>
-      <hr/>
-      
-      {%- for category, message in get_flashed_messages(with_categories = true) %}
-         <div class = "alert alert-danger">
-            {{ message }}
-         </div>
-      {%- endfor %}
-      
-      <form action = "/validate_login" method = "POST">
-         <label for="email">Email:</label><br>
-         <input type="text" id="email" name="email"><br>
-         <label for="password">Password:</label><br>
-         <input type="text" id="password" name="password">
+{% include 'format/header.html' %}
 
-         <input type = "submit" value = "Submit" />
-         
-      </form>
-      
-   </body>
-</html>
+<h1> LOG IN </h1>
+
+<form action="/login" method="POST">
+
+    {% if message %}
+        <p style="color:rgb(177, 0, 0);">
+            {{ message }}
+        </p>
+    {% endif %}
+
+    {% if email_error %}
+        <p style="color:rgb(177, 0, 0);">
+            {{ email_error }}
+        </p>
+    {% endif %}
+    <input placeholder="email" autocomplete="off" type="text" name="email" value= "{{ email }}">
+
+    {% if password_error %}
+        <p style="color:rgb(177, 0, 0);">
+            {{ password_error }}
+        </p>
+    {% endif %}
+    <input placeholder="password" autocomplete="off" type="password" name="password">
+
+
+
+
+    <input type="submit" name="login" value="login">
+
+</form>
+<a href="/register_user">
+    <button>Register</button>
+</a> 
+
+{% include 'format/footer.html' %}
