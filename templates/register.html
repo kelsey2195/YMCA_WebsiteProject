@@ -1,0 +1,46 @@
+{% include 'format/header.html' %}
+
+<h1> REGISTER </h1>
+
+<a href="/login">
+    <button>Back to login</button>
+</a> 
+
+<form action="/register_user" method="POST">
+    {% if email_error %}
+        <p style="color:rgb(177, 0, 0);">
+            {{ email_error }}
+        </p>
+    {% endif %}
+    <input placeholder="email" autocomplete="off" type="text" name="email" value= "{{ email }}" >
+    
+
+    {% if username_error %}
+        <p style="color:rgb(177, 0, 0);">
+            {{ username_error }}
+        </p>
+    {% endif %}
+    <input placeholder="username" autocomplete="off" type="text" name="username" value= "{{ username }}">
+    
+
+    {% if password_error %}
+        <p style="color:rgb(177, 0, 0);">
+            {{ password_error }}
+        </p>
+    {% endif %}
+    <input placeholder="password" autocomplete="off" type="password" name="password">
+    
+    <input placeholder="verify password" autocomplete="off" type="password" name="verify_password">
+
+
+    <input type="checkbox" id="membership" name="membership" value = "true">
+    <label for="member">Sign Up for Membership</label><br>
+
+    
+
+
+    <input type="submit" name="register" value="register">
+
+</form>
+
+{% include 'format/footer.html' %}
