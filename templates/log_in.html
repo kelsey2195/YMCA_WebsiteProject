@@ -1,8 +1,11 @@
 {% include 'format/header.html' %}
 
-<h1> LOG IN </h1>
 
-<form action="/login" method="POST">
+
+<section class="loginbox">
+<h1> LOG IN </h1>
+<p>Email</p>
+    <form action="/login" method="POST">
 
     {% if message %}
         <p style="color:rgb(177, 0, 0);">
@@ -15,14 +18,14 @@
             {{ email_error }}
         </p>
     {% endif %}
-    <input placeholder="email" autocomplete="off" type="text" name="email" value= "{{ email }}">
-
+    <input placeholder="Enter Email" autocomplete="off" type="text" name="email" value= "{{ email }}">
+<p>Password</p>
     {% if password_error %}
         <p style="color:rgb(177, 0, 0);">
             {{ password_error }}
         </p>
     {% endif %}
-    <input placeholder="password" autocomplete="off" type="password" name="password">
+    <input placeholder="Enter Password" autocomplete="off" type="password" name="password">
 
 
 
@@ -30,8 +33,10 @@
     <input type="submit" name="login" value="login">
 
 </form>
+
 <a href="/register_user">
-    <button>Register</button>
+   <p> <button>New User?</button></p>
 </a> 
 
+</section>
 {% include 'format/footer.html' %}

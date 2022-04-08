@@ -1,36 +1,35 @@
 {% include 'format/header.html' %}
 
+<div class="register">
 <h1> REGISTER </h1>
 
-<a href="/login">
-    <button>Back to login</button>
-</a> 
 
+<p>Email</p>
 <form action="/register_user" method="POST">
     {% if email_error %}
         <p style="color:rgb(177, 0, 0);">
             {{ email_error }}
         </p>
     {% endif %}
-    <input placeholder="email" autocomplete="off" type="text" name="email" value= "{{ email }}" >
+    <input placeholder="Enter Email" autocomplete="off" type="text" name="email" value= "{{ email }}" >
     
-
+<p>Username</p>
     {% if username_error %}
         <p style="color:rgb(177, 0, 0);">
             {{ username_error }}
         </p>
     {% endif %}
-    <input placeholder="username" autocomplete="off" type="text" name="username" value= "{{ username }}">
+    <input placeholder="Enter Username" autocomplete="off" type="text" name="username" value= "{{ username }}">
     
-
+<p>Password</p>
     {% if password_error %}
         <p style="color:rgb(177, 0, 0);">
             {{ password_error }}
         </p>
     {% endif %}
-    <input placeholder="password" autocomplete="off" type="password" name="password">
+    <input placeholder="Enter Password" autocomplete="off" type="password" name="password">
     
-    <input placeholder="verify password" autocomplete="off" type="password" name="verify_password">
+    <input placeholder="Verify Password" autocomplete="off" type="password" name="verify_password">
 
 
     <input type="checkbox" id="membership" name="membership" value = "true">
@@ -40,7 +39,9 @@
 
 
     <input type="submit" name="register" value="register">
-
+    <a href="/login">
+        <button>Back to login</button>
+    </a> 
 </form>
-
+</div>
 {% include 'format/footer.html' %}

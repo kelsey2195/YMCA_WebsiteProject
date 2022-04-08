@@ -187,7 +187,7 @@ def user_profile():
 @app.route('/create_program', methods= ['POST', 'GET'])
 def create_program():
     if( session['user_id'] != "employee" and session["manager_or_not"] != 1 ):
-        return redirect("/")
+        return redirect("/create_program.html")
     else:
         print("Place holder")
 

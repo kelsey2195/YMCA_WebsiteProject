@@ -2,14 +2,28 @@
 <html>
     
 <head>
+   <meta name="viewport" content="width=devide-width, inital-scale=1.0">
     <title>YMCA Project</title>
+    <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='css/style.css') }}">
 </head>
 
-    <body style = "background-color:#8a9094;" >
+    <body >
+  
+        <div id="contain">
+          
+        <div id="top">
         <nav >
-            <a href="/">YMCA</a>
+           
             
-            <div style="float: right;">
+           <img src="{{ MEDIA_URL }}static/images/logo.png" id="logo" />
+                
+                    <ul>
+                        
+                        <li><a href="templates/register">Register</a></li>
+                        <li>Program Search</li>
+                        
+                    
+                    
 
                 {% if session["username"] %} 
 
@@ -29,14 +43,19 @@
                 {% else %} 
                     
                     {% if not session["logging_in"] %}
-                    <a href="/login">
-                        <button>login</button>
-                    </a> 
+                   <li> <a href="/login">
+                        <button type="button">login</button>
+                    </a> </li>
+                    
                     {% endif %}
 
                 {% endif %}
-            </div>
-            
+                    </ul>
+                
             
             
         </nav>
+    </div>
+
+
+
