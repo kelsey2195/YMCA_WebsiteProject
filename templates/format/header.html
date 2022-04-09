@@ -19,8 +19,8 @@
                 
                     <ul>
                         
-                        <li><a href="templates/register">Register</a></li>
-                        <li>Program Search</li>
+                        <li id = "highlight"><a href="/register_user">Register</a></li>
+                        <li id = "highlight">Program Search</li>
                         
                     
                     
@@ -41,11 +41,12 @@
                     </a>  
 
                 {% else %} 
-                    
+                <li>
                     {% if not session["logging_in"] %}
-                   <li> <a href="/login">
-                        <button type="button">login</button>
-                    </a> </li>
+                       <a href="/login">
+                            <button type="button">login</button>
+                        </a>
+                </li>
                     
                     {% endif %}
 

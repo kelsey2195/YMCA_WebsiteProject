@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang = "en">
+   <head></head>
+   <body>
+      
+      <h3>
+         <a href = "{{ url_for('show_all') }}">Sign In</a>
+      </h3>
+      
+      <hr/>
+      {%- for message in get_flashed_messages() %}
+         {{ message }}
+      {%- endfor %}
+		
+      <h3>Members <br>(<a href = "{{ url_for('log_in') }}">Add Member
+         </a>)</h3>
+      
+      <table>
+         <thead>
+            <tr>
+               <th>FirstName</th>
+               <th>LastName</th>
+               <th>Email</th>
+               <th>Password</th>
+            </tr>
+         </thead>
+         
+         <tbody>
+            {% for Member in Members %}
+               <tr>
+                  <td>{{ Member.FirstName }}</td>
+                  <td>{{ Member.LastName }}</td>
+                  <td>{{ Member.Email }}</td>
+                  <td>{{ Member.password }}</td>
+               </tr>
+            {% endfor %}
+         </tbody>
+      </table>
+      
+   </body>
+</html>

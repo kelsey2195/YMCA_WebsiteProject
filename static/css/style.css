@@ -52,12 +52,15 @@ nav ul li{
 nav ul li a{
     text-decoration:none;
     color:black;
+    position: relative;
+    padding: 2em;
+    margin: -2em;
 }
 nav ul li a:hover
 {
     cursor:pointer;
-    background:black;
-    color:white
+    background:rgba(0, 0, 0, 0.5);
+    color:black
     
 }
 
@@ -103,6 +106,9 @@ div.starttext{
     transform:translate(-50%, -50%);
     box-sizing:border-box;
     padding:70px 30px;
+    border-radius: 25px;
+    box-shadow:2px 2px rgba(0, 0, 0, 0.5);
+    opacity: 0.8;
 }
 
 .loginbox h1{
@@ -150,6 +156,7 @@ div.starttext{
     color:#000;
     
 }
+
 .newuser{
     border:none;
     outline:none;
@@ -163,7 +170,7 @@ div.starttext{
 
 .register{
     width:320px;
-    height:550px;
+    height:480px;
     background: #000;
     color: #fff;
     top:50%;
@@ -171,7 +178,10 @@ div.starttext{
     position: absolute;
     transform:translate(-50%, -50%);
     box-sizing:border-box;
-    padding:70px 30px;
+    padding:38px 30px;
+    border-radius: 25px;
+    box-shadow:2px 2px rgba(0, 0, 0, 0.5);
+    opacity: 0.8;
 }
 
 h1 .register{

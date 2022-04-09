@@ -4,7 +4,6 @@
 <h1> REGISTER </h1>
 
 
-<p>Email</p>
 <form action="/register_user" method="POST">
     {% if email_error %}
         <p style="color:rgb(177, 0, 0);">
@@ -13,7 +12,6 @@
     {% endif %}
     <input placeholder="Enter Email" autocomplete="off" type="text" name="email" value= "{{ email }}" >
     
-<p>Username</p>
     {% if username_error %}
         <p style="color:rgb(177, 0, 0);">
             {{ username_error }}
@@ -21,7 +19,6 @@
     {% endif %}
     <input placeholder="Enter Username" autocomplete="off" type="text" name="username" value= "{{ username }}">
     
-<p>Password</p>
     {% if password_error %}
         <p style="color:rgb(177, 0, 0);">
             {{ password_error }}
@@ -32,9 +29,8 @@
     <input placeholder="Verify Password" autocomplete="off" type="password" name="verify_password">
 
 
+    <label for="member">Sign Up for Membership</label>
     <input type="checkbox" id="membership" name="membership" value = "true">
-    <label for="member">Sign Up for Membership</label><br>
-
     
 
 
