@@ -1,2 +1,3 @@
 # YMCA_WebsiteProject
-Use app.py not main.py
+Assumes a virtual environment (venv), flask framework, and mySQL have been installed to run.
+An instance of XAMPP must be running to connect the python to mySQL.
