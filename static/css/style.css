@@ -12,7 +12,12 @@ body{
     display:flex;
     flex-direction:column;
     min-height:100vh;
-    background-image: linear-gradient(rgba(0, 0, 0, 0.527),rgba(0, 0, 0, 0.5)) ,url('/static/images/swim.jpg');
+    /* 
+        TODO
+     comment out to make it easier for me to test stuff
+     bring it back once we have colored text
+     also it might be good to only use it on the main page and stuff
+     background-image: linear-gradient(rgba(0, 0, 0, 0.527),rgba(0, 0, 0, 0.5)) ,url('/static/images/swim.jpg'); */
     background-repeat:no-repeat;
     background-size:cover;
 }
