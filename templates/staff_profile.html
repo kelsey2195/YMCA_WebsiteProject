@@ -1,0 +1,18 @@
+{% include 'format/header.html' %}
+
+<h1> Manager Profile </h1>
+
+{% if session["manager_or_not"] == 1 %}
+    <a href="/create_program">
+        <button>Create Program</button>
+    </a>
+    
+{% endif %}
+<a href="">
+    <button>Search programs</button>
+</a>
+
+
+{% include 'format/footer.html' %}
+
+

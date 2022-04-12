@@ -1,3 +1,4 @@
+from pydoc import render_doc
 from flask import Flask, render_template, redirect, request, session
 import mysql.connector
 import re
@@ -44,7 +45,7 @@ def login():
                     session["username"] = result[0][1] + result[0][2]
                     session["manager_or_not"] = result[0][4]
                     cursor.close()
-                    return redirect("/")
+                    return render_template("staff_profile.html")
 
                 # If it's not an employee login apply rules to check if it's right format ect.
                 # check if it's email in the right format
@@ -198,8 +199,8 @@ def user_profile():
     if( 'user_id' in session ): # first checks if user_id is in session so you don't get a null error
         # checks if employee
         if( session['user_id'] == "employee" ):
-            return redirect("/")   #<--- TODO eventually need to add a redirect to employee account page
-    
+            return redirect("/staff_profile")
+
     # checks if the user is logged in
     if( 'username' not in session ):
         return redirect('/login')  
