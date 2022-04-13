@@ -1,7 +1,9 @@
-from pydoc import render_doc
+#from pydoc import render_doc
 from flask import Flask, render_template, redirect, request, session
 import mysql.connector
 import re
+
+from datetime import datetime
 
 email_format = re.compile(r'([A-Za-z0-9]+[.-_])*[A-Za-z0-9]+@[A-Za-z0-9-]+(\.[A-Z|a-z]{2,})+')
 
@@ -15,8 +17,6 @@ connection = mysql.connector.connect(host='localhost', password = '', user='root
 @app.route('/')
 def home():
     # set session variable sback to false to show various buttons
-    session["logging_in"] = False
-    session["viewing_account"] = False
     return render_template('index.html')
 
 # Login for employees and users
@@ -25,7 +25,7 @@ def login():
     if( 'username' in session ):    # checks if you are already logged in
         return redirect('/')
     else:
-        session["logging_in"] = True # hide login button
+        #session["logging_in"] = True # hide login button
         if request.method == 'POST':
             try:
                 # capture form elements
@@ -108,8 +108,6 @@ def register_user():
     if( 'username' in session ):
         return redirect('/')    # checks to make sure user was already created
     else:
-        session["logging_in"] = True
-
         if request.method == 'POST':
             try:
                 # caputure result from form
@@ -184,7 +182,7 @@ def register_user():
                 session["username"] = username
                 session["member_or_not"] = membership
 
-                return redirect("/user_profile")
+                return redirect("/create_account")
 
             # exception handler    
             except mysql.connector.Error as error:
@@ -205,9 +203,6 @@ def user_profile():
     if( 'username' not in session ):
         return redirect('/login')  
     else:
-        # variable in session to hide account button
-        session["viewing_account"] = True
-
         # collect user information & all their associated accounts
         cursor = connection.cursor(prepared=True)
         query = ''' SELECT *
@@ -218,6 +213,7 @@ def user_profile():
         result = cursor.fetchall()
 
         # TODO eventually this will have to be formated for output in a nice looking way
+        session['accounts'] = result
         num = cursor.rowcount
         cursor.close()
         return render_template("user_profile.html", accounts = result, num_accounts = num)
@@ -231,6 +227,45 @@ def create_program():
         return redirect("/")
     else:
         return render_template("create_program.html")
+
+# Create account associated with user
+# used initially when creating a new user and when creating a new family account
+@app.route('/create_account', methods= ['POST', 'GET'])
+def create_user_account():
+    print("Attempting to create a new account")
+    # catches regular employess and users here
+    if(  'user_id' not in session or session['user_id'] == "employee" ):
+        return redirect("/")
+    elif( session["member_or_not"] == 0 and 'accounts' in session ):
+        return redirect("/user_profile")
+    else:
+        if request.method == 'POST':
+            try:
+                print("Create new account")
+                first = request.form['first']
+                last = request.form['last']
+
+                birthday = request.form['birthday']
+
+                child = 1
+                # checks if the child redial is checked
+                if not request.form.get('child'):
+                    child = 0      # if it is not checked then new account is user
+
+                print("Restults")
+                print(first)
+                print(last)
+                print(birthday)
+                print(child)
+
+                # caputure result from form
+                # exception handler    
+                return redirect("/user_profile")
+            except mysql.connector.Error as error:
+                print("Failed to create new account: {}".format(error))
+
+        return render_template("create_account.html")
+
 
 
 if __name__ == "__main__":
