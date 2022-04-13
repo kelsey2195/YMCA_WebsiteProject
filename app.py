@@ -219,6 +219,8 @@ def user_profile():
 
         # TODO eventually this will have to be formated for output in a nice looking way
         session['accounts'] = result
+        print(result)
+
         num = cursor.rowcount
         cursor.close()
         return render_template("user_profile.html", accounts = result, num_accounts = num)

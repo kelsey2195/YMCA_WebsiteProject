@@ -239,3 +239,43 @@ footer{
    background:grey;
    color:black;
 }
+
+/* Styling for user profile*/
+/* Create three unequal columns that floats next to each other */
+* {
+    box-sizing: border-box;
+  }
+.column {
+  float: left;
+  padding: 10px;
+
+}
+
+.accounts {
+  width: 25%;
+}
+
+.calender{
+  width: 75%;
+}
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+/* Styling for cards in userprofile */
+.card {
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    transition: 0.3s;
+    width: 40%;
+  }
+  
+  .card:hover {
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+  }
+  
+  .container {
+    padding: 2px 16px;
+  }

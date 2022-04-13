@@ -4,8 +4,50 @@
 <h1> Profile </h1>
 
 {% if accounts %}
-    <!-- checks if there is some accounts connected and creates a card/view or them -->
+    
+    {% if session["member_or_not"] == 1 %}
+        <h2> Accounts </h2>
+        <!-- TODO Eventually will be a button to create more accounts for when it's a member user -->
+    {% else %}
+        <h2> Account information </h2>
+    {% endif %}
 
+
+    <div class="row">
+        <div class="column accounts" style="background-color:#aaa;">
+          <h2>Column 1</h2>
+          
+          <div class="card">
+            <img src="img_avatar.png" alt="Avatar" style="width:100%">
+            <div class="container">
+              <h4><b>John Doe</b></h4> 
+              <p>Architect & Engineer</p> 
+            </div>
+          </div>
+          
+        </div>
+        <div class="column calender" style="background-color:#bbb;">
+          <h2>Column 2</h2>
+          <p>Some text..</p>
+        </div>
+      
+      </div>
+      
+
+{% else %}
+    <!-- TODO Eventually will be a button to create a an account when a user doesn't have one -->
+
+{% endif %}
+
+
+{% include 'format/footer.html' %}
+
+
+
+
+
+    <!-- OLD CODE included temp for loop format
+        checks if there is some accounts connected and creates a card/view or them -->
     <!--  ALl of this will need to be changed so it's commented out for now.
         {% if num_accounts > 1 %}
         {% for account in accounts %}
@@ -25,17 +67,3 @@
     {% endif %} -->
 
 
-
-
-
-    {% if session["member_or_not"] == 1 %}
-        <!-- TODO Eventually will be a button to create more accounts for when it's a member user -->
-        <button type="button">Add another account</button>
-    {% endif %}
-{% else %}
-    <!-- TODO Eventually will be a button to create a an account when a user doesn't have one -->
-    <button type="button">Create Account</button>
-{% endif %}
-
-
-{% include 'format/footer.html' %}

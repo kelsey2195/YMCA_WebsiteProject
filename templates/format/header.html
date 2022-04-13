@@ -27,7 +27,7 @@
                     Hello {{ session["username"] }}
 
 
-                    {% if not session["viewing_acount"] and session["user_id"] != "employee" %}
+                    {% if session["user_id"] != "employee" %}
                         <!-- TODO maybe make a drop down for opetions as a user like setting and that sort of thing-->
                         <a href="/user_profile">
                             <button>Account</button>
