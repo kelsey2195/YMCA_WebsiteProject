@@ -10,11 +10,25 @@
             {{ email_error }}
         </p>
     {% endif %} -->
+    {% if first_error %}
+        <p style="color:rgb(177, 0, 0);">
+            {{ first_error }}
+        </p>
+    {% endif %}
     <input placeholder="Enter First Name" autocomplete="off" type="text" name="first" value= "{{ first }}" >
 
-
+    {% if last_error %}
+        <p style="color:rgb(177, 0, 0);">
+            {{ last_error }}
+        </p>
+    {% endif %}
     <input placeholder="Enter Last Name" autocomplete="off" type="text" name="last" value= "{{ last }}" >
 
+    {% if birthday_error %}
+        <p style="color:rgb(177, 0, 0);">
+            {{ birthday_error }}
+        </p>
+    {% endif %}
     <label for="birthday">Birthday:</label>
     <input type="date" id="birthday" name="birthday">
 
@@ -22,7 +36,7 @@
         since this is an account for a child they will most likely need swimming lessons and will have an associated swimming level
         otherwise if it's not a child then it can be assumed that the adult will be able to make their own choices (as in it's not managed by a parent)-->
     <label for="member">Child Account?</label>
-    <input type="checkbox" id="child" name="child" value = 1 checked="true">
+    <input type="checkbox" id="child" name="child" value = 1 {{ child }}>
     
    
     <input type="submit" name="submit" value="Create">

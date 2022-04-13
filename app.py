@@ -3,7 +3,7 @@ from flask import Flask, render_template, redirect, request, session
 import mysql.connector
 import re
 
-from datetime import datetime
+import datetime
 
 email_format = re.compile(r'([A-Za-z0-9]+[.-_])*[A-Za-z0-9]+@[A-Za-z0-9-]+(\.[A-Z|a-z]{2,})+')
 
@@ -108,6 +108,7 @@ def register_user():
     if( 'username' in session ):
         return redirect('/')    # checks to make sure user was already created
     else:
+        membership = ""
         if request.method == 'POST':
             try:
                 # caputure result from form
@@ -115,11 +116,10 @@ def register_user():
                 username = request.form['username']
                 password = request.form['password']
                 verify_password = request.form['verify_password']
-                membership = 0
 
                 # checks if the membership redial is checked
                 if request.form.get('membership'):
-                    membership = 1      # if it is checked then is the user wants to have a membership
+                    membership = "checked"      # if it is checked then is the user wants to have a membership
                     
                 # create dict to fill with errors
                 errorDict = {}
@@ -168,7 +168,12 @@ def register_user():
                         email_error = errorDict.get("email_error",""),
                         username_error = errorDict.get("username_error",""),
                         password_error = errorDict.get("password_error",""),
-                        email = email, username = username)
+                        email = email, username = username, membership = membership)
+
+                if membership:
+                    membership = 1
+                else:
+                    membership = 0
 
                 # now enter the information into database
                 cursor = connection.cursor(prepared=True)
@@ -188,7 +193,7 @@ def register_user():
             except mysql.connector.Error as error:
                 print("Failed to register: {}".format(error))
         
-        return render_template("register.html")
+        return render_template("register.html", membership = membership)
 
 # user profile
 @app.route('/user_profile') 
@@ -232,39 +237,74 @@ def create_program():
 # used initially when creating a new user and when creating a new family account
 @app.route('/create_account', methods= ['POST', 'GET'])
 def create_user_account():
-    print("Attempting to create a new account")
     # catches regular employess and users here
     if(  'user_id' not in session or session['user_id'] == "employee" ):
         return redirect("/")
     elif( session["member_or_not"] == 0 and 'accounts' in session ):
         return redirect("/user_profile")
     else:
+        child = "checked"
         if request.method == 'POST':
             try:
-                print("Create new account")
                 first = request.form['first']
                 last = request.form['last']
 
                 birthday = request.form['birthday']
 
-                child = 1
                 # checks if the child redial is checked
                 if not request.form.get('child'):
-                    child = 0      # if it is not checked then new account is user
+                    child = ""      # if it is not checked then new account is user
 
-                print("Restults")
-                print(first)
-                print(last)
-                print(birthday)
-                print(child)
+                # create dict to fill with errors
+                errorDict = {}
 
-                # caputure result from form
+                # Checks if there are whites spaces in either username or password
+                if ' ' in first:
+                    errorDict["first_error"] = "Can't have white space in name"
+                if ' ' in last:
+                    errorDict["last_error"] = "Can't have white space in surname"
+
+                if( not first ):
+                    errorDict["first_error"] = "Must fill name input"
+                if( not last ):
+                    errorDict["last_error"] = "Must fill surname input"
+                if( not birthday ):
+                    errorDict["birthday_error"] = "Must fill birthday input"
+                else:
+                    print(birthday)
+                    # TODO check to make sure it's a valid date. can't be born after today can't be born more than 200 years ago today
+
+                if errorDict:
+                    # return register template with errors on display
+                    return render_template('create_account.html',
+                        first_error = errorDict.get("first_error",""),
+                        last_error = errorDict.get("last_error",""),
+                        birthday_error = errorDict.get("birthday_error",""),
+                        first = first, last = last, birthday = birthday, child = child )
+
+                # checks if the child attribute was checked or not
+                if child:
+                    child = 1
+                else:
+                    child = 0
+
+                print("TEST1")
+
+                # now enter the information into database
+                cursor = connection.cursor(prepared=True)
+                query = ''' INSERT INTO accounts (`associated_user`, `account_first_name`, `account_last_name`, `account_level`, `account_birth_day`) 
+                            VALUES(?,?,?,?,?)'''
+                cursor.execute(query, ( session["user_id"], first, last, child, birthday))
+                connection.commit()
+                cursor.close()
+
                 # exception handler    
                 return redirect("/user_profile")
+
             except mysql.connector.Error as error:
                 print("Failed to create new account: {}".format(error))
 
-        return render_template("create_account.html")
+        return render_template("create_account.html", child = child)
 
 
 
