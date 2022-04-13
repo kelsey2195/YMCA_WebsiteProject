@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 07, 2022 at 11:18 AM
+-- Generation Time: Apr 13, 2022 at 05:21 AM
 -- Server version: 10.4.22-MariaDB
 -- PHP Version: 8.0.13
 
@@ -32,7 +32,7 @@ CREATE TABLE `accounts` (
   `associated_user` varchar(255) NOT NULL,
   `account_first_name` varchar(255) NOT NULL,
   `account_last_name` varchar(255) NOT NULL,
-  `account_level` int(11) NOT NULL DEFAULT 1,
+  `account_level` int(11) NOT NULL,
   `account_birth_day` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -41,7 +41,19 @@ CREATE TABLE `accounts` (
 --
 
 INSERT INTO `accounts` (`account_id`, `associated_user`, `account_first_name`, `account_last_name`, `account_level`, `account_birth_day`) VALUES
-(1, 'test@abc.com', 'Micheal', 'Ross', 1, '2002-04-01');
+(1000000, 'test@abc.com', 'Micheal', 'Ross', 1, '2002-04-01'),
+(1000002, 'NEWACC@ill.com', 'Prop', 'Bear', 1, '2022-04-01');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `account_in_program`
+--
+
+CREATE TABLE `account_in_program` (
+  `account_id` int(11) NOT NULL,
+  `program_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -125,6 +137,7 @@ CREATE TABLE `swim_levels` (
 --
 
 INSERT INTO `swim_levels` (`swim_level_id`, `swim_level_name`) VALUES
+(0, 'adult'),
 (1, 'Polliwog'),
 (2, 'Guppy'),
 (3, 'Minnow'),
@@ -150,21 +163,8 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`email`, `mem_display_name`, `password`, `member_or_not`) VALUES
-('cool@emai.com', 'collio', 'rabbit', 1),
-('newuser@email.com', 'newuser', 'test', 0),
-('test@abc.com', 'TEST ACCOUNT', 'password', 1),
-('time@time.com', 'newroman', 'pair', 0);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `user_in_program`
---
-
-CREATE TABLE `user_in_program` (
-  `account_id` int(11) NOT NULL,
-  `program_id` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+('email@email.com', 'newUser', 'pass', 0),
+('NEWACC@ill.com', 'newAccU', 'pass', 0);
 
 --
 -- Indexes for dumped tables
@@ -214,7 +214,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `accounts`
 --
 ALTER TABLE `accounts`
-  MODIFY `account_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `account_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1000003;
 
 --
 -- AUTO_INCREMENT for table `employees`
@@ -238,7 +238,7 @@ ALTER TABLE `program_time`
 -- AUTO_INCREMENT for table `swim_levels`
 --
 ALTER TABLE `swim_levels`
-  MODIFY `swim_level_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `swim_level_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
