@@ -1,0 +1,367 @@
+*{
+   margin:0;
+   padding:0;
+    font-family:'poppins', sans-serif;
+    
+}
+html, body{
+    height:100%;
+}
+body{
+    text-align:center;
+    display:flex;
+    flex-direction:column;
+    min-height:100vh;
+    background-image: linear-gradient(rgba(0, 0, 0, 0.527),rgba(0, 0, 0, 0.5)) ,url('/static/images/swim.jpg');
+    background-repeat:no-repeat;
+    background-size:cover;
+}
+#top{
+    padding:15px;
+    background:grey;
+    color:black;
+}
+#contain{
+    flex:1;
+}
+
+nav{
+    display:flex;
+    align-items:center;
+    padding:10px 8%;
+    height: 30px;
+}
+
+#logo{
+    width:75px;
+    height:56px;
+    margin-right:20px;
+    cursor:pointer;
+    text-align:right;
+}
+nav ul{
+    flex:1;
+    text-align:right;
+    margin-right: -120px;
+}
+
+nav ul li{
+    display:inline-block;
+    list-style:none;
+    margin: 0 20px;
+}
+nav ul li a{
+    text-decoration:none;
+    color:black;
+    position: relative;
+    padding: 1.5em;
+    margin: -1.5em;
+}
+.highlight:hover{
+    cursor:pointer;
+    color: aqua;
+    text-decoration: underline;
+}
+
+
+button{
+    background:#efefef;
+    height:30px;
+    width:60px;
+    border-radius:20px;
+    border:0;
+    outline:0;
+    cursor:pointer;
+}
+div.starttext{
+    padding-right:280px;
+    position:relative;
+    bottom:10;
+    
+}
+.starttext h1{
+    font-size: 100px;
+    font-weight:400;
+    text-align:right;
+}
+
+.starttext{
+    position:absolute;
+    top:10;
+    left:58%;
+    width:200px;
+    margin-top:15%;
+}
+
+
+.loginbox{
+    width:320px;
+    height:420px;
+    background: #000;
+    color: #fff;
+    top:50%;
+    left:50%;
+    position: absolute;
+    transform:translate(-50%, -50%);
+    box-sizing:border-box;
+    padding:70px 30px;
+    border-radius: 25px;
+    box-shadow:2px 2px rgba(0, 0, 0, 0.5);
+    opacity: 0.8;
+}
+
+.loginbox h1{
+    margin:0;
+    padding: 0 0 20px;
+    text-align:center;
+    font-size: 22px;
+    text-decoration: underline;
+}
+
+.loginbox p{
+    margin:0;
+    padding:0;
+    font-weight:bold;
+}
+
+.loginbox input{
+    width:100%;
+    margin-bottom:20px;
+}
+
+.loginbox input[type="text"], input[type="password"]{
+    border:none;
+    border-bottom: 1px solid #fff;
+    background:transparent;
+    outline:none;
+    height: 40px;
+    color: #fff;
+    font-size: 16px;
+}
+
+.loginbox input[type="submit"]{
+    border:none;
+    outline:none;
+    height:40px;
+    background:green;
+    color:#fff;
+    font-size:18px;
+    border-radius:20px;
+}
+
+.loginbox input[type="submit"]:hover
+{
+    cursor:pointer;
+    background:blue;
+    color:#000;
+    
+}
+
+.newuser{
+    border:none;
+    outline:none;
+    height:40px;
+    background:green;
+    color:#fff;
+    font-size:18px;
+    border-radius:20px;
+}
+
+
+.register{
+    width:320px;
+    height:480px;
+    background: #000;
+    color: #fff;
+    top:50%;
+    left:50%;
+    position: absolute;
+    transform:translate(-50%, -50%);
+    box-sizing:border-box;
+    padding:38px 30px;
+    border-radius: 25px;
+    box-shadow:2px 2px rgba(0, 0, 0, 0.5);
+    opacity: 0.8;
+}
+
+h1 .register{
+    margin:0;
+    padding: 0 0 20px;
+    text-align:center;
+    font-size: 22px;
+}
+
+.register p{
+    margin:0;
+    padding:0;
+    font-weight:bold;
+}
+
+.register input{
+    width:100%;
+    margin-bottom:20px;
+}
+.register input[type="text"], input[type="password"]{
+    border:none;
+    border-bottom: 1px solid #fff;
+    background:transparent;
+    outline:none;
+    height: 40px;
+    color: #fff;
+    font-size: 16px;
+}
+
+.register input[type="submit"]{
+    border:none;
+    outline:none;
+    height:40px;
+    background:green;
+    color:#fff;
+    font-size:18px;
+    border-radius:20px;
+}
+
+.register input[type="submit"]:hover
+{
+    cursor:pointer;
+    background:black;
+    color:white;
+    
+}
+
+.create_box{
+    width:400px;
+    height:540px;
+    background: #000;
+    color: #fff;
+    top:50%;
+    left:50%;
+    position: absolute;
+    transform:translate(-50%, -50%);
+    box-sizing:border-box;
+    padding:70px 30px;
+    border-radius: 25px;
+    box-shadow:2px 2px rgba(0, 0, 0, 0.5);
+    opacity: 0.8;
+}
+
+.create_box h1{
+    margin:0;
+    padding: 0 0 20px;
+    text-align:center;
+    font-size: 22px;
+    text-decoration: underline;
+    margin-top: -30px;
+}
+
+.create_box p{
+    margin:0;
+    padding:0;
+    font-weight:bold;
+}
+
+.create_box input{
+    width:100%;
+    margin-bottom:25px;
+}
+
+.create_box input[type="text"], input[type="password"]{
+    border:none;
+    border-bottom: 1px solid #fff;
+    background:transparent;
+    outline:none;
+    height: 40px;
+    color: #fff;
+    font-size: 16px;
+}
+
+.create_box input[type="submit"]{
+    border:none;
+    outline:none;
+    height:40px;
+    background:green;
+    color:#fff;
+    font-size:18px;
+    border-radius:20px;
+}
+
+.create_box input[type="submit"]:hover
+{
+    cursor:pointer;
+    background:blue;
+    color:#000;
+    
+}
+
+footer{
+   padding:15px;
+   background:grey;
+   color:black;
+}
+
+.tableFixHead {
+  overflow-y: auto;
+  border-collapse: collapse;
+  margin: 25px 0;
+  font-size: 0.9em;
+  font-family: sans-serif;
+  margin-left: 150px;
+  text-align: left;
+  overflow-y: auto;
+  height: 50%;
+  width: 80%;
+}
+
+.tableFixHead thead th {
+  position: sticky;
+  top: 0;
+  background-color: #009879;
+  color: #ffffff;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+th,
+td {
+  padding: 12px 15px;
+}
+
+th {
+  background: #eee;
+}
+
+.tableFixHead tbody tr {
+    border-bottom: thin solid #dddddd;
+    background-color: #000;
+    color: #efefef;
+    border-bottom: thin solid #009879;
+    opacity: 80%;
+}
+
+.tableFixHead tbody tr:last-child td:first-child {
+    border-bottom-left-radius: 15px;
+}
+
+.tableFixHead tbody tr:last-of-type {
+    border-bottom: none;
+}
+
+.styled-table tbody tr:hover{
+    background-color: #000;
+}
+
+#myInput {
+    background-position: 10px 12px; /* Position the search icon */
+    background-repeat: no-repeat; /* Do not repeat the icon image */
+    width: 40%; /* Full-width */
+    font-size: 16px; /* Increase font-size */
+    padding: 12px 20px 12px 40px; /* Add some padding */
+    margin-bottom: 12px; /* Add some space below the input */
+    color: grey;
+    border: none;
+    background-color: #000;
+    opacity: 90%;
+  }

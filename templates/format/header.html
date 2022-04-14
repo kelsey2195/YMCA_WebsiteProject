@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+    
+<head>
+   <meta name="viewport" content="width=devide-width, inital-scale=1.0">
+    <title>YMCA Project</title>
+    <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='css/style.css') }}">
+</head>
+
+    <body >
+  
+        <div id="contain">
+          
+        <div id="top">
+        <nav >
+           
+            <a href="/">
+                <img src="{{ MEDIA_URL }}static/images/logo.png" id="logo" />
+            </a>
+             
+                    <ul>
+                        <li><a href="/program_search" class = "highlight">Programs</a></li>        
+
+                {% if session["username"] %} 
+                    
+                    {% if session["user_id"] == "employee" %}
+                        <li><a href="/create" class = "highlight">Create Program</a></li>
+                    {% endif %}
+
+                    <li><a>Hello {{ session["username"] }}</a></li>
+
+
+                    {% if not session["viewing_acount"] and session["user_id"] != "employee" %}
+                        <a href="/user_profile">
+                            <button>Account</button>
+                        </a>
+                    {% endif %}
+                    <li>
+                    <a href="/logout">
+                        <button>logout</button>
+                    </a>  
+                </li>
+
+                {% else %} 
+                <li>
+                    {% if not session["logging_in"] %}
+                       <a href="/login">
+                            <button type="button">login</button>
+                        </a>
+                </li>
+                    
+                    {% endif %}
+
+                {% endif %}
+                    </ul>
+                
+            
+            
+        </nav>
+    </div>
+
+
+

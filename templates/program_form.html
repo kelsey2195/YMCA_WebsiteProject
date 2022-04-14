@@ -1,0 +1,22 @@
+<section class="loginbox">
+
+<body>
+    <form action="/create_program" method="POST">
+        <script>
+            document.getElementById("current_date").innerHTML = Date();
+        </script>
+
+        <input placeholder="Program Name" autocomplete="off" type="text" name="name" value= "{{ name }}" >
+        <input placeholder="Start Date" autocomplete="off" type="date" name="start_date" value= "{{ start_date }}" min="current_date">
+        <input placeholder="End Date" autocomplete="off" type="date" name="end_date" value= "{{ end_date }}" min="current_date">
+        <!-- textarea not tested, unsure if it will function as an input -->
+        <textarea placeholder="Description" autocomplete="off" name="description" value= "{{ description }}"></textarea>
+        <input placeholder="Member Price" autocomplete="off" type="text" name="price" value= "{{ price }}">
+        <label for="max_slots">Maximum Participants: </label>
+        <input autocomplete="off" type="number" name="max_slots" id="max_slots" value= "{{ max_slots }}">
+
+        <input type="submit" name="register" value="register">
+    </form>
+</body>
+
+</section>

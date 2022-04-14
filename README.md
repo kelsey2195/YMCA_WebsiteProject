@@ -1,5 +1,3 @@
 # YMCA_WebsiteProject
-Repository for the project
-
-
-Testing testing 1 2 3
+Assumes a virtual environment (venv), flask framework, and mySQL have been installed to run.
+An instance of XAMPP must be running to connect the python to mySQL.
