@@ -253,7 +253,7 @@ def create_table(result):
     table = ""
 
     #Placing data from result into the table
-    for i in range(len(result)-1):
+    for i in range(len(result)):
         table += "  <tr>\n"
         for column in range(5):
             try:
