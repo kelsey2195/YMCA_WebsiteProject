@@ -355,8 +355,9 @@ td:nth-child(5):before {
     border-bottom: none;
 }
 
-.styled-table tbody tr:hover{
-    background-color: #000;
+.tableFixHead tbody tr:hover{
+    background-color: #949494;
+    color: #000;
 }
 
 #myInput {

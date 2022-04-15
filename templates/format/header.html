@@ -31,9 +31,11 @@
 
 
                     {% if not session["viewing_acount"] and session["user_id"] != "employee" %}
-                        <a href="/user_profile">
-                            <button>Account</button>
-                        </a>
+                        <li>
+                            <a href="/user_profile">
+                                <button>Account</button>
+                            </a>
+                        </li>
                     {% endif %}
                     <li>
                     <a href="/logout">

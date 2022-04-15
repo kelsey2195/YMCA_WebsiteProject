@@ -25,12 +25,13 @@ def login():
     if( 'username' in session ):    # checks if you are already logged in
         return redirect('/')
     else:
-        session["logging_in"] = True # hide login button
+        #session["logging_in"] = True # hide login button
         if request.method == 'POST':
             try:
                 # capture form elements
                 email = request.form['email']
                 password = request.form['password']
+
                 errorDict = {}  # create dictonary to hold errors for printing
 
                 # This block checks if the login is an employee
@@ -38,12 +39,12 @@ def login():
                 query = ''' SELECT * FROM employees WHERE employee_id = %s AND employee_password = %s'''
                 cursor.execute(query, ( email, password ))
                 result = cursor.fetchall()
+                cursor.close()
                 # Sets session to contain employee information
                 if result:
                     session["user_id"] = "employee"
                     session["username"] = result[0][1].decode() + result[0][2].decode()
                     session["manager_or_not"] = result[0][4]
-                    cursor.close()
                     return redirect("/")
 
                 # If it's not an employee login apply rules to check if it's right format ect.
@@ -67,12 +68,12 @@ def login():
                         email = email)
 
                 # no errors on input -> now check if this is a valid user
-                # fetches the input from the databse
+                # fetches the input from the database
                 cursor = connection.cursor(prepared=True)
                 query = ''' SELECT * FROM users WHERE email = %s AND password = %s'''
                 cursor.execute(query, ( email, password ))
- 
                 result = cursor.fetchall()
+                cursor.close()
 
                 # if there is a result then that means it's a valid user
                 if result :
@@ -80,13 +81,10 @@ def login():
                     session["user_id"] = result[0][0].decode()
                     session["username"] = result[0][1].decode()
                     session["member_or_not"] = result[0][3]
-                    cursor.close()
-
                     return redirect("/user_profile")
                 else:
                     # invalid user
                     message = "Invalid email or password"
-                    cursor.close()
                     return render_template('log_in.html', message = message, email = email)
             
             # exception handler
@@ -155,10 +153,10 @@ def register_user():
                 query = ''' SELECT * FROM users WHERE email = %s'''
                 cursor.execute(query, ( email, ))
                 result = cursor.fetchall()
+                cursor.close()
 
                 # if there is a result that means that the email is in use
                 if result :
-                    cursor.close()
                     errorDict["email_error"] = "Email already in use"
 
                 # Checks if there was any errors
@@ -213,7 +211,7 @@ def user_profile():
                     ON accounts.account_level = swim_levels.swim_level_id 
                     WHERE associated_user = ?'''
         cursor.execute(query, ( session["user_id"], ))
-        connection.commit()
+
         result = cursor.fetchall()
 
         # TODO eventually this will have to be formated for output in a nice looking way
@@ -238,8 +236,8 @@ def get_programs():
     cursor = connection.cursor(prepared=True)
     cursor.execute("SELECT name_program, start_date, end_date, description, %s, num_total_people, num_signed_up FROM programs" %(price_type))
     result = cursor.fetchall()
-    create_table(result)
     cursor.close()
+    create_table(result)
 
 
 #Creates html file of table of available programs
