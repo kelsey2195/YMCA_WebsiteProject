@@ -8,22 +8,17 @@ html, body{
     height:100%;
 }
 body{
-    text-align:center;
+    text-align: center;
     display:flex;
     flex-direction:column;
     min-height:100vh;
-    /* 
-        TODO
-     comment out to make it easier for me to test stuff
-     bring it back once we have colored text
-     also it might be good to only use it on the main page and stuff
-     background-image: linear-gradient(rgba(0, 0, 0, 0.527),rgba(0, 0, 0, 0.5)) ,url('/static/images/swim.jpg'); */
+    background-image: /*linear-gradient(rgba(0, 0, 0, 0.527),rgba(0, 0, 0, 0.5)) ,*/url('/static/images/swim.jpg');
     background-repeat:no-repeat;
     background-size:cover;
 }
 #top{
     padding:15px;
-    background:grey;
+    background:lightskyblue;
     color:black;
 }
 #contain{
@@ -61,23 +56,20 @@ nav ul li a{
     padding: 2em;
     margin: -2em;
 }
-nav ul li a:hover
-{
-    cursor:pointer;
-    background:rgba(0, 0, 0, 0.5);
-    color:black
-    
-}
-
 
 button{
-    background:#efefef;
+    background:white;
+    color: black;
     height:30px;
     width:60px;
     border-radius:20px;
     border:0;
     outline:0;
     cursor:pointer;
+}
+button:hover{
+    background-color: black;
+    color: white;
 }
 div.starttext{
     padding-right:280px;
@@ -148,7 +140,7 @@ div.starttext{
     border:none;
     outline:none;
     height:40px;
-    background:green;
+    background:lightskyblue;
     color:#fff;
     font-size:18px;
     border-radius:20px;
@@ -157,7 +149,7 @@ div.starttext{
 .loginbox input[type="submit"]:hover
 {
     cursor:pointer;
-    background:blue;
+    background:white;
     color:#000;
     
 }
@@ -166,7 +158,7 @@ div.starttext{
     border:none;
     outline:none;
     height:40px;
-    background:green;
+    background:white;
     color:#fff;
     font-size:18px;
     border-radius:20px;
@@ -220,7 +212,7 @@ h1 .register{
     border:none;
     outline:none;
     height:40px;
-    background:green;
+    background:lightskyblue;
     color:#fff;
     font-size:18px;
     border-radius:20px;
@@ -236,6 +228,49 @@ h1 .register{
 
 footer{
    padding:15px;
-   background:grey;
+   background:lightskyblue;
    color:black;
 }
+
+/* Styling for user profile*/
+/* Create three unequal columns that floats next to each other */
+* {
+    box-sizing: border-box;
+  }
+.column {
+  float: left;
+  padding: 20px;
+
+}
+
+.accounts {
+  width: 25%;
+}
+
+.calender{
+  width: 75%;
+}
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+/* Cards for account user profile */
+.card {
+    /* Add shadows to create the "card" effect */
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    transition: 0.3s;
+  }
+  
+  /* On mouse-over, add a deeper shadow */
+  .card:hover {
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+  }
+  
+  /* Add some padding inside the card container */
+  .container {
+    padding: 2px 16px;
+  }
