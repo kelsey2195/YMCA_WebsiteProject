@@ -2,7 +2,6 @@
 Assumes a virtual environment (venv), flask framework, and mySQL have been installed to run.
 An instance of XAMPP must be running to connect the python to mySQL.
 
-
 session["user_id"] -> "employee" or email for user
 session["username"] -> Employee name for employee
                         username for users
