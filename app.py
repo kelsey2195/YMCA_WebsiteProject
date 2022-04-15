@@ -14,7 +14,7 @@ connection = mysql.connector.connect(host='localhost', password = '', user='root
 # Home
 @app.route('/')
 def home():
-    # set session variable sback to false to show various buttons
+    # set session variable sback to false to show various button
     session["logging_in"] = False
     session["viewing_account"] = False
     return render_template('index.html')
