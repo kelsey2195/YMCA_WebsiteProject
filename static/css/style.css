@@ -32,6 +32,12 @@ nav{
     height: 30px;
 }
 
+footer{
+    padding:15px;
+    background:grey;
+    color:black;
+ }
+
 #logo{
     width:75px;
     height:56px;
@@ -291,12 +297,6 @@ h1 .register{
     background:blue;
     color:#000;
     
-}
-
-footer{
-   padding:15px;
-   background:grey;
-   color:black;
 }
 
 .tableFixHead {
