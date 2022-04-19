@@ -20,8 +20,7 @@
             </a>
              
                     <ul>
-                        <!-- <li id = "highlight"><a href="/register_user">Register</a></li>
-                        <li id = "highlight">Program Search</li> --> 
+                        <li id = "highlight"> <a href="/program_search"> Program Search </a></li> 
 
                 {% if session["username"] %} 
 
@@ -32,6 +31,10 @@
                         <!-- TODO maybe make a drop down for opetions as a user like setting and that sort of thing-->
                         <a href="/user_profile">
                             <button>Account</button>
+                        </a>
+                    {% else %}
+                        <a href="/staff_profile">
+                            <button>Actions</button>
                         </a>
                     {% endif %}
 
