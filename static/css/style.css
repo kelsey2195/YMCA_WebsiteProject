@@ -235,6 +235,8 @@ h1 .register{
     
 }
 
+/* ------- PROGRAM CREATION FORM ------- */
+
 .create_box{
     width:400px;
     height:540px;
@@ -299,15 +301,33 @@ h1 .register{
     
 }
 
+/* ------- PROGRAM CREATION FORM ------- */
+
+
+
+/* ------- PROGRAM SEARCH TABLE ------- */
+
+#searchbar {
+    background-position: 10px 12px; /* Position the search icon */
+    background-repeat: no-repeat; /* Do not repeat the icon image */
+    width: 40%; /* Full-width */
+    font-size: 16px; /* Increase font-size */
+    padding: 12px 20px 12px 40px; /* Add some padding */
+    margin-bottom: 12px; /* Add some space below the input */
+    color: grey;
+    border: none;
+    background-color: #000;
+    opacity: 90%;
+}
+
 .tableFixHead {
-  overflow-y: auto;
+  overflow-y: auto; /* Makes the table scrollable */
   border-collapse: collapse;
   margin: 25px 0;
   font-size: 0.9em;
   font-family: sans-serif;
   margin-left: 150px;
   text-align: left;
-  overflow-y: auto;
   height: 50%;
   width: 80%;
 }
@@ -360,15 +380,5 @@ td:nth-child(5):before {
     color: #000;
 }
 
-#myInput {
-    background-position: 10px 12px; /* Position the search icon */
-    background-repeat: no-repeat; /* Do not repeat the icon image */
-    width: 40%; /* Full-width */
-    font-size: 16px; /* Increase font-size */
-    padding: 12px 20px 12px 40px; /* Add some padding */
-    margin-bottom: 12px; /* Add some space below the input */
-    color: grey;
-    border: none;
-    background-color: #000;
-    opacity: 90%;
-  }
+
+/* ------- PROGRAM SEARCH TABLE ------- */

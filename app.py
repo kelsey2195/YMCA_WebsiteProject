@@ -221,36 +221,39 @@ def user_profile():
 
 @app.route('/program_search')
 def program_search():
+    # User must be logged in to access
     if( 'username' not in session ):
         return redirect('/login')
 
-    get_programs()
-    return render_template("program_search.html")
-
-def get_programs():
+    # Obtains the correct price for the user depending on if they are a member or not
     if not session["user_id"] != "employee" or session["member_or_not"] == 0:
-        price_type = "nonmember_price"
+            price_type = "nonmember_price"
     else:
-        price_type = "member_price"
+            price_type = "member_price"
 
+    # Queries the db for all programs
+    # TODO: Implement advanced queries
     cursor = connection.cursor(prepared=True)
     cursor.execute("SELECT name_program, start_date, end_date, description, %s, num_total_people, num_signed_up FROM programs" %(price_type))
     result = cursor.fetchall()
     cursor.close()
     create_table(result)
+    return render_template("program_search.html")
 
 
 #Creates html file of table of available programs
 #File placed in data folder as table.html
 def create_table(result):
     file_path = 'templates/data/table.html'
+    # Ensure that table.html has the correct data
     if os.path.exists(file_path):
         os.remove(file_path)
 
+    # creates table.html
     file = open(file_path, "w")
     table = ""
 
-    #Placing data from result into the table
+    #Placing data from result into table.html
     for i in range(len(result)):
         table += "  <tr>\n"
         for column in range(5):
@@ -264,7 +267,7 @@ def create_table(result):
     file.writelines(table)
     file.close()
 
-# Will eventually have the ability to create a program here
+# Creates program
 # only manager's should be able to create programs
 @app.route('/create', methods= ['POST', 'GET'])
 def create_program():

@@ -1,44 +1,58 @@
 {% include 'format/header.html' %}
-      <body>
-        <div class="tableFixHead">
-            <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for programs..">
-          <table id="myTable">
+
+<body>
+
+    <div class="tableFixHead">
+
+        <!-- Search bar for programs, uses program_search() js function to look through table -->
+        <input type="text" id="searchbar" onkeyup="program_search()" placeholder="Search for programs..">
+
+        <table id="program-table">
+
+            <!-- Table Header -->
             <thead>
-                
-            <tr>
-                <th>Program</th>
-                <th>Start Date</th>
-                <th>End Date</th>
-                <th>Description</th>
-                <th>Price</th>
-                <th>Available Slots</th>
-            </tr>
-        </thead>
+                <tr>
+                    <th>Program</th>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                    <th>Description</th>
+                    <th>Price</th>
+                    <th>Available Slots</th>
+                </tr>
+            </thead>
+
+            <!-- uses jinja to include html file created by the create_table(result) python method -->
+            <!-- table.html is a table including data of all programs {will be updated for advanced queries} -->
             <tbody> {% include 'data/table.html' %} </tbody>
-          </table>
-        </div>
-        <script>
-            function myFunction() {
-              // Declare variables
-              var input, filter, table, tr, td, i, txtValue;
-              input = document.getElementById("myInput");
-              filter = input.value.toUpperCase();
-              table = document.getElementById("myTable");
-              tr = table.getElementsByTagName("tr");
-            
-              // Loop through all table rows, and hide those who don't match the search query
-              for (i = 0; i < tr.length; i++) {
-                td = tr[i].getElementsByTagName("td")[0];
-                if (td) {
-                  txtValue = td.textContent || td.innerText;
-                  if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                    tr[i].style.display = "";
-                  } else {
-                    tr[i].style.display = "none";
-                  }
+        </table>
+    </div>
+
+    <script>
+        //JavaScript function to search through the table by table row <tr><td>
+        function program_search() {
+            var input, filter, table, tr, td, i, txtValue;
+
+            // returning the input from the searchbar
+            input = document.getElementById("searchbar");
+            filter = input.value.toUpperCase();
+            table = document.getElementById("program-table");
+            tr = table.getElementsByTagName("tr");
+
+            for(i = 0; i < tr.length; i++) {
+                td = tr[i].getElementsByTagName("td")[0]; //<--- Change this to set index of table column to be read
+                if(td) {
+                    txtValue = td.textContent || td.innserText;
+                    if(txtValue.toUpperCase().indexOf(filter) > -1) {
+                        tr[i].style.display = "";
+                    } else {
+                        tr[i].style.display = "none";
+                    }
                 }
-              }
             }
-        </script>
-      </body>
+        }
+
+    </script>
+
+</body>
+
 {% include 'format/footer.html' %}
