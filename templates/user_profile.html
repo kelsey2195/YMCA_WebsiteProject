@@ -11,12 +11,15 @@
             {% if session["member_or_not"] == 1 %}
                 <h2> Accounts </h2>
                 <!-- TODO Eventually will be a button to create more accounts for when it's a member user -->
-                {% for account in accounts %}
+                {% for accId, first, last, swimLevelNum, swimLevelName  in accounts %}
                     <div class="card">
-                        <!-- TODO have to display information in a proper way, currently just prints out tuple result-->
-                        {{ account }}
-
+                        <br>
+                        <p>YMCA id: {{ accId }}</p>
+                        <p>Name: {{ first }} {{ last }}</p>
+                        <p>Level: {{ swimLevelName}}</p>
+                        <br>
                     </div>
+                    <br>
                 {% endfor %}
                 
             {% else %}
@@ -28,8 +31,9 @@
 
         <div class="column calender" style="background-color:#bbb;">
             <h2>Calender</h2>
+            <!-- 
             will eventually have a calender here, I am looking at this tutorial for some thing like it? 
-            https://www.liquidlight.co.uk/blog/create-an-event-schedule-with-html-table/
+            https://www.liquidlight.co.uk/blog/create-an-event-schedule-with-html-table/ -->
         </div>
 
     </div>

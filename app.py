@@ -1,9 +1,7 @@
 #from pydoc import render_doc
 from flask import Flask, render_template, redirect, request, session
 import mysql.connector
-import re
-
-import datetime
+import re, os
 
 email_format = re.compile(r'([A-Za-z0-9]+[.-_])*[A-Za-z0-9]+@[A-Za-z0-9-]+(\.[A-Z|a-z]{2,})+')
 
@@ -18,6 +16,12 @@ connection = mysql.connector.connect(host='localhost', password = '', user='root
 def home():
     # set session variable sback to false to show various buttons
     return render_template('index.html')
+
+@app.route('/staff_profile')
+def staff_profile():
+    if( session["user_id"] != 'employee' ):
+        return redirect('/')
+    return render_template("staff_profile.html")
 
 # Login for employees and users
 @app.route('/login', methods= ['POST', 'GET'])
@@ -42,10 +46,10 @@ def login():
                 # Sets session to contain employee information
                 if result:
                     session["user_id"] = "employee"
-                    session["username"] = result[0][1] + result[0][2]
+                    session["username"] = result[0][1].decode() + result[0][2].decode()
                     session["manager_or_not"] = result[0][4]
                     cursor.close()
-                    return render_template("staff_profile.html")
+                    return redirect('/staff_profile')
 
                 # If it's not an employee login apply rules to check if it's right format ect.
                 # check if it's email in the right format
@@ -217,6 +221,9 @@ def user_profile():
         cursor.execute(query, ( session["user_id"], ))
         result = cursor.fetchall()
 
+        accId, email, first, last, swimLevelNum, birth, temp, swimLevelName = zip(*result)
+        result = list(zip( accId, first, last, swimLevelNum, swimLevelName ))
+
         # TODO eventually this will have to be formated for output in a nice looking way
         session['accounts'] = result
         print(result)
@@ -233,7 +240,143 @@ def create_program():
     if( session['user_id'] != "employee" or session["manager_or_not"] != 1 ):
         return redirect("/")
     else:
-        return render_template("create_program.html")
+        cursor = connection.cursor(prepared=True)
+        query = ''' SELECT *
+                    FROM swim_levels'''
+        cursor.execute(query)
+        result = cursor.fetchall()
+        cursor.close()
+        # temp, swimlevels = zip(*result)
+        # prognamelist = swimlevels[2:]
+        # swimlevels = [level.lower() for level in swimlevels] 
+        # changes so I can run the code on my machine
+        swimlevels = {}
+        prognamelist = {}
+        for i in range(len(result)):
+            swimlevels[i] = result[i][0]
+            prognamelist[i] = result[i][1].decode()
+
+        dayAndTime = [ (["","","","","","",""],"","",True) ]
+        numDayAndTime = 1
+
+        if request.method == 'POST':
+            try:
+                # capture form information
+                progname = request.form.get("program")
+                startDate = request.form.get("start")
+                endDate = request.form.get("end")
+
+                # Start process time and day list
+                numDayAndTime = int( request.form.get("numDayAndTime") )
+                if request.form.get('add'):
+                    numDayAndTime += 1
+
+                remove = 0   
+                for x in range(1, numDayAndTime + 1):
+                    if request.form.get('remove' + str(x) ):
+                        remove = x
+                        break
+                
+                dayAndTime = [ createDayAndTime( x, request ) for x in range(1, numDayAndTime + 1) if x != remove ]
+                numDayAndTime = len( dayAndTime )
+                if( numDayAndTime <= 0 ):
+                    dayAndTime = [ (["","","","","","",""],"","",True) ]
+                    numDayAndTime = 1
+                # end process time and day list
+
+                # continue capturing form
+                location = request.form.get("location")
+                description = request.form.get("description")
+                maxParticipants = request.form.get("maxParticipants")
+                memberPrice = request.form.get("memberPrice")
+                nonMemberPrice = request.form.get("nonMemberPrice")
+                minswimlevel = request.form.get("minswimlevel")
+
+                # not create no need to validate errors
+                # captures the remove and add post
+                if not request.form.get('create'):
+                    return render_template("create_program.html", 
+                        swimlevels = swimlevels, progname = progname, prognamelist =prognamelist, 
+                        startDate=startDate, endDate=endDate,
+                        dayAndTime=dayAndTime, numDayAndTime=numDayAndTime,
+                        location=location, description=description, maxParticipants=maxParticipants,
+                        memberPrice=memberPrice, nonMemberPrice=nonMemberPrice, minswimlevel=minswimlevel )
+
+                # create dict to fill with errors
+                errorDict = {}
+
+                # check for errors in every input
+                if( not progname ):
+                    errorDict["name_error"] = "Must fill name input"
+                if( not startDate or not endDate ):
+                    errorDict["date_error"] = "Must have a start and date"
+                
+                i = next( (i for i, v in enumerate(dayAndTime) if v[3] == True), -1)
+                if( i > -1):
+                    errorDict["daytime_error"] = "Make sure time " + str(i + 1) + " is completely filled or remove it"
+
+                if( not location ):
+                    errorDict["location_error"] = "Must have a location"
+
+                if( not maxParticipants ):
+                    errorDict["max_error"] = "Must specify the maximum participants"
+
+                if( not memberPrice or not nonMemberPrice):
+                    errorDict["price_error"] = "Must have a price for members and nonmembers"
+
+                if( not minswimlevel ):
+                    errorDict["level_error"] = "Must have a minimum level for participants of this program" 
+                # elif( minswimlevel.lower() not in swimlevels ):
+                #     errorDict["level_error"] = "Invalid swimlevel" 
+                
+                # errors so return template rendered with errors
+                if errorDict:
+                    return render_template("create_program.html", 
+                        name_error = errorDict.get("name_error",""),
+                        date_error = errorDict.get("date_error",""),
+                        daytime_error = errorDict.get("daytime_error",""),
+                        location_error = errorDict.get("location_error",""),
+                        max_error = errorDict.get("max_error",""),
+                        price_error = errorDict.get("price_error",""),
+                        level_error = errorDict.get("level_error",""),
+                        swimlevels = swimlevels, progname = progname, prognamelist =prognamelist, 
+                        startDate=startDate, endDate=endDate,
+                        dayAndTime=dayAndTime, numDayAndTime=numDayAndTime,
+                        location=location, description=description, maxParticipants=maxParticipants,
+                        memberPrice=memberPrice, nonMemberPrice=nonMemberPrice, minswimlevel=minswimlevel, )
+                else:
+                     # have to acutally insert into database here
+                    cursor = connection.cursor(prepared=True)
+                    query = ''' INSERT INTO programs 
+                                    ( `name_program`, `start_date`, `end_date`, `location`, `description`, 
+                                        `min_swim_level`, `member_price`, `nonmember_price`, `num_total_people`, `num_signed_up`)
+                                    VALUES (?,?,?,?,?,?,?,?,?,0); '''
+                    cursor.execute(query, ( progname, startDate, endDate, location, description, 
+                                        minswimlevel, memberPrice, nonMemberPrice, maxParticipants))
+        
+                    programId = cursor.lastrowid
+
+                    dayTimeTupleList = [ dayTimeInsertTuple(x, programId) for x in dayAndTime ]
+                    dayTimeTupleList =  [item for sublist in dayTimeTupleList for item in sublist] #flatten list
+                    print(dayTimeTupleList)
+                    query = ''' INSERT INTO program_schedule 
+                                    (`program_id`, `day_of_week`, `start_time`, `end_time`) VALUES (?,?,?,?); '''
+
+                    cursor.executemany( query, dayTimeTupleList )
+
+                    connection.commit()
+                    cursor.close()
+
+                    print("Success")
+
+                    return redirect("/")
+
+            except mysql.connector.Error as error:
+                print("Failed to create new program: {}".format(error))
+
+        # Renders inital template
+        return render_template("create_program.html", 
+            swimlevels = swimlevels, prognamelist =prognamelist, dayAndTime=dayAndTime, numDayAndTime=numDayAndTime )
 
 # Create account associated with user
 # used initially when creating a new user and when creating a new family account
@@ -300,6 +443,9 @@ def create_user_account():
                 connection.commit()
                 cursor.close()
 
+                query = ''' INSERT INTO program_schedule (`program_id`, `day_of_week`, `start_time`, `end_time`) VALUES '''
+
+
                 # exception handler    
                 return redirect("/user_profile")
 
@@ -308,7 +454,109 @@ def create_user_account():
 
         return render_template("create_account.html", child = child)
 
+@app.route('/program_search')
+def program_search():
+    # User must be logged in to access
+    if( 'username' not in session ):
+        return redirect('/login')
 
+    # Obtains the correct price for the user depending on if they are a member or not
+    if not session["user_id"] != "employee" or session["member_or_not"] == 0:
+            price_type = "nonmember_price"
+    else:
+            price_type = "member_price"
+
+    # Queries the db for all programs
+    # TODO: Implement advanced queries
+    cursor = connection.cursor(prepared=True)
+    cursor.execute("SELECT name_program, start_date, end_date, description, %s, num_total_people, num_signed_up FROM programs" %(price_type))
+    result = cursor.fetchall()
+    cursor.close()
+    create_table(result)
+    return render_template("program_search.html")
+
+
+#Creates html file of table of available programs
+#File placed in data folder as table.html
+def create_table(result):
+    file_path = 'templates/data/table.html'
+    # Ensure that table.html has the correct data
+    if os.path.exists(file_path):
+        os.remove(file_path)
+
+    # creates table.html
+    file = open(file_path, "w")
+    table = ""
+
+    #Placing data from result into table.html
+    for i in range(len(result)):
+        table += "  <tr>\n"
+        for column in range(5):
+            try:
+                table += "    <td>{0}</td>\n".format(result[i][column].decode())
+            except(AttributeError):
+                table += "    <td>{0}</td>\n".format(result[i][column])
+        table += "    <td>{0}/{1}</td>\n".format(result[i][5]-result[i][6], result[i][5])
+        table += " </tr>\n"
+
+    file.writelines(table)
+    file.close()
+
+def createDayAndTime( x, request ):
+    dayList = []
+    empty = True
+
+    if( request.form.get('sunday' + str(x)) ):
+        dayList.append("checked")
+        empty = False
+    else:
+        dayList.append("")
+    if( request.form.get('monday' + str(x)) ):
+        dayList.append("checked")
+        empty = False
+    else:
+        dayList.append("")
+    if( request.form.get('tuesday' + str(x)) ):
+        dayList.append("checked")
+        empty = False
+    else:
+        dayList.append("")
+    if( request.form.get('wednesday' + str(x)) ):
+        dayList.append("checked")
+        empty = False
+    else:
+        dayList.append("")
+    if( request.form.get('thursday' + str(x)) ):
+        dayList.append("checked")
+        empty = False
+    else:
+        dayList.append("")
+    if( request.form.get('friday' + str(x)) ):
+        dayList.append("checked")
+        empty = False
+    else:
+        dayList.append("")
+    if( request.form.get('saturday' + str(x)) ):
+        dayList.append("checked")
+        empty = False
+    else:
+        dayList.append("")
+    
+    startTime = ""
+    if( request.form.get('startTime' + str(x)) ):
+        startTime = request.form.get('startTime' + str(x))
+
+    endTime = ""
+    if( request.form.get('endTime' + str(x)) ):
+        endTime = request.form.get('endTime' + str(x))
+
+    if( startTime == "" or endTime == "" ):
+        empty = True
+
+    return ( dayList, startTime, endTime, empty )
+
+def dayTimeInsertTuple( x, programId ):
+    return [ (programId, i, x[1], x[2]) for i,day in enumerate(x[0]) if day == 'checked' ]
 
 if __name__ == "__main__":
-    app.run()
+    app.run(debug=True)

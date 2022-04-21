@@ -1,37 +1,153 @@
 {% include 'format/header.html' %}
 
+{% block javascript %}
+    <script src="{{ url_for('static',filename='javascript/program_create_scripts.js') }}"></script>
+{% endblock %}
+
 <h1> Create Program </h1>
 
-<!--
-    TODO
-    program name
-        make this one of the level or make it changable
 
-    start date
-    end date
-        make sure end date is after start date
 
-    description
+<form action="/create_program" method="POST" class="program-creation-form">
+    {% if name_error %}
+        <p style="color:rgb(177, 0, 0);">
+            {{ name_error }} 
+        </p>
+    {% endif %}
+    <!-- Ignore error with "{{swimlevels|tojson}}", not an actual error -->
+    <input placeholder="Program Name" type="text" name="program" list="progname" id="programName" value="{{ progname }}"
+                        autocomplete="off"
+                        onchange='updateSwimLevel( this, document.getElementById("MinSwimLevel"), {{swimlevels|tojson}} )'/>
+    <datalist id="progname">
+        {% for name in prognamelist %}
+            <option value= "{{ name }}" > {{ name }} </option>
+        {% endfor %}
+    </datalist>
 
-    min_swim_level
-        should also be able to be null if the program name isn't a level
+    <br> 
+    <br> 
 
-    price
-        make two slots
-        set non member price or member price based on the other
-        allow it to be editable
-            if the manager wants something different in terms of price
+    {% if date_error %}
+        <p style="color:rgb(177, 0, 0);">
+            {{ date_error }} 
+        </p>
+    {% endif %}
+    <label for="start">Start Date:</label>
+    <input type="date" id="start" name="start" value="{{ startDate }}"
+                    onchange='whenChangeStartDate(this, document.getElementById("end"))'>
 
-    num_total_people
-        num_total_people_allowed to sign up
+    <label for="end">End Date:</label>
+    <input type="date" id="end" name="end" value="{{ endDate }}"
+                    onchange='whenChangeEndDate(document.getElementById("start"), this)'>
+
+    <br> 
+    <br> 
     
-    num_signed up
-        total number of people currently signed up
+    <h3>Weekday & Times</h3>
+    {% if daytime_error %}
+        <p style="color:rgb(177, 0, 0);">
+            {{ daytime_error }} 
+        </p>
+    {% endif %}
+    {% for weekday, startTime, endTime, empty in dayAndTime %}
+        {{ loop.index }}
 
-    when submited get the newest program ID
-    then time slots
+        <!-- TODO make the days into buttons makes it look nicer-->
+        <input type="checkbox" value="0" id="sunday{{ loop.index }}" name="sunday{{ loop.index }}" {{ weekday[0] }}>
+        <label for="sunday{{ loop.index }}">Sunday</label>
+        <input type="checkbox" value="1" id="monday{{ loop.index }}" name="monday{{ loop.index }}" {{ weekday[1] }}>
+        <label for="monday{{ loop.index }}">monday</label>
+        <input type="checkbox" value="2" id="tuesday{{ loop.index }}" name="tuesday{{ loop.index }}" {{ weekday[2] }}>
+        <label for="tuesday{{ loop.index }}">tuesday</label>
+        <input type="checkbox" value="3" id="wednesday{{ loop.index }}" name="wednesday{{ loop.index }}" {{ weekday[3] }}>
+        <label for="wednesday{{ loop.index }}">wednesday</label>
+        <input type="checkbox" value="4" id="thursday{{ loop.index }}" name="thursday{{ loop.index }}" {{ weekday[4] }}>
+        <label for="thursday{{ loop.index }}">thursday</label>
+        <input type="checkbox" value="5" id="friday{{ loop.index }}" name="friday{{ loop.index }}" {{ weekday[5] }}>
+        <label for="friday{{ loop.index }}">friday</label>
+        <input type="checkbox" value="0" id="saturday{{ loop.index }}" name="saturday{{ loop.index }}" {{ weekday[6] }}>
+        <label for="saturday{{ loop.index }}">saturday</label>
+        <input type="time" name="startTime{{ loop.index }}" id="startTime{{ loop.index }}" value="{{startTime}}"
+                onchange='whenChangeStartTime( this, document.getElementById("startTime{{ loop.index }}") )'
+                onclick='setTime( this )'>
+        <input type="time" name="endTime{{ loop.index }}" id="endTime{{ loop.index }}" value="{{endTime}}"
+                onchange='whenChangeEndTime( document.getElementById("startTime{{ loop.index }}"), this )'
+                onclick='setTime( this )'>
+        
+        {% if loop.length == 1 %}
+            <input type="submit" name="remove{{ loop.index }}" value="clear">
+        {% else %}
+            <input type="submit" name="remove{{ loop.index }}" value="remove day">
+        {% endif %} 
+        <br>
+    {% endfor %}
 
--->
+    <input type="hidden" id="numDayAndTime" name="numDayAndTime" value={{ numDayAndTime }}>
+    <input type="submit" name="add" value="add a day">
 
+    <br> 
+    <br>
+    
+    {% if location_error %}
+        <p style="color:rgb(177, 0, 0);">
+            {{ location_error }} 
+        </p>
+    {% endif %}
+    <label for="location">Location:</label>
+    <input placeholder="Location" autocomplete="off" type="text" name="location" id="location" value= "{{ location }}" >
+
+    <br> 
+    <br> 
+
+    <textarea placeholder="Description (Not required)" autocomplete="off" type="text" name="description" rows="3" cols="50">{{ description }}</textarea>
+
+    <br> 
+    <br> 
+
+    {% if max_error %}
+        <p style="color:rgb(177, 0, 0);">
+            {{ max_error }} 
+        </p>
+    {% endif %}
+    <input placeholder="Max Participants" autocomplete="off" type="number" name="maxParticipants" value= "{{ maxParticipants }}" step="1" 
+            onchange='minPeople( this )'>
+
+    <br> 
+    <br> 
+
+    {% if price_error %}
+        <p style="color:rgb(177, 0, 0);">
+            {{ price_error }} 
+        </p>
+    {% endif %}
+    <label for="memberPrice">Member Price: $</label>
+    <input autocomplete="off" type="number" name="memberPrice" id="memberPrice" value= "{{ memberPrice }}" 
+            onchange='setNonMemberPrice( this, document.getElementById("nonMemberPrice") )'>
+
+    <label for="nonMemberPrice">Non-Member Price: $</label>
+    <input autocomplete="off" type="number" name="nonMemberPrice" id="nonMemberPrice" value= "{{ nonMemberPrice }}" 
+            onchange='minNonMemberPrice( document.getElementById("memberPrice"), this )'>
+    
+    <br> 
+    <br> 
+
+    {% if level_error %}
+        <p style="color:rgb(177, 0, 0);">
+            {{ level_error }} 
+        </p>
+    {% endif %}
+    <input placeholder="Min Swim Level" type="text" name="minswimlevel" list="swimlevel" id="MinSwimLevel" value="{{ minswimlevel }}"/>
+    <datalist id="swimlevel">
+        {% for level in swimlevels %}
+            <option value= "{{ level }}" > {{ level }} </option>
+        {% endfor %}
+    </datalist>
+
+    <br> 
+    <br> 
+
+    <input type="submit" name="create" value="create">
+
+</form>
 
 {% include 'format/footer.html' %}
