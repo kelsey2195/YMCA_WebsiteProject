@@ -15,10 +15,11 @@
 
     {% if email_error %}
         <p style="color:rgb(177, 0, 0);">
-            {{ email_error }}
+            {{ email_error }} 
         </p>
     {% endif %}
     <input placeholder="Enter Email" autocomplete="off" type="text" name="email" value= "{{ email }}">
+    
 <p>Password</p>
     {% if password_error %}
         <p style="color:rgb(177, 0, 0);">
@@ -26,9 +27,6 @@
         </p>
     {% endif %}
     <input placeholder="Enter Password" autocomplete="off" type="password" name="password">
-
-
-
 
     <input type="submit" name="login" value="login">
 

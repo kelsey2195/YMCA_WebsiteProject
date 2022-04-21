@@ -4,10 +4,11 @@
 <head>
    <meta name="viewport" content="width=devide-width, inital-scale=1.0">
     <title>YMCA Project</title>
-    <link rel= "stylesheet" type= "text/css" href= "../../static/css/style.css">
+    <link rel="icon" type="image/x-icon" href="../../static/images/logo.png">
+    <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='css/style.css') }}">
 </head>
 
-    <body>
+    <body >
   
         <div id="contain">
           
@@ -19,29 +20,36 @@
             </a>
              
                     <ul>
-                        <li><a href="/program_search" class = "highlight">Programs</a></li>        
+                        <li id = "highlight"> <a href="/program_search"> Program Search </a></li> 
 
                 {% if session["username"] %} 
-                    
+                
                     {% if session["user_id"] == "employee" %}
-                        <li><a href="/create" class = "highlight">Create Program</a></li>
+                        <li><a href="/create_program" class = "highlight">Create Program</a></li>
                     {% endif %}
 
                     <li><a>Hello {{ session["username"] }}</a></li>
 
 
-                    {% if not session["viewing_acount"] and session["user_id"] != "employee" %}
+                    {% if session["user_id"] != "employee" %}
+                        <!-- TODO maybe make a drop down for opetions as a user like setting and that sort of thing-->
                         <li>
                             <a href="/user_profile">
                                 <button>Account</button>
                             </a>
                         </li>
+                    {% else %}
+                    <li>
+                        <a href="/staff_profile">
+                            <button>Actions</button>
+                        </a>
+                    </li>
                     {% endif %}
                     <li>
-                    <a href="/logout">
-                        <button>logout</button>
-                    </a>  
-                </li>
+                        <a href="/logout">
+                            <button>logout</button>
+                        </a> 
+                    </li> 
 
                 {% else %} 
                 <li>
