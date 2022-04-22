@@ -82,8 +82,8 @@ def login():
                 # if there is a result then that means it's a valid user
                 if result :
                     # fill session info with user information
-                    session["user_id"] = result[0][0]
-                    session["username"] = result[0][1]
+                    session["user_id"] = result[0][0].decode()
+                    session["username"] = result[0][1].decode()
                     session["member_or_not"] = result[0][3]
                     cursor.close()
 
@@ -221,16 +221,19 @@ def user_profile():
         cursor.execute(query, ( session["user_id"], ))
         result = cursor.fetchall()
 
-        accId, email, first, last, swimLevelNum, birth, temp, swimLevelName = zip(*result)
-        result = list(zip( accId, first, last, swimLevelNum, swimLevelName ))
+        if result:
+            accId, email, first, last, swimLevelNum, birth, temp, swimLevelName = zip(*result)
+            result = list(zip( accId, first, last, swimLevelNum, swimLevelName ))
 
-        # TODO eventually this will have to be formated for output in a nice looking way
-        session['accounts'] = result
-        print(result)
+            # TODO eventually this will have to be formated for output in a nice looking way
+            session['accounts'] = result
+            print(result)
 
-        num = cursor.rowcount
-        cursor.close()
-        return render_template("user_profile.html", accounts = result, num_accounts = num)
+            num = cursor.rowcount
+            cursor.close()
+            return render_template("user_profile.html", accounts = result, num_accounts = num)
+
+        return render_template("user_profile.html", num_accounts=0)
 
 # Will eventually have the ability to create a program here
 # only manager's should be able to create programs
