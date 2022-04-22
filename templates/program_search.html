@@ -1,12 +1,25 @@
 {% include 'format/header.html' %}
 
+{% block javascript %}
+    <script src="{{ url_for('static',filename='javascript/program_search_scripts.js') }}"></script>
+    
+{% endblock %}
+
 <body>
 
     <div class="tableFixHead">
 
         <!-- Search bar for programs, uses program_search() js function to look through table -->
         <input type="text" id="searchbar" onkeyup="program_search()" placeholder="Search for programs..">
-
+        
+        {% if session["user_id"] == "employee" %}
+            <button id="cancel-button" class="cancel-button" role="button">Cancel</button>
+            
+            <!-- Program Deletion button -->
+            <!-- {% if session["manager_or_not"] == 1 %}
+                <button class="delete-button" role="button">Delete</button>
+            {% endif %} -->
+        {% endif %}
         <table id="program-table">
 
             <!-- Table Header -->
@@ -25,34 +38,15 @@
             <!-- table.html is a table including data of all programs {will be updated for advanced queries} -->
             <tbody> {% include 'data/table.html' %} </tbody>
         </table>
+
+        <button class="confirm-button" role="button">Confirm Program Cancel</button>
     </div>
 
+    
     <script>
-        //JavaScript function to search through the table by table row <tr><td>
-        function program_search() {
-            var input, filter, table, tr, td, i, txtValue;
-
-            // returning the input from the searchbar
-            input = document.getElementById("searchbar");
-            filter = input.value.toUpperCase();
-            table = document.getElementById("program-table");
-            tr = table.getElementsByTagName("tr");
-
-            for(i = 0; i < tr.length; i++) {
-                td = tr[i].getElementsByTagName("td")[0]; //<--- Change this to set index of table column to be read
-                if(td) {
-                    txtValue = td.textContent || td.innserText;
-                    if(txtValue.toUpperCase().indexOf(filter) > -1) {
-                        tr[i].style.display = "";
-                    } else {
-                        tr[i].style.display = "none";
-                    }
-                }
-            }
-        }
-
+        const element = document.getElementById("cancel-button");
+        element.addEventListener("click", delete_mode);
     </script>
-
 </body>
 
 {% include 'format/footer.html' %}

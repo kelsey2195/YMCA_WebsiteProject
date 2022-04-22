@@ -493,7 +493,7 @@ def create_table(result):
 
     #Placing data from result into table.html
     for i in range(len(result)):
-        table += "  <tr>\n"
+        table += "  <tr id='program-table'>\n"
         for column in range(5):
             try:
                 table += "    <td>{0}</td>\n".format(result[i][column].decode())

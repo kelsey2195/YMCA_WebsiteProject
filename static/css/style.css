@@ -353,5 +353,67 @@ td:nth-child(5):before {
     color: #000;
 }
 
+.delete-button {
+    float: right;
+    background-color: #f10e0e;
+    border-radius: 8px;
+    border-style: none;
+    box-sizing: border-box;
+    color: #FFFFFF;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    height: 40px;
+    line-height: 20px;
+    list-style: none;
+    margin: 0;
+    outline: none;
+    position: relative;
+    text-align: center;
+    text-decoration: none;
+    transition: color 100ms;
+    vertical-align: baseline;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+}
+  
+.delete-button:hover {
+    background-color: #ee5050;
+}
+
+.cancel-button,
+.confirm-button {
+    float: right;
+    background-color: #f10e0e;
+    border-radius: 8px;
+    border-style: none;
+    box-sizing: border-box;
+    color: #FFFFFF;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    height: 40px;
+    line-height: 20px;
+    list-style: none;
+    margin: 0;
+    outline: none;
+    position: relative;
+    text-align: center;
+    text-decoration: none;
+    transition: color 100ms;
+    vertical-align: baseline;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    width: fit-content;
+    padding-right: 12px;
+    padding-left: 12px;
+}
+  
+.cancel-button:hover {
+    background-color: #ee5050;
+}
+
 
 /* ------- PROGRAM SEARCH TABLE ------- */
