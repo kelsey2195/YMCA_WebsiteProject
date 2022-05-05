@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 21, 2022 at 02:06 AM
+-- Generation Time: May 06, 2022 at 01:20 AM
 -- Server version: 10.4.22-MariaDB
 -- PHP Version: 8.0.13
 
@@ -32,7 +32,6 @@ CREATE TABLE `accounts` (
   `associated_user` varchar(255) NOT NULL,
   `account_first_name` varchar(255) NOT NULL,
   `account_last_name` varchar(255) NOT NULL,
-  `account_level` int(11) NOT NULL,
   `account_birth_day` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -40,11 +39,11 @@ CREATE TABLE `accounts` (
 -- Dumping data for table `accounts`
 --
 
-INSERT INTO `accounts` (`account_id`, `associated_user`, `account_first_name`, `account_last_name`, `account_level`, `account_birth_day`) VALUES
-(1000000, 'test@abc.com', 'Micheal', 'Ross', 1, '2002-04-01'),
-(1000002, 'NEWACC@ill.com', 'Prop', 'Bear', 1, '2022-04-01'),
-(1000003, 'test@abc.com', 'TestName', 'TestSurname', 0, '2000-01-01'),
-(1000004, 'example@test.com', 'firstName', 'lastName', 0, '2022-04-07');
+INSERT INTO `accounts` (`account_id`, `associated_user`, `account_first_name`, `account_last_name`, `account_birth_day`) VALUES
+(1000000, 'test@abc.com', 'Micheal', 'Ross', '2002-04-01'),
+(1000002, 'NEWACC@ill.com', 'Prop', 'Bear', '2022-04-01'),
+(1000003, 'test@abc.com', 'TestName', 'TestSurname', '2000-01-01'),
+(1000004, 'example@test.com', 'firstName', 'lastName', '2022-04-07');
 
 -- --------------------------------------------------------
 
@@ -93,7 +92,7 @@ CREATE TABLE `programs` (
   `end_date` date NOT NULL,
   `location` varchar(255) NOT NULL,
   `description` varchar(9999) NOT NULL,
-  `min_swim_level` int(11) DEFAULT NULL,
+  `min_swim_level` varchar(255) DEFAULT NULL,
   `member_price` int(11) NOT NULL,
   `nonmember_price` int(11) NOT NULL,
   `num_total_people` int(11) NOT NULL,
@@ -105,8 +104,8 @@ CREATE TABLE `programs` (
 --
 
 INSERT INTO `programs` (`program_id`, `name_program`, `start_date`, `end_date`, `location`, `description`, `min_swim_level`, `member_price`, `nonmember_price`, `num_total_people`, `num_signed_up`) VALUES
-(16, 'pike', '2022-04-19', '2022-04-22', 'pool', 'trest description poolllllllll', 4, 4, 4, 2, 0),
-(17, 'shark', '2022-04-19', '2022-05-15', 'YMCA Onalaska Pool', '', 5, 48, 96, 8, 0);
+(16, 'pike', '2022-04-19', '2022-04-22', 'pool', 'trest description poolllllllll', '4', 4, 4, 2, 0),
+(17, 'shark', '2022-04-19', '2022-05-15', 'YMCA Onalaska Pool', '', '5', 48, 96, 8, 0);
 
 -- --------------------------------------------------------
 
@@ -134,30 +133,6 @@ INSERT INTO `program_schedule` (`program_id`, `day_of_week`, `start_time`, `end_
 (16, 0, '05:00:00', '06:00:00'),
 (16, 3, '05:00:00', '06:00:00'),
 (17, 4, '17:00:00', '17:40:00');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `swim_levels`
---
-
-CREATE TABLE `swim_levels` (
-  `swim_level_id` int(11) NOT NULL,
-  `swim_level_name` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data for table `swim_levels`
---
-
-INSERT INTO `swim_levels` (`swim_level_id`, `swim_level_name`) VALUES
-(0, 'adult'),
-(1, 'polliwog'),
-(2, 'guppy'),
-(3, 'minnow'),
-(4, 'fish'),
-(5, 'pike'),
-(6, 'shark');
 
 -- --------------------------------------------------------
 
@@ -206,12 +181,6 @@ ALTER TABLE `programs`
   ADD PRIMARY KEY (`program_id`);
 
 --
--- Indexes for table `swim_levels`
---
-ALTER TABLE `swim_levels`
-  ADD PRIMARY KEY (`swim_level_id`);
-
---
 -- Indexes for table `users`
 --
 ALTER TABLE `users`
@@ -238,12 +207,6 @@ ALTER TABLE `employees`
 --
 ALTER TABLE `programs`
   MODIFY `program_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
-
---
--- AUTO_INCREMENT for table `swim_levels`
---
-ALTER TABLE `swim_levels`
-  MODIFY `swim_level_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
