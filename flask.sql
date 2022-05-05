@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 13, 2022 at 05:21 AM
+-- Generation Time: Apr 21, 2022 at 02:06 AM
 -- Server version: 10.4.22-MariaDB
 -- PHP Version: 8.0.13
 
@@ -42,7 +42,9 @@ CREATE TABLE `accounts` (
 
 INSERT INTO `accounts` (`account_id`, `associated_user`, `account_first_name`, `account_last_name`, `account_level`, `account_birth_day`) VALUES
 (1000000, 'test@abc.com', 'Micheal', 'Ross', 1, '2002-04-01'),
-(1000002, 'NEWACC@ill.com', 'Prop', 'Bear', 1, '2022-04-01');
+(1000002, 'NEWACC@ill.com', 'Prop', 'Bear', 1, '2022-04-01'),
+(1000003, 'test@abc.com', 'TestName', 'TestSurname', 0, '2000-01-01'),
+(1000004, 'example@test.com', 'firstName', 'lastName', 0, '2022-04-07');
 
 -- --------------------------------------------------------
 
@@ -89,6 +91,7 @@ CREATE TABLE `programs` (
   `name_program` varchar(255) NOT NULL,
   `start_date` date NOT NULL,
   `end_date` date NOT NULL,
+  `location` varchar(255) NOT NULL,
   `description` varchar(9999) NOT NULL,
   `min_swim_level` int(11) DEFAULT NULL,
   `member_price` int(11) NOT NULL,
@@ -96,6 +99,14 @@ CREATE TABLE `programs` (
   `num_total_people` int(11) NOT NULL,
   `num_signed_up` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `programs`
+--
+
+INSERT INTO `programs` (`program_id`, `name_program`, `start_date`, `end_date`, `location`, `description`, `min_swim_level`, `member_price`, `nonmember_price`, `num_total_people`, `num_signed_up`) VALUES
+(16, 'pike', '2022-04-19', '2022-04-22', 'pool', 'trest description poolllllllll', 4, 4, 4, 2, 0),
+(17, 'shark', '2022-04-19', '2022-05-15', 'YMCA Onalaska Pool', '', 5, 48, 96, 8, 0);
 
 -- --------------------------------------------------------
 
@@ -106,20 +117,23 @@ CREATE TABLE `programs` (
 CREATE TABLE `program_schedule` (
   `program_id` int(11) NOT NULL,
   `day_of_week` int(11) NOT NULL,
-  `program_time_id` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `program_time`
---
-
-CREATE TABLE `program_time` (
-  `program_time_id` int(11) NOT NULL,
   `start_time` time NOT NULL,
   `end_time` time NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `program_schedule`
+--
+
+INSERT INTO `program_schedule` (`program_id`, `day_of_week`, `start_time`, `end_time`) VALUES
+(16, 2, '08:00:00', '12:00:00'),
+(16, 5, '08:00:00', '12:00:00'),
+(16, 1, '11:00:00', '16:00:00'),
+(16, 4, '11:00:00', '16:00:00'),
+(16, 6, '11:00:00', '16:00:00'),
+(16, 0, '05:00:00', '06:00:00'),
+(16, 3, '05:00:00', '06:00:00'),
+(17, 4, '17:00:00', '17:40:00');
 
 -- --------------------------------------------------------
 
@@ -138,12 +152,12 @@ CREATE TABLE `swim_levels` (
 
 INSERT INTO `swim_levels` (`swim_level_id`, `swim_level_name`) VALUES
 (0, 'adult'),
-(1, 'Polliwog'),
-(2, 'Guppy'),
-(3, 'Minnow'),
-(4, 'Fish'),
-(5, 'Pike'),
-(6, 'Shark');
+(1, 'polliwog'),
+(2, 'guppy'),
+(3, 'minnow'),
+(4, 'fish'),
+(5, 'pike'),
+(6, 'shark');
 
 -- --------------------------------------------------------
 
@@ -163,8 +177,11 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`email`, `mem_display_name`, `password`, `member_or_not`) VALUES
+('demo@email.con', 'demo2', 'password', 1),
 ('email@email.com', 'newUser', 'pass', 0),
-('NEWACC@ill.com', 'newAccU', 'pass', 0);
+('example@test.com', 'test', 'test', 0),
+('NEWACC@ill.com', 'newAccU', 'pass', 1),
+('test@abc.com', 'testAcc', 'password', 1);
 
 --
 -- Indexes for dumped tables
@@ -189,12 +206,6 @@ ALTER TABLE `programs`
   ADD PRIMARY KEY (`program_id`);
 
 --
--- Indexes for table `program_time`
---
-ALTER TABLE `program_time`
-  ADD PRIMARY KEY (`program_time_id`);
-
---
 -- Indexes for table `swim_levels`
 --
 ALTER TABLE `swim_levels`
@@ -214,7 +225,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `accounts`
 --
 ALTER TABLE `accounts`
-  MODIFY `account_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1000003;
+  MODIFY `account_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1000005;
 
 --
 -- AUTO_INCREMENT for table `employees`
@@ -226,13 +237,7 @@ ALTER TABLE `employees`
 -- AUTO_INCREMENT for table `programs`
 --
 ALTER TABLE `programs`
-  MODIFY `program_id` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `program_time`
---
-ALTER TABLE `program_time`
-  MODIFY `program_time_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `program_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT for table `swim_levels`

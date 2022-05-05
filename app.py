@@ -1,7 +1,7 @@
 #from pydoc import render_doc
 from flask import Flask, render_template, redirect, request, session
 import mysql.connector
-import re
+import re, os
 
 email_format = re.compile(r'([A-Za-z0-9]+[.-_])*[A-Za-z0-9]+@[A-Za-z0-9-]+(\.[A-Z|a-z]{2,})+')
 
@@ -46,7 +46,7 @@ def login():
                 # Sets session to contain employee information
                 if result:
                     session["user_id"] = "employee"
-                    session["username"] = result[0][1] + result[0][2]
+                    session["username"] = result[0][1].decode() + result[0][2].decode()
                     session["manager_or_not"] = result[0][4]
                     cursor.close()
                     return redirect('/staff_profile')
@@ -246,7 +246,6 @@ def create_program():
         cursor.execute(query)
         result = cursor.fetchall()
         cursor.close()
-
         temp, swimlevels = zip(*result)
         prognamelist = swimlevels[2:]
         swimlevels = [level.lower() for level in swimlevels] 
@@ -321,8 +320,8 @@ def create_program():
 
                 if( not minswimlevel ):
                     errorDict["level_error"] = "Must have a minimum level for participants of this program" 
-                elif( minswimlevel.lower() not in swimlevels ):
-                    errorDict["level_error"] = "Invalid swimlevel" 
+                # elif( minswimlevel.lower() not in swimlevels ):
+                #     errorDict["level_error"] = "Invalid swimlevel" 
                 
                 # errors so return template rendered with errors
                 if errorDict:
@@ -347,7 +346,7 @@ def create_program():
                                         `min_swim_level`, `member_price`, `nonmember_price`, `num_total_people`, `num_signed_up`)
                                     VALUES (?,?,?,?,?,?,?,?,?,0); '''
                     cursor.execute(query, ( progname, startDate, endDate, location, description, 
-                                        swimlevels.index(minswimlevel), memberPrice, nonMemberPrice, maxParticipants))
+                                        minswimlevel, memberPrice, nonMemberPrice, maxParticipants))
         
                     programId = cursor.lastrowid
 
@@ -449,9 +448,53 @@ def create_user_account():
 
         return render_template("create_account.html", child = child)
 
-@app.route('/program_search', methods= ['POST', 'GET'] )
+@app.route('/program_search')
 def program_search():
-    return redirect('/')
+    # User must be logged in to access
+    if( 'username' not in session ):
+        return redirect('/login')
+
+    # Obtains the correct price for the user depending on if they are a member or not
+    if not session["user_id"] != "employee" or session["member_or_not"] == 0:
+            price_type = "nonmember_price"
+    else:
+            price_type = "member_price"
+
+    # Queries the db for all programs
+    # TODO: Implement advanced queries
+    cursor = connection.cursor(prepared=True)
+    cursor.execute("SELECT name_program, start_date, end_date, description, %s, num_total_people, num_signed_up FROM programs" %(price_type))
+    result = cursor.fetchall()
+    cursor.close()
+    create_table(result)
+    return render_template("program_search.html")
+
+
+#Creates html file of table of available programs
+#File placed in data folder as table.html
+def create_table(result):
+    file_path = 'templates/data/table.html'
+    # Ensure that table.html has the correct data
+    if os.path.exists(file_path):
+        os.remove(file_path)
+
+    # creates table.html
+    file = open(file_path, "w")
+    table = ""
+
+    #Placing data from result into table.html
+    for i in range(len(result)):
+        table += "  <tr>\n"
+        for column in range(5):
+            try:
+                table += "    <td>{0}</td>\n".format(result[i][column].decode())
+            except(AttributeError):
+                table += "    <td>{0}</td>\n".format(result[i][column])
+        table += "    <td>{0}/{1}</td>\n".format(result[i][5]-result[i][6], result[i][5])
+        table += " </tr>\n"
+
+    file.writelines(table)
+    file.close()
 
 def createDayAndTime( x, request ):
     dayList = []
@@ -510,4 +553,4 @@ def dayTimeInsertTuple( x, programId ):
     return [ (programId, i, x[1], x[2]) for i,day in enumerate(x[0]) if day == 'checked' ]
 
 if __name__ == "__main__":
-    app.run()
+    app.run(debug=True)
