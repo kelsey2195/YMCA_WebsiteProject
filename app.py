@@ -44,7 +44,7 @@ def login():
                 cursor.execute(query, ( email, password ))
                 result = cursor.fetchall()
                 # Sets session to contain employee information
-                print("Test1")
+                
                 if result:
                     session["user_id"] = "employee"
 
@@ -57,7 +57,7 @@ def login():
                     session["manager_or_not"] = result[0][4]
                     cursor.close()
                     return redirect('/staff_profile')
-                print("Test2")
+              
 
                 # If it's not an employee login apply rules to check if it's right format ect.
                 # check if it's email in the right format
@@ -117,7 +117,7 @@ def login():
 
                         # TODO eventually this will have to be formated for output in a nice looking way
                         session['accounts'] = result
-                        print(result)
+                        #print(result)
                         #updateProgList()
 
             
@@ -484,7 +484,7 @@ def user_search():
         print( result )
         create_user_table(result)
 
-        return render_template("user_search.html")
+    return render_template("user_search.html")
 
 
 @app.route('/program_search')
@@ -571,14 +571,14 @@ def create_user_table(result):
     table = ""
 
     #Placing data from result into table.html
-    for i in range(len(result)):
+    for i in result:
         table += "  <tr>\n"
-        for column in range(5):
+        for j in range(7):
             try:
-                table += "    <td>{0}</td>\n".format(result[i][column].decode())
-            except(AttributeError):
-                table += "    <td>{0}</td>\n".format(result[i][column])
-        table += "    <td>{0}/{1}</td>\n".format(result[i][5]-result[i][6], result[i][5])
+                table += "    <td>{0}</td>\n".format( i[j] )
+            except:
+                table += "    <td>{0}</td>\n".format( i[j].decode() )
+        
         table += " </tr>\n"
 
     file.writelines(table)
