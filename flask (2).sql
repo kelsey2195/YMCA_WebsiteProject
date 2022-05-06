@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 06, 2022 at 04:07 AM
+-- Generation Time: May 06, 2022 at 04:44 AM
 -- Server version: 10.4.22-MariaDB
--- PHP Version: 8.1.2
+-- PHP Version: 8.0.13
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -32,7 +32,6 @@ CREATE TABLE `accounts` (
   `associated_user` varchar(255) NOT NULL,
   `account_first_name` varchar(255) NOT NULL,
   `account_last_name` varchar(255) NOT NULL,
-  `account_level` int(11) NOT NULL,
   `account_birth_day` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -40,11 +39,11 @@ CREATE TABLE `accounts` (
 -- Dumping data for table `accounts`
 --
 
-INSERT INTO `accounts` (`account_id`, `associated_user`, `account_first_name`, `account_last_name`, `account_level`, `account_birth_day`) VALUES
-(1000000, 'test@abc.com', 'Micheal', 'Ross', 1, '2002-04-01'),
-(1000002, 'NEWACC@ill.com', 'Prop', 'Bear', 1, '2022-04-01'),
-(1000003, 'test@abc.com', 'TestName', 'TestSurname', 0, '2000-01-01'),
-(1000004, 'example@test.com', 'firstName', 'lastName', 0, '2022-04-07');
+INSERT INTO `accounts` (`account_id`, `associated_user`, `account_first_name`, `account_last_name`, `account_birth_day`) VALUES
+(1000000, 'test@abc.com', 'Micheal', 'Ross', '2002-04-01'),
+(1000002, 'NEWACC@ill.com', 'Prop', 'Bear', '2022-04-01'),
+(1000003, 'test@abc.com', 'TestName', 'TestSurname', '2000-01-01'),
+(1000004, 'example@test.com', 'firstName', 'lastName', '2022-04-07');
 
 -- --------------------------------------------------------
 
@@ -142,30 +141,6 @@ INSERT INTO `program_schedule` (`program_id`, `day_of_week`, `start_time`, `end_
 -- --------------------------------------------------------
 
 --
--- Table structure for table `swim_levels`
---
-
-CREATE TABLE `swim_levels` (
-  `swim_level_id` int(11) NOT NULL,
-  `swim_level_name` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data for table `swim_levels`
---
-
-INSERT INTO `swim_levels` (`swim_level_id`, `swim_level_name`) VALUES
-(0, 'adult'),
-(1, 'polliwog'),
-(2, 'guppy'),
-(3, 'minnow'),
-(4, 'fish'),
-(5, 'pike'),
-(6, 'shark');
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `users`
 --
 
@@ -210,12 +185,6 @@ ALTER TABLE `programs`
   ADD PRIMARY KEY (`program_id`);
 
 --
--- Indexes for table `swim_levels`
---
-ALTER TABLE `swim_levels`
-  ADD PRIMARY KEY (`swim_level_id`);
-
---
 -- Indexes for table `users`
 --
 ALTER TABLE `users`
@@ -242,12 +211,6 @@ ALTER TABLE `employees`
 --
 ALTER TABLE `programs`
   MODIFY `program_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
-
---
--- AUTO_INCREMENT for table `swim_levels`
---
-ALTER TABLE `swim_levels`
-  MODIFY `swim_level_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
