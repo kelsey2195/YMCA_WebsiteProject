@@ -11,9 +11,15 @@
         <input type="text" id="accountsearchbar" onchange="updatecol( this )" placeholder="column to search">
 
         <form action="/user_search" method="post">
-            <label for="uid">Delete Account:</label><br>
+            <label for="aid">Delete Account:</label><br>
             <input type="text" id="aid" name="aid" placeholder="enter account id" ><br>
-            <input type="submit" name="accountDel" onclick='return confirm("Are you sure you want to delete this user?")' value="Submit">
+            <input type="submit" name="accountDel" onclick='return confirm("Are you sure you want to delete this account?")' value="Delete">
+        </form> 
+
+        <form action="/user_search" method="post">
+            <label for="uid">Delete User:</label><br>
+            <input type="text" id="uid" name="uid" placeholder="enter user email" ><br>
+            <input type="submit" name="userDel" onclick='return confirm("Are you sure you want to delete this user?")' value="Delete">
         </form> 
 
 

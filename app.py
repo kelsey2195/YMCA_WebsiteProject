@@ -84,7 +84,7 @@ def login():
                 # no errors on input -> now check if this is a valid user
                 # fetches the input from the databse
                 cursor = connection.cursor(prepared=True)
-                query = ''' SELECT * FROM users WHERE email = %s AND password = %s'''
+                query = ''' SELECT * FROM users WHERE email = %s AND password = %s AND active = 1'''
                 cursor.execute(query, ( email, password ))
                 result = cursor.fetchall()
                 cursor.close()
@@ -142,7 +142,7 @@ def login():
                     return redirect('/')
                 else:
                     # invalid user
-                    message = "Invalid email or password"
+                    message = "Invalid email or password or account does not exist"
                     return render_template('log_in.html', message = message, email = email)
             
             # exception handler
@@ -489,6 +489,9 @@ def user_search():
     if request.method == 'POST':
         if request.form.get('accountDel'):
             deleteAccount( request.form.get( "aid" ) )
+        if request.form.get('userDel'):
+            deleteUser( request.form.get( "uid" ) )
+
 
     if session["user_id"] == "employee" :
         result = "empty"
@@ -506,16 +509,35 @@ def user_search():
 
     return render_template("user_search.html")
 
+def deleteUser( id ):
+    cursor = connection.cursor(prepared=True)
+    query = ''' SELECT account_id FROM accounts where associated_user = ? '''
+    cursor.execute( query , (id,) )
+    result = cursor.fetchall()
+    cursor.close()
+    #print(result)
+    cursor = connection.cursor(prepared=True)
+    query = ''' Update accounts SET active = 0 where accounts.account_id = ? '''
+    cursor.execute( query , (id,) )
+    connection.commit()
+    cursor.close()
+
+    for account in result:
+        deleteAccount( account[0] )
+
 
 def deleteAccount( id ):
     cursor = connection.cursor(prepared=True)
-    query = ''' Update accounts SET active = 0 where account.id = ? '''
+    query = ''' Update accounts SET active = 0 where accounts.account_id = ? '''
     cursor.execute( query , (id,) )
     connection.commit()
     cursor.close()
 
     cursor = connection.cursor(prepared=True)
-    query = ''' DELETE FROM account_in_program where account.id = ? '''
+    query = ''' DELETE FROM account_in_program where account_in_program.account_id = ? '''
+    cursor.execute( query , (id,) )
+    connection.commit()
+    cursor.close()
 
 
 @app.route('/program_search')
