@@ -215,13 +215,14 @@ def user_profile():
         # collect user information & all their associated accounts
         cursor = connection.cursor(prepared=True)
         query = ''' SELECT *
-                    FROM accounts
+                    FROM accounts LEFT OUTER JOIN swim_levels 
+                    ON accounts.account_level = swim_levels.swim_level_id 
                     WHERE associated_user = ?'''
         cursor.execute(query, ( session["user_id"], ))
         result = cursor.fetchall()
 
-        accId, email, first, last, birth = zip(*result)
-        result = list(zip( accId, first, last ))
+        accId, email, first, last, swimLevelNum, birth, temp, swimLevelName = zip(*result)
+        result = list(zip( accId, first, last, swimLevelNum, swimLevelName ))
 
         # TODO eventually this will have to be formated for output in a nice looking way
         session['accounts'] = result
@@ -452,7 +453,10 @@ def program_search():
     # Queries the db for all programs
     # TODO: Implement advanced queries
     cursor = connection.cursor(prepared=True)
-    cursor.execute("SELECT name_program, start_date, end_date, description, %s, num_total_people, num_signed_up FROM programs" %(price_type))
+    query = ''' SELECT name_program, start_date, end_date, description, {}, num_total_people, num_signed_up, program_id 
+                    FROM programs
+                    WHERE active = 1; '''.format(price_type)
+    cursor.execute(query)
     result = cursor.fetchall()
     cursor.close()
     create_table(result)
@@ -476,7 +480,7 @@ def create_table(result):
         table += "  <tr>\n"
         for column in range(5):
             try:
-                table += "    <td>{0}</td>\n".format(result[i][column].decode())
+                table += '''    <td id="{0}">{1}</td>\n'''.format(result[i][7], result[i][column].decode())
             except(AttributeError):
                 table += "    <td>{0}</td>\n".format(result[i][column])
         table += "    <td>{0}/{1}</td>\n".format(result[i][5]-result[i][6], result[i][5])

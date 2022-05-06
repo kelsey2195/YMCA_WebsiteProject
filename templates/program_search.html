@@ -7,6 +7,36 @@
         <!-- Search bar for programs, uses program_search() js function to look through table -->
         <input type="text" id="searchbar" onkeyup="program_search()" placeholder="Search for programs..">
 
+        <button class="cancel-btn" id="cancel-btn" onclick="cancel_on_click()">Cancel</button>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <script>
+            function delete_on_click() {
+                var table = document.getElementById("search-table");
+                var rows = table.getElementsByTagName("tr");
+                for (i = 0; i < rows.length; i++) {
+                    var currentRow = table.rows[i];
+                    var createClickHandler = function(row) {
+                        return function() {
+                            var cell = row.getElementsByTagName("td")[0];
+                            var id = cell.innerHTML;
+                            const dict_values = {id, prof}
+                            const s = JSON.stringify(dict_values);
+                            console.log(s);
+                            if(confirm("Do you really want to delete " + id)) {
+                                $.ajax({
+                                url:"/postmethod",
+                                type:"POST",
+                                contentType: "application/json",
+                                data: JSON.stringify(s)
+                                });
+                            }
+                        };
+                    };
+                    currentRow.onclick = createClickHandler(currentRow);
+                }
+            }
+        </script>
+
         <table id="program-table">
 
             <!-- Table Header -->
