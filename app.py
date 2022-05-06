@@ -655,12 +655,13 @@ def updateProgList():
 
         print(temp)
         new.append( (account[0], temp) )
-          
+
     #print()
     #print(new)
     session["programs"] = new
     cursor.close()
 
+# takes in an input program and checks if that information already exists
 #def checkConflict(accountId, programId, startDate, endDate, ):
 
 
