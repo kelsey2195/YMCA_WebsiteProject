@@ -560,6 +560,7 @@ def cancel_program():
     output = request.get_json()
     result = json.loads(output)
     program_id = int(result)
+    print(program_id)
     cursor = connection.cursor(prepared=True)
     query = ''' UPDATE programs SET active = 0 WHERE program_id = {}; '''.format(program_id)
     cursor.execute(query)
@@ -710,7 +711,7 @@ def create_table(result):
                 table += '''    <td>{}</td>\n'''.format(result[i][column].decode())
             except(AttributeError):
                 table += "    <td>{}</td>\n".format(result[i][column])
-        table += "    <td>{0}/{1}</td>\n".format(result[i][5]-result[i][6], result[i][5])
+        table += "    <td>{0}/{1};{2}</td>\n".format(result[i][5]-result[i][6], result[i][5], result[i][7])
         table += " </tr>\n"
 
     file.writelines(table)
