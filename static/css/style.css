@@ -285,6 +285,7 @@ footer{
 /* ------- PROGRAM SEARCH TABLE ------- */
 
 #searchbar {
+    float: left;
     background-position: 10px 12px; /* Position the search icon */
     background-repeat: no-repeat; /* Do not repeat the icon image */
     width: 40%; /* Full-width */
@@ -299,10 +300,11 @@ footer{
 #accountsearchbar {
     background-position: 10px 12px; /* Position the search icon */
     background-repeat: no-repeat; /* Do not repeat the icon image */
-    width: 40%; /* Full-width */
+    width: 20%;
     font-size: 16px; /* Increase font-size */
     padding: 12px 20px 12px 40px; /* Add some padding */
     margin-bottom: 12px; /* Add some space below the input */
+    margin-left: 50px; /* Add some space below the input */
     color: grey;
     border: none;
     background-color: #000;
@@ -373,7 +375,6 @@ td:nth-child(5):before {
 .cancel-btn,
 .active-btn,
 .reg-btn {
-    float: right;
     width: 5%;
     border-radius: 8px;
     border-style: none;
@@ -400,6 +401,7 @@ td:nth-child(5):before {
 
 .cancel-btn,
 .active-btn {
+    float: right;
     background-color: #830019;
 }
 
@@ -409,12 +411,14 @@ td:nth-child(5):before {
 }
 
 .active-btn {
-    margin-right: 20px;
+    margin-right: 1em;
     width: 7%;
 }
 
 .reg-btn {
+    float: left;
     background-color: #87cefa;
+    margin-left: 1em;
 }
 
 

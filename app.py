@@ -43,6 +43,7 @@ def login():
                 query = ''' SELECT * FROM employees WHERE employee_id = %s AND employee_password = %s'''
                 cursor.execute(query, ( email, password ))
                 result = cursor.fetchall()
+                cursor.close()
                 # Sets session to contain employee information
                 
                 if result:
@@ -55,7 +56,6 @@ def login():
                         
                     
                     session["manager_or_not"] = result[0][4]
-                    cursor.close()
                     return redirect('/staff_profile')
               
 
@@ -84,8 +84,8 @@ def login():
                 cursor = connection.cursor(prepared=True)
                 query = ''' SELECT * FROM users WHERE email = %s AND password = %s'''
                 cursor.execute(query, ( email, password ))
-
                 result = cursor.fetchall()
+                cursor.close()
 
                 # if there is a result then that means it's a valid user
                 if result :
@@ -100,34 +100,37 @@ def login():
         
                     session["member_or_not"] = result[0][3]
                     #cursor.close()
-
+                
 
                     # collect user information & all their associated accounts
                     cursor = connection.cursor(prepared=True)
                     query = ''' SELECT *
-                                FROM accounts 
-                                WHERE associated_user = ?'''
-                    cursor.execute(query, ( session["user_id"], ))
+                                    FROM accounts 
+                                    WHERE associated_user = '{}'; '''.format(session["user_id"])
+                    print(session["user_id"])
+                    cursor.execute(query)
                     result = cursor.fetchall()
                     cursor.close()  
+               
+
                
                     if result:
                         accId, email, first, last, birth = zip(*result)
                         result = list(zip( accId, first, last ))
+                        print(result)
 
                         # TODO eventually this will have to be formated for output in a nice looking way
                         session['accounts'] = result
                         #print(result)
                         #updateProgList()
 
-            
+
                     # finish user profile before redirecting to it
                     # return redirect("/user_profile")
                     return redirect('/')
                 else:
                     # invalid user
                     message = "Invalid email or password"
-                    cursor.close()
                     return render_template('log_in.html', message = message, email = email)
             
             # exception handler
@@ -474,10 +477,11 @@ def user_search():
     if session["user_id"] == "employee" :
         result = "empty"
         cursor = connection.cursor(prepared=True)
-        query = ''' SELECT accounts.account_id, account_first_name, account_last_name, name_program, start_date, end_date, description 
+        query = ''' SELECT accounts.account_id, account_first_name, account_last_name, name_program, start_date, end_date, description, active 
                     FROM (( account_in_program 
                         INNER JOIN accounts  ON account_in_program.account_id = accounts.account_id )
-                        INNER JOIN programs ON account_in_program.program_id = programs.program_id )'''
+                        INNER JOIN programs ON account_in_program.program_id = programs.program_id 
+                    )WHERE active = 1'''
         cursor.execute( query )
         result = cursor.fetchall()
         cursor.close()
@@ -508,7 +512,6 @@ def program_search():
     cursor.execute(query)
     result = cursor.fetchall()
     cursor.close()
-    print(result)
     create_table(result)
 
     return render_template("program_search.html")
@@ -522,14 +525,45 @@ def cancel_program():
     cursor = connection.cursor(prepared=True)
     query = ''' UPDATE programs SET active = 0 WHERE program_id = {}; '''.format(program_id)
     cursor.execute(query)
+    connection.commit()
     cursor.close()
     return redirect('/program_search')
+
+
+@app.route('/register_program', methods=['POST'])
+def register_program():
+    print('hello')
+    # staff cannot register for programs
+    if session["user_id"] == "employee":
+        redirect('/program_search')
+
+    output = request.get_json()
+    program_id = int(json.loads(output))
+    user_id = session["user_id"]
+    cursor = connection.cursor(prepared=True)
+    query = ''' INSERT INTO account_in_program VALUES (?,?); '''
+    try:
+        cursor.execute(query, (user_id, program_id))
+        connection.commit()
+        print("----------REGISTERING USER FOR PROGRAM------------")
+        print("Query: " + query)
+        cursor.close()
+        # return redirect('/user_profile')
+        return redirect('/')
+
+    except mysql.connector.Error as error:
+        # Program doesn't exist
+        print("Failed to register: {}".format(error))
+    cursor.close()
+    return redirect('/program_search')
+
 
 @app.route('/activate_all', methods=['POST'])
 def activate_all():
     cursor = connection.cursor(prepared=True)
     query = ''' UPDATE programs SET active = 1; '''
     cursor.execute(query)
+    connection.commit()
     cursor.close()
     return redirect('/program_search')
 
@@ -549,7 +583,7 @@ def create_table(result):
     #Placing data from result into table.html
     for i in range(len(result)):
         table += '''  <tr  id="{}">\n'''.format(result[i][7])
-        for column in range(len(result[i])):
+        for column in range(len(result[i])-3):
             try:
                 table += '''    <td>{}</td>\n'''.format(result[i][column].decode())
             except(AttributeError):
@@ -569,7 +603,7 @@ def create_user_table(result):
     # creates table.html
     file = open(file_path, "w")
     table = ""
-
+    print(result)
     #Placing data from result into table.html
     for i in result:
         table += "  <tr>\n"
