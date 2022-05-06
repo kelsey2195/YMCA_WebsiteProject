@@ -215,14 +215,13 @@ def user_profile():
         # collect user information & all their associated accounts
         cursor = connection.cursor(prepared=True)
         query = ''' SELECT *
-                    FROM accounts LEFT OUTER JOIN swim_levels 
-                    ON accounts.account_level = swim_levels.swim_level_id 
+                    FROM accounts
                     WHERE associated_user = ?'''
         cursor.execute(query, ( session["user_id"], ))
         result = cursor.fetchall()
 
-        accId, email, first, last, swimLevelNum, birth, temp, swimLevelName = zip(*result)
-        result = list(zip( accId, first, last, swimLevelNum, swimLevelName ))
+        accId, email, first, last, birth = zip(*result)
+        result = list(zip( accId, first, last ))
 
         # TODO eventually this will have to be formated for output in a nice looking way
         session['accounts'] = result
