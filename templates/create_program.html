@@ -3,11 +3,11 @@
 {% block javascript %}
     <script src="{{ url_for('static',filename='javascript/program_create_scripts.js') }}"></script>
 {% endblock %}
-
+<br>
 <h1> Create Program </h1>
 
 
-
+<div class="form-style">
 <form action="/create_program" method="POST" class="program-creation-form">
     {% if name_error %}
         <p style="color:rgb(177, 0, 0);">
@@ -42,23 +42,22 @@
         </p>
     {% endif %}
     {% for weekday, startTime, endTime, empty in dayAndTime %}
-        {{ loop.index }}
 
         <!-- TODO make the days into buttons makes it look nicer-->
         <input type="checkbox" value="0" id="sunday{{ loop.index }}" name="sunday{{ loop.index }}" {{ weekday[0] }}>
         <label for="sunday{{ loop.index }}">Sunday</label>
         <input type="checkbox" value="1" id="monday{{ loop.index }}" name="monday{{ loop.index }}" {{ weekday[1] }}>
-        <label for="monday{{ loop.index }}">monday</label>
+        <label for="monday{{ loop.index }}">Monday</label>
         <input type="checkbox" value="2" id="tuesday{{ loop.index }}" name="tuesday{{ loop.index }}" {{ weekday[2] }}>
-        <label for="tuesday{{ loop.index }}">tuesday</label>
+        <label for="tuesday{{ loop.index }}">Tuesday</label>
         <input type="checkbox" value="3" id="wednesday{{ loop.index }}" name="wednesday{{ loop.index }}" {{ weekday[3] }}>
-        <label for="wednesday{{ loop.index }}">wednesday</label>
+        <label for="wednesday{{ loop.index }}">Wednesday</label>
         <input type="checkbox" value="4" id="thursday{{ loop.index }}" name="thursday{{ loop.index }}" {{ weekday[4] }}>
-        <label for="thursday{{ loop.index }}">thursday</label>
+        <label for="thursday{{ loop.index }}">Thursday</label>
         <input type="checkbox" value="5" id="friday{{ loop.index }}" name="friday{{ loop.index }}" {{ weekday[5] }}>
-        <label for="friday{{ loop.index }}">friday</label>
+        <label for="friday{{ loop.index }}">Friday</label>
         <input type="checkbox" value="0" id="saturday{{ loop.index }}" name="saturday{{ loop.index }}" {{ weekday[6] }}>
-        <label for="saturday{{ loop.index }}">saturday</label>
+        <label for="saturday{{ loop.index }}">Saturday</label>
         <input type="time" name="startTime{{ loop.index }}" id="startTime{{ loop.index }}" value="{{startTime}}"
                 onchange='whenChangeStartTime( this, document.getElementById("endTime{{ loop.index }}") )'
                 onclick='setTime( this )'>
@@ -67,15 +66,15 @@
                 onclick='setTime( this )'>
         
         {% if loop.length == 1 %}
-            <input type="submit" name="remove{{ loop.index }}" value="clear">
+            <input type="submit" name="remove{{ loop.index }}" value="clear" class="prog-btn">
         {% else %}
-            <input type="submit" name="remove{{ loop.index }}" value="remove day">
+            <input type="submit" name="remove{{ loop.index }}" value="remove day" class="prog-btn">
         {% endif %} 
         <br>
     {% endfor %}
 
     <input type="hidden" id="numDayAndTime" name="numDayAndTime" value={{ numDayAndTime }}>
-    <input type="submit" name="add" value="add a day">
+    <input type="submit" name="add" value="add day">
 
     <br> 
     <br>
@@ -132,8 +131,8 @@
     <br> 
     <br> 
 
-    <input type="submit" name="create" value="create">
+    <input type="submit" name="create" value="create" class="prog-btn">
 
 </form>
-
+</div>
 {% include 'format/footer.html' %}

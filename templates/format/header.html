@@ -20,7 +20,7 @@
             </a>
              
                     <ul>
-                        <li id = "highlight"> <a href="/program_search"> Program Search </a></li> 
+                        <li id = "highlight"> <a href="/program_search" class="highlight"> Program Search </a></li> 
 
                 {% if session["username"] %} 
                 
@@ -47,12 +47,14 @@
                     {% endif %}
                     <li>
                         <a href="/usermanual">
-                            <button>Manual</button>
+                            <button class="header-btn">Manual</button>
                         </a> 
+                    </li> 
+                    <li>
                         <a href="/logout">
                             <button class="header-btn">logout</button>
                         </a> 
-                    </li> 
+                    </li>
 
                 {% else %} 
                 <li>

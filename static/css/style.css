@@ -323,7 +323,8 @@ footer{
   width: 80%;
 }
 
-.tableFixHead thead th {
+.tableFixHead thead th,
+.prof-contain thead th {
   position: sticky;
   top: 0;
   background-color: #009879;
@@ -345,11 +346,12 @@ th {
   background: #eee;
 }
 
-td:nth-child(5):before {
+.tableFixHead td:nth-child(5):before {
     content: '$';
 }
 
-.tableFixHead tbody tr {
+.tableFixHead tbody tr,
+.prof-contain tbody tr {
     border-bottom: thin solid #dddddd;
     background-color: #000;
     color: #efefef;
@@ -357,15 +359,18 @@ td:nth-child(5):before {
     opacity: 80%;
 }
 
-.tableFixHead tbody tr:last-child td:first-child {
+.tableFixHead tbody tr:last-child td:first-child,
+.prof-contain tbody tr:last-child td:first-child {
     border-bottom-left-radius: 15px;
 }
 
-.tableFixHead tbody tr:last-of-type {
+.tableFixHead tbody tr:last-of-type,
+.prof-contain tbody tr:last-of-type {
     border-bottom: none;
 }
 
-.tableFixHead tbody tr:hover{
+.tableFixHead tbody tr:hover,
+.prof-contain tbody tr:hover {
     background-color: #949494;
     color: #000;
     /* cursor:pointer; */
@@ -474,107 +479,70 @@ td:nth-child(5):before {
 /* ------- USER PROFILE ------- */
 
 
-.container{
-    margin:100px auto;
-    width:809px;
+.account_display {
+    width: 30%;
+    margin-left: 2em;
+    margin-top: 4em;
 }
 
-.dark{
-  margin-left: 65px;
+.prof-contain {
+    float: right;
+    width: 60%;
+    margin-bottom: 10em;
+    margin-top: -10em;
+    margin-right: 4em;
+    margin-left: 2em;
 }
-
-.calendar{
-  width:370px;
-  box-shadow: 0px 0px 35px -16px rgba(0,0,0,0.75);
-  font-family: 'Roboto', sans-serif;
-  padding: 20px 30px;
-  color:#363b41;
-  display: inline-block;
-}
-
-.calendar_header{
-  border-bottom: 2px solid rgba(0, 0, 0, 0.08);
-}
-
-.header_copy{
-  color: #929d95;
-  font-size: 20px;
-}
-.calendar_plan{
-  margin:20px 0 40px;
-}
-.cl_plan{
-  width:100%;
-  height: 140px;
-  background-image: linear-gradient(-222deg, #6cc0f5, #91d1f8);
-  box-shadow: 0px 0px 52px -18px rgba(0, 0, 0, 0.75);
-  padding:30px;
-  color:#fff;
-}
-.cl_copy{
-  font-size:20px;
-  margin: 20px 0;
-  display: inline-block;
-}
-
-.cl_add{
-  display: inline-block;
-  width: 40px;
-  height:40px;
-  border-radius:50%;
-  background-color: #fff;
-  margin:0 0 0 65px;
-  color:#c2c2c2;
-  padding: 11px 13px;
-}
-.calendar_events{
-  color:  #929d95;
-}
-.ce_title{
-  font-size:14px;
-}
-
-.event_item{
-  margin: 18px 0;
-  padding:5px;
-  text-align: left;
-  cursor: pointer;
-}
-.event_item:hover {
-      background-image: linear-gradient(-222deg, #87cefa, #ffa9b7);
-      box-shadow: 0px 0px 52px -18px rgba(0, 0, 0, 0.75);
-}
-
-.ei_Dot,.ei_Title{
-  display:inline-block;
-}
-
-.ei_Dot{
-  border-radius:50%;
-  width:10px;
-  height: 10px;
-  background-color: #929d95;
-  box-shadow: 0px 0px 52px -18px rgba(0, 0, 0, 0.75);
-}
-.dot_active{
-  background-color: #87cefa;
-}
-
-.ei_Title{
-  margin-left:10px;
-  color:#1c1d1c;
-}
-
-.ei_Copy{
-  font-size:12px;
-  margin-left:27px;
-}
-
-.dark{
-  background-image: linear-gradient(-222deg, #646464, #454545);
-  color:#fff;
-}
-
 
 
 /* ------- USER PROFILE ------- */
+.form-style {
+    width: 70%;
+    height: 75%;
+    background: #f4f7f8;
+    margin: 10px auto;
+    padding: 20px;
+    border-radius: 8px;
+    font-family: Georgia, "Times New Roman", Times, serif;
+}
+.form-style fieldset {
+    border: none;
+}
+.form-style legend {
+    font-size: 1.4em;
+    margin-bottom: 10px;
+}
+.form-style label {
+    margin-bottom: 8px;
+}
+
+.form-style select {
+    -webkit-appearance: menulist-button;
+    height:35px;
+}
+
+.form-style input[type="submit"],
+.form-style input[type="button"]
+{
+    display: inline-block;
+    padding: 19px 39px 18px 33px;
+    color: #fff;
+    background: #009879;
+    font-size: 18px;
+    font-style: normal;
+    width: 10%;
+    margin-bottom: 10px;
+    border-radius: 8px;
+}
+.form-style input[type="submit"]:hover,
+.form-style input[type="button"]:hover
+{
+    background: #026451;
+    cursor: pointer;
+}
+
+.program-creation-form label {
+    width: 10%;
+    display: inline-block;
+}
+
