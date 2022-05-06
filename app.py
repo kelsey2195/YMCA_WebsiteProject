@@ -112,6 +112,7 @@ def login():
                     result = cursor.fetchall()
                     cursor.close()  
                
+               
                     if result:
                         accId, email, first, last, birth = zip(*result)
                         result = list(zip( accId, first, last ))
@@ -122,7 +123,7 @@ def login():
                         print(result)
                         #updateProgList()
 
-                        
+
                     # finish user profile before redirecting to it
                     # return redirect("/user_profile")
                     return redirect('/')
