@@ -46,12 +46,12 @@ def login():
                 # Sets session to contain employee information
                 if result:
                     session["user_id"] = "employee"
-                    try:
-                        session["username"] = result[0][1]
-                        session["username"] += result[0][2]
-                    except TypeError as error:
+
+                    if(type(result[0][1]) == bytearray):
                         session["username"] = result[0][1].decode() + result[0][2].decode()
-                    session["username"] = result[0][1].decode() + result[0][2].decode()
+                    else:
+                        session["username"] = result[0][1] + result[0][2]
+                        
                     
                     session["manager_or_not"] = result[0][4]
                     cursor.close()
@@ -88,12 +88,13 @@ def login():
                 # if there is a result then that means it's a valid user
                 if result :
                     # fill session info with user information
-                    try:
-                        session["user_id"] = result[0][0]
-                        session["username"] = result[0][1]
-                    except TypeError as error:
+                    if(type(result[0][0]) == bytearray):
                         session["user_id"] = result[0][0].decode()
                         session["username"] = result[0][1].decode()
+                    else:
+                        session["user_id"] = result[0][0]
+                        session["username"] = result[0][1]
+                        
 
                     session["member_or_not"] = result[0][3]
                     cursor.close()
