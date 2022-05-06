@@ -1,10 +1,3 @@
-// Automatically sets swim level to less than program name
-function updateSwimLevel( progNameInput, minSwimLevelInput, swimlevels ) {
-    var programLevel = swimlevels.indexOf(progNameInput.value.toLowerCase());
-    if( programLevel > -1 ) {
-        minSwimLevelInput.value = swimlevels[ programLevel - 1 ];
-    }
-}
 
 // Makes sure that when changing start date it maintains end is after start
 //TODO add a way to update error message
@@ -54,7 +47,8 @@ function whenChangeStartTime( start, end ) {
     var startTime = start.value;
 
     if( end && end.value ) {
-        if( end.value < startTime ) {
+        var endtime = end.value;
+        if( endtime < startTime ) {
             end.value = startTime;
             //TODO update error value here "start date should be before end date"
         }
@@ -67,7 +61,8 @@ function whenChangeEndTime( start, end ) {
     var endTime = end.value;
 
     if( start && start.value ) {
-        if( start.value > endTime ) {
+        var startTime = start.value;
+        if( startTime > endTime ) {
             start.value = endTime;
             //TODO update error value here "end date should be after start date"
         }
