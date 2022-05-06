@@ -108,18 +108,20 @@ def login():
                     cursor.execute(query, ( session["user_id"], ))
                     result = cursor.fetchall()
 
-                    accId, email, first, last, birth = zip(*result)
-                    result = list(zip( accId, first, last ))
+                    if result:
+                        accId, email, first, last, birth = zip(*result)
+                        result = list(zip( accId, first, last ))
 
-                    # TODO eventually this will have to be formated for output in a nice looking way
-                    session['accounts'] = result
-                    print(result)
-
-                    updateProgList()
+                        # TODO eventually this will have to be formated for output in a nice looking way
+                        session['accounts'] = result
+                        print(result)
+                        updateProgList()
 
                     cursor.close()
 
-                    return redirect("/user_profile")
+                    # finish user profile before redirecting to it
+                    # return redirect("/user_profile")
+                    return redirect('/')
                 else:
                     # invalid user
                     message = "Invalid email or password"
