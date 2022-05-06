@@ -46,7 +46,13 @@ def login():
                 # Sets session to contain employee information
                 if result:
                     session["user_id"] = "employee"
-                    session["username"] = result[0][1] + result[0][2]
+                    try:
+                        session["username"] = result[0][1]
+                        session["username"] += result[0][2]
+                    except TypeError as error:
+                        session["username"] = result[0][1].decode() + result[0][2].decode()
+                    session["username"] = result[0][1].decode() + result[0][2].decode()
+                    
                     session["manager_or_not"] = result[0][4]
                     cursor.close()
                     return redirect('/staff_profile')
@@ -82,8 +88,13 @@ def login():
                 # if there is a result then that means it's a valid user
                 if result :
                     # fill session info with user information
-                    session["user_id"] = result[0][0]
-                    session["username"] = result[0][1]
+                    try:
+                        session["user_id"] = result[0][0]
+                        session["username"] = result[0][1]
+                    except TypeError as error:
+                        session["user_id"] = result[0][0].decode()
+                        session["username"] = result[0][1].decode()
+
                     session["member_or_not"] = result[0][3]
                     cursor.close()
 
@@ -456,6 +467,11 @@ def program_search():
     result = cursor.fetchall()
     cursor.close()
     create_table(result)
+    return render_template("program_search.html")
+
+@app.route('/cancel_program')
+def cancel_program():
+    
     return render_template("program_search.html")
 
 

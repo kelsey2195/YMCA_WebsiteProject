@@ -351,6 +351,32 @@ td:nth-child(5):before {
 .tableFixHead tbody tr:hover{
     background-color: #949494;
     color: #000;
+    /* cursor:pointer; */
+}
+
+.cancel-btn {
+    float: right;
+    background-color: #830019;
+    border-radius: 8px;
+    border-style: none;
+    box-sizing: border-box;
+    color: #FFFFFF;
+    cursor: pointer;
+    font-family: "Haas Grot Text R Web", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    height: 40px;
+    text-decoration: none;
+    transition: color 100ms;
+    vertical-align: baseline;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+}
+  
+.cancel-btn:hover {
+    background-color: #690215;
+    cursor:pointer;
 }
 
 
