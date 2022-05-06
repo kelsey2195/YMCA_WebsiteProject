@@ -449,6 +449,7 @@ def program_search():
     else:
             price_type = "member_price"
 
+
     # Queries the db for all programs
     # TODO: Implement advanced queries
     cursor = connection.cursor(prepared=True)
@@ -456,13 +457,52 @@ def program_search():
     result = cursor.fetchall()
     cursor.close()
     create_table(result)
+
+    if session["user_id"] == "employee" :
+        result = "empty"
+        cursor = connection.cursor(prepared=True)
+        query = ''' SELECT accounts.account_id, account_first_name, account_last_name, name_program, start_date, end_date, description 
+                    FROM (( account_in_program 
+                        INNER JOIN accounts  ON account_in_program.account_id = accounts.account_id )
+                        INNER JOIN programs ON account_in_program.program_id = programs.program_id )'''
+        cursor.execute( query )
+        result = cursor.fetchall()
+        cursor.close()
+        print( result )
+        #create_user_table(result)
+
     return render_template("program_search.html")
+    
 
 
 #Creates html file of table of available programs
 #File placed in data folder as table.html
 def create_table(result):
     file_path = 'templates/data/table.html'
+    # Ensure that table.html has the correct data
+    if os.path.exists(file_path):
+        os.remove(file_path)
+
+    # creates table.html
+    file = open(file_path, "w")
+    table = ""
+
+    #Placing data from result into table.html
+    for i in range(len(result)):
+        table += "  <tr>\n"
+        for column in range(5):
+            try:
+                table += "    <td>{0}</td>\n".format(result[i][column].decode())
+            except(AttributeError):
+                table += "    <td>{0}</td>\n".format(result[i][column])
+        table += "    <td>{0}/{1}</td>\n".format(result[i][5]-result[i][6], result[i][5])
+        table += " </tr>\n"
+
+    file.writelines(table)
+    file.close()
+
+def create_user_table(result):
+    file_path = 'templates/data/usertable.html'
     # Ensure that table.html has the correct data
     if os.path.exists(file_path):
         os.remove(file_path)

@@ -3,9 +3,14 @@
 <body>
 
     <div class="tableFixHead">
+        
 
         <!-- Search bar for programs, uses program_search() js function to look through table -->
         <input type="text" id="searchbar" onkeyup="program_search()" placeholder="Search for programs..">
+
+        {% if session["user_id"] == "employee" %} 
+            <input type="text" id="accountsearchbar" onkeyup="program_search()" placeholder="Search for users..">
+        {% endif %}
 
         <table id="program-table">
 
