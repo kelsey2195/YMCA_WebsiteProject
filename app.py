@@ -114,6 +114,8 @@ def login():
                     session['accounts'] = result
                     print(result)
 
+                    updateProgList()
+
                     cursor.close()
 
                     return redirect("/user_profile")
@@ -636,7 +638,7 @@ def updateProgList():
                 INNER JOIN accounts USING (account_id)
                 INNER JOIN programs USING (program_id)
                 INNER JOIN program_schedule USING (program_id)
-                WHERE accounts.account_id == ?; '''
+                WHERE accounts.account_id = ?; '''
         cursor.execute(query, ( account[0], ))
         result = cursor.fetchall()
         print(result)
