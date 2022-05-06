@@ -11,10 +11,11 @@
         <input type="text" id="accountsearchbar" onchange="updatecol( this )" placeholder="column to search">
 
         <form action="/user_search" method="post">
-            <label for="uid">Delete User:</label><br>
-            <input type="text" id="uid" name="uid" placeholder="enter uid" ><br>
-            <input type="submit" onclick='alert("Are you sure you want to delete this user?")' value="Submit">
+            <label for="uid">Delete Account:</label><br>
+            <input type="text" id="aid" name="aid" placeholder="enter account id" ><br>
+            <input type="submit" name="accountDel" onclick='return confirm("Are you sure you want to delete this user?")' value="Submit">
         </form> 
+
 
         <table id="user-table">
 
@@ -24,12 +25,13 @@
                     <!-- <th>header</th> -->
                     <thead>
                         <tr>
-                            <th>(0)User Id</th>
-                            <th>(1)First Name</th>
-                            <th>(2)Last Name</th>
-                            <th>(3)Program Name</th>
-                            <th>(4)Start Date</th>
-                            <th>(5)End Date</th>
+                            <th>(0)User account</th>
+                            <th>(1)Account Id</th>
+                            <th>(2)First Name</th>
+                            <th>(3)Last Name</th>
+                            <th>(4)Program Name</th>
+                            <th>(5)Start Date</th>
+                            <th>(6)End Date</th>
                             <th>Discription</th>
                         </tr>
                     </thead>

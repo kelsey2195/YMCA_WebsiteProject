@@ -486,21 +486,36 @@ def create_user_account():
 
 @app.route('/user_search', methods= ['POST', 'GET'])
 def user_search():
+    if request.method == 'POST':
+        if request.form.get('accountDel'):
+            deleteAccount( request.form.get( "aid" ) )
+
     if session["user_id"] == "employee" :
         result = "empty"
         cursor = connection.cursor(prepared=True)
-        query = ''' SELECT accounts.account_id, account_first_name, account_last_name, name_program, start_date, end_date, description, active 
+        query = ''' SELECT accounts.associated_user, accounts.account_id, account_first_name, account_last_name, name_program, start_date, end_date, description, accounts.active, programs.active 
                     FROM (( account_in_program 
                         INNER JOIN accounts  ON account_in_program.account_id = accounts.account_id )
                         INNER JOIN programs ON account_in_program.program_id = programs.program_id 
-                    )WHERE active = 1'''
+                    )WHERE accounts.active = 1 AND programs.active = 1 '''
         cursor.execute( query )
         result = cursor.fetchall()
         cursor.close()
-        print( result )
+        #print( result )
         create_user_table(result)
 
     return render_template("user_search.html")
+
+
+def deleteAccount( id ):
+    cursor = connection.cursor(prepared=True)
+    query = ''' Update accounts SET active = 0 where account.id = ? '''
+    cursor.execute( query , (id,) )
+    connection.commit()
+    cursor.close()
+
+    cursor = connection.cursor(prepared=True)
+    query = ''' DELETE FROM account_in_program where account.id = ? '''
 
 
 @app.route('/program_search')
@@ -615,11 +630,11 @@ def create_user_table(result):
     # creates table.html
     file = open(file_path, "w")
     table = ""
-    print(result)
+    #print(result)
     #Placing data from result into table.html
     for i in result:
         table += "  <tr>\n"
-        for j in range(7):
+        for j in range(8):
             try:
                 table += "    <td>{0}</td>\n".format( i[j] )
             except:
