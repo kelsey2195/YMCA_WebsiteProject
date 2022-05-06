@@ -632,10 +632,10 @@ def createDayAndTime( x, request ):
 
 def updateProgList():
      # collect user information & all their associated accounts
+    cursor = connection.cursor(prepared=True)
+    new = []
     for account in session['accounts']:
-        result = []
-        cursor = connection.cursor(prepared=True)
-        query = ''' SELECT accounts.account_id, programs.program_id, name_program, start_date, end_date, day_of_week, start_time, end_time
+        query = ''' SELECT programs.program_id, name_program, start_date, end_date, day_of_week, start_time, end_time
                 FROM account_in_program
                 INNER JOIN accounts USING (account_id)
                 INNER JOIN programs USING (program_id)
@@ -643,7 +643,20 @@ def updateProgList():
                 WHERE accounts.account_id = ?; '''
         cursor.execute(query, ( account[0], ))
         result = cursor.fetchall()
-        print(result)
+        temp = []
+        for row in result:
+            temp.append(row)
+            #print(row)
+
+        print(temp)
+        new.append( (account[0], temp) )
+          
+    #print()
+    #print(new)
+    session["programs"] = new
+    cursor.close()
+
+#def checkConflict(accountId, programId, startDate, endDate, ):
 
 
 
