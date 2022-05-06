@@ -469,9 +469,9 @@ def program_search():
     create_table(result)
     return render_template("program_search.html")
 
-@app.route('/cancel_program')
+@app.route('/cancel_program', methods=['POST'])
 def cancel_program():
-    
+
     return render_template("program_search.html")
 
 
@@ -489,10 +489,10 @@ def create_table(result):
 
     #Placing data from result into table.html
     for i in range(len(result)):
-        table += "  <tr>\n"
+        table += '''  <tr  id="{}">\n'''.format(result[i][7])
         for column in range(5):
             try:
-                table += '''    <td id="{0}">{1}</td>\n'''.format(result[i][7], result[i][column].decode())
+                table += '''    <td>{1}</td>\n'''.format(result[i][column].decode())
             except(AttributeError):
                 table += "    <td>{0}</td>\n".format(result[i][column])
         table += "    <td>{0}/{1}</td>\n".format(result[i][5]-result[i][6], result[i][5])
