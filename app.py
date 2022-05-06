@@ -45,6 +45,7 @@ def login():
                 result = cursor.fetchall()
                 cursor.close()
                 # Sets session to contain employee information
+                print("Test1")
                 if result:
                     session["user_id"] = "employee"
 
@@ -56,6 +57,7 @@ def login():
                     
                     session["manager_or_not"] = result[0][4]
                     return redirect('/staff_profile')
+                print("Test2")
 
                 # If it's not an employee login apply rules to check if it's right format ect.
                 # check if it's email in the right format
@@ -95,7 +97,7 @@ def login():
                         session["user_id"] = result[0][0]
                         session["username"] = result[0][1]
                         
-
+        
                     session["member_or_not"] = result[0][3]
                     #cursor.close()
                 
@@ -108,9 +110,14 @@ def login():
                     print(session["user_id"])
                     cursor.execute(query)
                     result = cursor.fetchall()
+<<<<<<< HEAD
                     cursor.close()
                     print(result)
 
+=======
+                    cursor.close()  
+               
+>>>>>>> fba3a9cb9347584b606325771ddac6b7901dda78
                     if result:
                         accId, email, first, last, birth = zip(*result)
                         result = list(zip( accId, first, last ))
@@ -119,9 +126,14 @@ def login():
                         # TODO eventually this will have to be formated for output in a nice looking way
                         session['accounts'] = result
                         print(result)
+<<<<<<< HEAD
                         updateProgList()
 
+=======
+                        #updateProgList()
+>>>>>>> fba3a9cb9347584b606325771ddac6b7901dda78
 
+            
                     # finish user profile before redirecting to it
                     # return redirect("/user_profile")
                     return redirect('/')
@@ -490,7 +502,7 @@ def user_search():
 @app.route('/program_search')
 def program_search():
 
-    if not session["user_id"]:
+    if 'user_id' not in session :
         price_type = "nonmember_price"
     else:
         # Obtains the correct price for the user depending on if they are a member or not
@@ -669,9 +681,10 @@ def createDayAndTime( x, request ):
 
 def updateProgList():
      # collect user information & all their associated accounts
+    cursor = connection.cursor(prepared=True)
+    new = []
     for account in session['accounts']:
-        cursor = connection.cursor(prepared=True)
-        query = ''' SELECT accounts.account_id, programs.program_id, name_program, start_date, end_date, day_of_week, start_time, end_time
+        query = ''' SELECT programs.program_id, name_program, start_date, end_date, day_of_week, start_time, end_time
                 FROM account_in_program
                 INNER JOIN accounts USING (account_id)
                 INNER JOIN programs USING (program_id)
@@ -679,7 +692,21 @@ def updateProgList():
                 WHERE accounts.account_id = ?; '''
         cursor.execute(query, ( account[0], ))
         result = cursor.fetchall()
-        print(result)
+        temp = []
+        for row in result:
+            temp.append(row)
+            #print(row)
+
+        #print(temp)
+        new.append( (account[0], temp) )
+
+    #print()
+    #print(new)
+    session["programs"] = new
+    cursor.close()
+
+# takes in an input program and checks if that information already exists
+#def checkConflict(accountId, programId, startDate, endDate, ):
 
 
 
