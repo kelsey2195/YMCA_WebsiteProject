@@ -43,22 +43,23 @@
                         </li>
                     {% else %}
                     <li>
-                        <a href="/staff_profile">
-                            <button>Actions</button>
-                        </a>
+                        <div class="dropdown">
+                            <button class="dropbtn">Actions</button>
+                            <div class="dropdown-content">
+                                <a href="/staff_profile">
+                                    <button>Staff Profile</button>
+                                </a>
+                                <a href="/usermanual">
+                                    <button>Manual</button>
+                                </a>
+                                <a href="/logout">
+                                    <button>logout</button>
+                                </a> 
+                            </div>
+                        </div>
                     </li>
                     {% endif %}
-                    <li>
-                        <a href="/usermanual">
-                            <button>Manual</button>
-                        </a> 
-                    </li> 
-
-                    <li>
-                        <a href="/logout">
-                            <button>logout</button>
-                        </a> 
-                    </li>
+                
 
                 {% else %} 
                 <li>
