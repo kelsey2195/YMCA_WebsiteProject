@@ -108,18 +108,20 @@ def login():
                     cursor.execute(query, ( session["user_id"], ))
                     result = cursor.fetchall()
 
-                    accId, email, first, last, birth = zip(*result)
-                    result = list(zip( accId, first, last ))
+                    if result:
+                        accId, email, first, last, birth = zip(*result)
+                        result = list(zip( accId, first, last ))
 
-                    # TODO eventually this will have to be formated for output in a nice looking way
-                    session['accounts'] = result
-                    print(result)
-
-                    updateProgList()
+                        # TODO eventually this will have to be formated for output in a nice looking way
+                        session['accounts'] = result
+                        print(result)
+                        updateProgList()
 
                     cursor.close()
 
-                    return redirect("/user_profile")
+                    # finish user profile before redirecting to it
+                    # return redirect("/user_profile")
+                    return redirect('/')
                 else:
                     # invalid user
                     message = "Invalid email or password"
@@ -485,12 +487,15 @@ def user_search():
 
 @app.route('/program_search')
 def program_search():
-    # Obtains the correct price for the user depending on if they are a member or not
-    if not session["user_id"] != "employee" or session["member_or_not"] == 0:
-            price_type = "nonmember_price"
-    else:
-            price_type = "member_price"
 
+    if not session["user_id"]:
+        price_type = "nonmember_price"
+    else:
+        # Obtains the correct price for the user depending on if they are a member or not
+        if not session["user_id"] != "employee" or session["member_or_not"] == 0:
+                price_type = "nonmember_price"
+        else:
+                price_type = "member_price"
 
     # Queries the db for all programs
     # TODO: Implement advanced queries
