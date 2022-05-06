@@ -628,7 +628,20 @@ def createDayAndTime( x, request ):
     return ( dayList, startTime, endTime, empty )
 
 def updateProgList():
-    print("Update prog list here")
+     # collect user information & all their associated accounts
+    for account in session['accounts']:
+        cursor = connection.cursor(prepared=True)
+        query = ''' SELECT accounts.account_id, programs.program_id, name_program, start_date, end_date, day_of_week, start_time, end_time
+                FROM account_in_program
+                INNER JOIN accounts USING (account_id)
+                INNER JOIN programs USING (program_id)
+                INNER JOIN program_schedule USING (program_id)
+                WHERE accounts.account_id == ?; '''
+        cursor.execute(query, ( account[0], ))
+        result = cursor.fetchall()
+        print(result)
+
+
 
 def dayTimeInsertTuple( x, programId ):
     return [ (programId, i, x[1], x[2]) for i,day in enumerate(x[0]) if day == 'checked' ]
