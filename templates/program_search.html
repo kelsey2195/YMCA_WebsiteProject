@@ -8,9 +8,38 @@
         <!-- Search bar for programs, uses program_search() js function to look through table -->
         <input type="text" id="searchbar" onkeyup="program_search()" placeholder="Search for programs..">
 
-        {% if session["user_id"] == "employee" %} 
-            <input type="text" id="accountsearchbar" onkeyup="program_search()" placeholder="Search for users..">
-        {% endif %}
+        <button class="cancel-btn" id="cancel-btn" onclick="cancel_on_click()">Cancel</button>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <script>
+            function cancel_on_click() {
+                var table = document.getElementById("program-table");
+                var rows = table.getElementsByTagName("tr");
+                for (i = 0; i < rows.length; i++) {
+                    var currentRow = table.rows[i];
+                    if(i > 0)
+                        rows[i].style.cursor = "pointer";
+
+                    var createClickHandler = function(row) {
+                        return function() {
+                            var cell = row.getElementsByTagName("td")[0];
+                            var name = cell.innerHTML;
+                            // const dict_values = {id, prof}
+                            // const s = JSON.stringify(dict_values);
+                            console.log(s);
+                            if(confirm("Do you really want to cancel " + name)) {
+                                $.ajax({
+                                    url:"/postmethod",
+                                    type:"POST",
+                                    contentType: "application/json",
+                                    data: JSON.stringify(s)
+                                });
+                            }
+                        };
+                    };
+                    currentRow.onclick = createClickHandler(currentRow);
+                }
+            }
+        </script>
 
         <table id="program-table">
 

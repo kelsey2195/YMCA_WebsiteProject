@@ -11,11 +11,12 @@
             {% if session["member_or_not"] == 1 %}
                 <h2> Accounts </h2>
                 <!-- TODO Eventually will be a button to create more accounts for when it's a member user -->
-                {% for accId, first, last  in accounts %}
+                {% for accId, first, last, swimLevelNum, swimLevelName  in accounts %}
                     <div class="card">
                         <br>
                         <p>YMCA id: {{ accId }}</p>
                         <p>Name: {{ first }} {{ last }}</p>
+                        <p>Level: {{ swimLevelName}}</p>
                         <br>
                     </div>
                     <br>

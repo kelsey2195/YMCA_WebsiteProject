@@ -292,18 +292,6 @@ footer{
     background-color: #000;
     opacity: 90%;
 }
-#accountsearchbar {
-    background-position: 10px 12px; /* Position the search icon */
-    background-repeat: no-repeat; /* Do not repeat the icon image */
-    width: 40%; /* Full-width */
-    font-size: 16px; /* Increase font-size */
-    padding: 12px 20px 12px 40px; /* Add some padding */
-    margin-bottom: 12px; /* Add some space below the input */
-    color: grey;
-    border: none;
-    background-color: #000;
-    opacity: 90%;
-}
 
 .tableFixHead {
   overflow-y: auto; /* Makes the table scrollable */
@@ -363,7 +351,6 @@ td:nth-child(5):before {
 .tableFixHead tbody tr:hover{
     background-color: #949494;
     color: #000;
-    /* cursor:pointer; */
 }
 
 .cancel-btn {
@@ -378,7 +365,13 @@ td:nth-child(5):before {
     font-size: 14px;
     font-weight: 600;
     height: 40px;
-    text-decoration: none;
+    /* line-height: 20px; */
+    list-style: none;
+    /* margin: 0; */
+    /* outline: none; */
+    /* padding: 10px 16px; */
+    /* position: relative; */
+    /* text-decoration: none; */
     transition: color 100ms;
     vertical-align: baseline;
     user-select: none;
@@ -388,7 +381,6 @@ td:nth-child(5):before {
   
 .cancel-btn:hover {
     background-color: #690215;
-    cursor:pointer;
 }
 
 

@@ -46,7 +46,13 @@ def login():
                 # Sets session to contain employee information
                 if result:
                     session["user_id"] = "employee"
-                    session["username"] = result[0][1] + result[0][2]
+                    try:
+                        session["username"] = result[0][1]
+                        session["username"] += result[0][2]
+                    except TypeError as error:
+                        session["username"] = result[0][1].decode() + result[0][2].decode()
+                    session["username"] = result[0][1].decode() + result[0][2].decode()
+                    
                     session["manager_or_not"] = result[0][4]
                     cursor.close()
                     return redirect('/staff_profile')
@@ -82,8 +88,13 @@ def login():
                 # if there is a result then that means it's a valid user
                 if result :
                     # fill session info with user information
-                    session["user_id"] = result[0][0]
-                    session["username"] = result[0][1]
+                    try:
+                        session["user_id"] = result[0][0]
+                        session["username"] = result[0][1]
+                    except TypeError as error:
+                        session["user_id"] = result[0][0].decode()
+                        session["username"] = result[0][1].decode()
+
                     session["member_or_not"] = result[0][3]
                     cursor.close()
 
@@ -215,13 +226,14 @@ def user_profile():
         # collect user information & all their associated accounts
         cursor = connection.cursor(prepared=True)
         query = ''' SELECT *
-                    FROM accounts
+                    FROM accounts LEFT OUTER JOIN swim_levels 
+                    ON accounts.account_level = swim_levels.swim_level_id 
                     WHERE associated_user = ?'''
         cursor.execute(query, ( session["user_id"], ))
         result = cursor.fetchall()
 
-        accId, email, first, last, birth = zip(*result)
-        result = list(zip( accId, first, last ))
+        accId, email, first, last, swimLevelNum, birth, temp, swimLevelName = zip(*result)
+        result = list(zip( accId, first, last, swimLevelNum, swimLevelName ))
 
         # TODO eventually this will have to be formated for output in a nice looking way
         session['accounts'] = result
@@ -439,10 +451,6 @@ def create_user_account():
 
 @app.route('/program_search')
 def program_search():
-    # User must be logged in to access
-    if( 'username' not in session ):
-        return redirect('/login')
-
     # Obtains the correct price for the user depending on if they are a member or not
     if not session["user_id"] != "employee" or session["member_or_not"] == 0:
             price_type = "nonmember_price"
@@ -453,7 +461,10 @@ def program_search():
     # Queries the db for all programs
     # TODO: Implement advanced queries
     cursor = connection.cursor(prepared=True)
-    cursor.execute("SELECT name_program, start_date, end_date, description, %s, num_total_people, num_signed_up FROM programs" %(price_type))
+    query = ''' SELECT name_program, start_date, end_date, description, {}, num_total_people, num_signed_up, program_id 
+                    FROM programs
+                    WHERE active = 1; '''.format(price_type)
+    cursor.execute(query)
     result = cursor.fetchall()
     cursor.close()
     create_table(result)
@@ -474,6 +485,11 @@ def program_search():
     return render_template("program_search.html")
     
 
+@app.route('/cancel_program')
+def cancel_program():
+    
+    return render_template("program_search.html")
+
 
 #Creates html file of table of available programs
 #File placed in data folder as table.html
@@ -492,7 +508,7 @@ def create_table(result):
         table += "  <tr>\n"
         for column in range(5):
             try:
-                table += "    <td>{0}</td>\n".format(result[i][column].decode())
+                table += '''    <td id="{0}">{1}</td>\n'''.format(result[i][7], result[i][column].decode())
             except(AttributeError):
                 table += "    <td>{0}</td>\n".format(result[i][column])
         table += "    <td>{0}/{1}</td>\n".format(result[i][5]-result[i][6], result[i][5])
