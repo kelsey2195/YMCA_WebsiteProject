@@ -7,7 +7,6 @@ email_format = re.compile(r'([A-Za-z0-9]+[.-_])*[A-Za-z0-9]+@[A-Za-z0-9-]+(\.[A-
 
 app = Flask(__name__)
 app.secret_key = "27eduCBA09"
-app.config['TEMPLATES_AUTO_RELOAD'] = True
 
 # Connection to the database
 connection = mysql.connector.connect(host='localhost', password = '', user='root', database = 'flask')
@@ -17,10 +16,6 @@ connection = mysql.connector.connect(host='localhost', password = '', user='root
 def home():
     # set session variable sback to false to show various buttons
     return render_template('index.html')
-
-@app.route('/usermanual')
-def usermanual():
-    return render_template('usermanual.html')
 
 @app.route('/staff_profile')
 def staff_profile():
@@ -48,7 +43,6 @@ def login():
                 query = ''' SELECT * FROM employees WHERE employee_id = %s AND employee_password = %s'''
                 cursor.execute(query, ( email, password ))
                 result = cursor.fetchall()
-                cursor.close()
                 # Sets session to contain employee information
                 if result:
                     session["user_id"] = "employee"
@@ -60,6 +54,7 @@ def login():
                         
                     
                     session["manager_or_not"] = result[0][4]
+                    cursor.close()
                     return redirect('/staff_profile')
 
                 # If it's not an employee login apply rules to check if it's right format ect.
@@ -85,10 +80,10 @@ def login():
                 # no errors on input -> now check if this is a valid user
                 # fetches the input from the databse
                 cursor = connection.cursor(prepared=True)
-                query = ''' SELECT * FROM users WHERE email = %s AND password = %s AND active = 1; '''
+                query = ''' SELECT * FROM users WHERE email = %s AND password = %s'''
                 cursor.execute(query, ( email, password ))
+
                 result = cursor.fetchall()
-                cursor.close()
 
                 # if there is a result then that means it's a valid user
                 if result :
@@ -100,52 +95,37 @@ def login():
                         session["user_id"] = result[0][0]
                         session["username"] = result[0][1]
                         
-        
+
                     session["member_or_not"] = result[0][3]
                     #cursor.close()
 
-                    
-                
 
                     # collect user information & all their associated accounts
                     cursor = connection.cursor(prepared=True)
                     query = ''' SELECT *
-                                    FROM accounts 
-                                    WHERE associated_user = '{}'; '''.format(session["user_id"])
-                    cursor.execute(query)
+                                FROM accounts 
+                                WHERE associated_user = ?'''
+                    cursor.execute(query, ( session["user_id"], ))
                     result = cursor.fetchall()
-                    cursor.close()  
-               
+
                     if result:
-                        acts = []
-                        for i in range(len(result)):
-                            if(type(result[i][1]) == bytearray):
-                                account_info = [
-                                    result[i][0],
-                                    result[i][1].decode(),
-                                    result[i][2].decode(),
-                                    result[i][3].decode(),
-                                    result[i][4]
-                                ]
-                            else:
-                                account_info = [
-                                    result[i][0],
-                                    result[i][1],
-                                    result[i][2],
-                                    result[i][3],
-                                    result[i][4]
-                                ]
-                            acts.append(account_info)
-                            
+                        accId, email, first, last, birth = zip(*result)
+                        result = list(zip( accId, first, last ))
+
                         # TODO eventually this will have to be formated for output in a nice looking way
-                        print(acts)
-                        session['accounts'] = acts
+                        session['accounts'] = result
+                        print(result)
+                        updateProgList()
+
+                    cursor.close()
+
                     # finish user profile before redirecting to it
                     # return redirect("/user_profile")
                     return redirect('/')
                 else:
                     # invalid user
-                    message = "Invalid email or password or account does not exist"
+                    message = "Invalid email or password"
+                    cursor.close()
                     return render_template('log_in.html', message = message, email = email)
             
             # exception handler
@@ -235,8 +215,8 @@ def register_user():
 
                 # now enter the information into database
                 cursor = connection.cursor(prepared=True)
-                query = ''' INSERT INTO users VALUES(?,?,?,?,?)'''
-                cursor.execute(query, ( email, username, password, membership, 1 ))
+                query = ''' INSERT INTO users VALUES(?,?,?,?)'''
+                cursor.execute(query, ( email, username, password, membership ))
                 connection.commit()
                 cursor.close()
             
@@ -253,7 +233,21 @@ def register_user():
         
         return render_template("register.html", membership = membership)
 
+# user profile
+@app.route('/user_profile') 
+def user_profile():
+    # checks to make sure that the user isn't an employee
+    if( 'user_id' in session ): # first checks if user_id is in session so you don't get a null error
+        # checks if employee
+        if( session['user_id'] == "employee" ):
+            return redirect("/staff_profile")
 
+    # checks if the user is logged in
+    if( 'username' not in session ):
+        return redirect('/login')  
+    else:
+        
+        return render_template("user_profile.html", accounts = session['accounts'], num_accounts = len( session['accounts'] ) )
 
 # Will eventually have the ability to create a program here
 # only manager's should be able to create programs
@@ -457,7 +451,7 @@ def create_user_account():
                             WHERE associated_user = ?'''
                 cursor.execute(query, ( session["user_id"], ))
                 result = cursor.fetchall()
-                accId, email, first, last, birth, active = zip(*result)
+                accId, email, first, last, birth = zip(*result)
                 result = list(zip( accId, first, last ))
                 # TODO eventually this will have to be formated for output in a nice looking way
                 session['accounts'] = result
@@ -473,66 +467,28 @@ def create_user_account():
 
         return render_template("create_account.html", child = child)
 
-@app.route('/user_search', methods= ['POST', 'GET'])
+@app.route('/user_search')
 def user_search():
-    if request.method == 'POST':
-        if request.form.get('accountDel'):
-            deleteAccount( request.form.get( "aid" ) )
-        if request.form.get('userDel'):
-            deleteUser( request.form.get( "uid" ) )
-
-
     if session["user_id"] == "employee" :
         result = "empty"
         cursor = connection.cursor(prepared=True)
-        query = ''' SELECT accounts.associated_user, accounts.account_id, account_first_name, account_last_name, name_program, start_date, end_date, description, accounts.active, programs.active 
+        query = ''' SELECT accounts.account_id, account_first_name, account_last_name, name_program, start_date, end_date, description 
                     FROM (( account_in_program 
                         INNER JOIN accounts  ON account_in_program.account_id = accounts.account_id )
-                        INNER JOIN programs ON account_in_program.program_id = programs.program_id 
-                    )WHERE accounts.active = 1 AND programs.active = 1 '''
+                        INNER JOIN programs ON account_in_program.program_id = programs.program_id )'''
         cursor.execute( query )
         result = cursor.fetchall()
         cursor.close()
-        #print( result )
+        print( result )
         create_user_table(result)
 
-    return render_template("user_search.html", filePath='data/usertable.html')
-
-def deleteUser( id ):
-    cursor = connection.cursor(prepared=True)
-    query = ''' SELECT account_id FROM accounts where associated_user = ? '''
-    cursor.execute( query , (id,) )
-    result = cursor.fetchall()
-    cursor.close()
-    #print(result)
-    cursor = connection.cursor(prepared=True)
-    query = ''' Update users SET active = 0 where users.email = ? '''
-    cursor.execute( query , (id,) )
-    connection.commit()
-    cursor.close()
-
-    for account in result:
-        deleteAccount( account[0] )
-
-
-def deleteAccount( id ):
-    cursor = connection.cursor(prepared=True)
-    query = ''' Update accounts SET active = 0 where accounts.account_id = ? '''
-    cursor.execute( query , (id,) )
-    connection.commit()
-    cursor.close()
-
-    cursor = connection.cursor(prepared=True)
-    query = ''' DELETE FROM account_in_program where account_in_program.account_id = ? '''
-    cursor.execute( query , (id,) )
-    connection.commit()
-    cursor.close()
+        return render_template("user_search.html")
 
 
 @app.route('/program_search')
 def program_search():
 
-    if 'user_id' not in session :
+    if not session["user_id"]:
         price_type = "nonmember_price"
     else:
         # Obtains the correct price for the user depending on if they are a member or not
@@ -550,6 +506,7 @@ def program_search():
     cursor.execute(query)
     result = cursor.fetchall()
     cursor.close()
+    print(result)
     create_table(result)
 
     return render_template("program_search.html")
@@ -563,131 +520,16 @@ def cancel_program():
     cursor = connection.cursor(prepared=True)
     query = ''' UPDATE programs SET active = 0 WHERE program_id = {}; '''.format(program_id)
     cursor.execute(query)
-    connection.commit()
     cursor.close()
     return redirect('/program_search')
-
-
-@app.route('/register_program', methods=['POST'])
-def register_program():
-    print('hello')
-    # staff cannot register for programs
-    if session["user_id"] == "employee":
-        redirect('/program_search')
-
-    output = request.get_json()
-    program_id = int(json.loads(output))
-    user_id = session["user_id"]
-    cursor = connection.cursor(prepared=True)
-    query = ''' INSERT INTO account_in_program VALUES (?,?); '''
-    try:
-        cursor.execute(query, (user_id, program_id))
-        connection.commit()
-        print("----------REGISTERING USER FOR PROGRAM------------")
-        print("Query: " + query)
-        cursor.close()
-        # return redirect('/user_profile')
-        return redirect('/')
-
-    except mysql.connector.Error as error:
-        # Program doesn't exist
-        print("Failed to register: {}".format(error))
-    cursor.close()
-    return redirect('/program_search')
-
 
 @app.route('/activate_all', methods=['POST'])
 def activate_all():
     cursor = connection.cursor(prepared=True)
     query = ''' UPDATE programs SET active = 1; '''
     cursor.execute(query)
-    connection.commit()
     cursor.close()
     return redirect('/program_search')
-
-
-# user profile
-@app.route('/user_profile') 
-def user_profile():
-    # checks to make sure that the user isn't an employee
-    if( 'user_id' in session ): # first checks if user_id is in session so you don't get a null error
-        # checks if employee
-        if( session['user_id'] == "employee" ):
-            return redirect("/staff_profile")
-
-    # checks if the user is logged in
-    if( 'username' not in session ):
-        return redirect('/login')  
-    else:
-        cursor = connection.cursor(prepared=True)
-        query = ''' SELECT name_program, start_date, end_date, description, active
-                        FROM users NATURAL JOIN accounts NATURAL JOIN account_in_program NATURAL JOIN programs
-                        WHERE users.email = '{}'; '''.format(session["user_id"])
-        cursor.execute(query)
-        result = cursor.fetchall()
-        cursor.close()
-        user_programs(result)
-        return render_template("user_profile.html", accounts = session['accounts'], num_accounts = len( session['accounts'] ) )
-
-
-
-
-def user_programs(result):
-    file_path = 'templates/data/user_programs.html'
-
-    if(os.path.exists(file_path)):
-        os.remove(file_path)
-
-    file = open(file_path, "w")
-    table = ""
-
-    for i in range(len(result)):
-        table += '''  <tr>\n'''.format()
-        
-        for j in range(4):
-            if(type(result[i][0]) == bytearray):
-                try:
-                    table += "    <td>{}</td>\n".format(result[i][j].decode())
-                except AttributeError:
-                    table += "    <td>{}</td>\n".format(result[i][j])
-            else:
-                table += "    <td>{}</td>\n".format(result[i][j])
-
-        if result[i][4] == 0:
-            table += '''    <td style="color: red;">Cancelled</td>\n'''
-        else:
-            table += '''    <td style="color: green;">Active</td>\n'''
-
-        table += "  </tr>\n"
-
-    file.writelines(table)
-    file.close()
-
-
-def user_program_table(result):
-    file_path = 'templates/data/prog_table.html'
-
-    if os.path.exists(file_path):
-        os.remove(file_path)
-
-    file = open(file_path, "w")
-    cal = ""
-
-    for i in range(len(result)):
-        cal += '''  <div class="event_item">\n'''
-
-        if type(result[i][1]) == bytearray:
-            name = result[i][1].decode()
-            location = result[i][4]
-            description = result[i][5]
-        else:
-            name = result[i][1]
-
-
-        cal += '''  </div>\n'''
-
-    file.writelines(cal)
-    file.close()
 
 
 #Creates html file of table of available programs
@@ -705,7 +547,7 @@ def create_table(result):
     #Placing data from result into table.html
     for i in range(len(result)):
         table += '''  <tr  id="{}">\n'''.format(result[i][7])
-        for column in range(len(result[i])-3):
+        for column in range(len(result[i])):
             try:
                 table += '''    <td>{}</td>\n'''.format(result[i][column].decode())
             except(AttributeError):
@@ -725,27 +567,20 @@ def create_user_table(result):
     # creates table.html
     file = open(file_path, "w")
     table = ""
-    #print(result)
+
     #Placing data from result into table.html
-    for i in result:
+    for i in range(len(result)):
         table += "  <tr>\n"
-        for j in range(8):
+        for column in range(5):
             try:
-                table += "    <td>{0}</td>\n".format( i[j] )
-            except:
-                table += "    <td>{0}</td>\n".format( i[j].decode() )
-        
+                table += "    <td>{0}</td>\n".format(result[i][column].decode())
+            except(AttributeError):
+                table += "    <td>{0}</td>\n".format(result[i][column])
+        table += "    <td>{0}/{1}</td>\n".format(result[i][5]-result[i][6], result[i][5])
         table += " </tr>\n"
 
     file.writelines(table)
     file.close()
-
-
-
-
-
-
-
 
 def createDayAndTime( x, request ):
     dayList = []
@@ -802,10 +637,9 @@ def createDayAndTime( x, request ):
 
 def updateProgList():
      # collect user information & all their associated accounts
-    cursor = connection.cursor(prepared=True)
-    new = []
     for account in session['accounts']:
-        query = ''' SELECT programs.program_id, name_program, start_date, end_date, day_of_week, start_time, end_time
+        cursor = connection.cursor(prepared=True)
+        query = ''' SELECT accounts.account_id, programs.program_id, name_program, start_date, end_date, day_of_week, start_time, end_time
                 FROM account_in_program
                 INNER JOIN accounts USING (account_id)
                 INNER JOIN programs USING (program_id)
@@ -813,21 +647,7 @@ def updateProgList():
                 WHERE accounts.account_id = ?; '''
         cursor.execute(query, ( account[0], ))
         result = cursor.fetchall()
-        temp = []
-        for row in result:
-            temp.append(row)
-            #print(row)
-
-        #print(temp)
-        new.append( (account[0], temp) )
-
-    #print()
-    #print(new)
-    session["programs"] = new
-    cursor.close()
-
-# takes in an input program and checks if that information already exists
-#def checkConflict(accountId, programId, startDate, endDate, ):
+        print(result)
 
 
 
