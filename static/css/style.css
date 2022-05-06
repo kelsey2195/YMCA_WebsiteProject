@@ -369,16 +369,19 @@ td:nth-child(5):before {
     /* cursor:pointer; */
 }
 
-.cancel-btn {
+
+.cancel-btn,
+.active-btn,
+.reg-btn {
     float: right;
-    background-color: #830019;
+    width: 5%;
     border-radius: 8px;
     border-style: none;
     box-sizing: border-box;
     color: #FFFFFF;
     cursor: pointer;
     font-family: "Haas Grot Text R Web", "Helvetica Neue", Helvetica, Arial, sans-serif;
-    font-size: 14px;
+    font-size: 1em;
     font-weight: 600;
     height: 40px;
     text-decoration: none;
@@ -389,10 +392,31 @@ td:nth-child(5):before {
     touch-action: manipulation;
 }
   
-.cancel-btn:hover {
-    background-color: #690215;
+.cancel-btn:hover,
+.active-btn:hover,
+.reg-btn:hover {
     cursor:pointer;
 }
+
+.cancel-btn,
+.active-btn {
+    background-color: #830019;
+}
+
+.cancel-btn:hover,
+.active-btn:hover {
+    background-color: #690215;
+}
+
+.active-btn {
+    margin-right: 20px;
+    width: 7%;
+}
+
+.reg-btn {
+    background-color: #87cefa;
+}
+
 
 
 /* ------- PROGRAM SEARCH TABLE ------- */
