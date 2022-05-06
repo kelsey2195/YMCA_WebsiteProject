@@ -20,10 +20,7 @@
             </a>
              
                     <ul>
-                        {% if session["username"] and session["user_id"] == "employee" %}
-                            <li><a href="/user_search" class="highlight">User Search</a></li>
-                        {% endif %}
-                        <li> <a href="/program_search" class="highlight">Program Search</a></li> 
+                        <li id = "highlight"> <a href="/program_search"> Program Search </a></li> 
 
                 {% if session["username"] %} 
                 
@@ -50,15 +47,12 @@
                     {% endif %}
                     <li>
                         <a href="/usermanual">
-                            <button class="header-btn">Manual</button>
+                            <button>User Manual</button>
                         </a> 
-                    </li> 
-
-                    <li>
                         <a href="/logout">
                             <button class="header-btn">logout</button>
                         </a> 
-                    </li>
+                    </li> 
 
                 {% else %} 
                 <li>

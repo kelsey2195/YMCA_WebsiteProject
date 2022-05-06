@@ -49,7 +49,6 @@ def login():
                 result = cursor.fetchall()
                 cursor.close()
                 # Sets session to contain employee information
-
                 if result:
                     session["user_id"] = "employee"
 
@@ -61,7 +60,6 @@ def login():
                     
                     session["manager_or_not"] = result[0][4]
                     return redirect('/staff_profile')
-
 
                 # If it's not an employee login apply rules to check if it's right format ect.
                 # check if it's email in the right format
@@ -474,22 +472,38 @@ def create_user_account():
 
         return render_template("create_account.html", child = child)
 
-@app.route('/user_search')
+@app.route('/user_search', methods= ['POST', 'GET'])
 def user_search():
+    if request.method == 'POST':
+        if request.form.get('accountDel'):
+            deleteAccount( request.form.get( "aid" ) )
+
     if session["user_id"] == "employee" :
         result = "empty"
         cursor = connection.cursor(prepared=True)
-        query = ''' SELECT accounts.account_id, account_first_name, account_last_name, name_program, start_date, end_date, description 
+        query = ''' SELECT accounts.associated_user, accounts.account_id, account_first_name, account_last_name, name_program, start_date, end_date, description, accounts.active, programs.active 
                     FROM (( account_in_program 
                         INNER JOIN accounts  ON account_in_program.account_id = accounts.account_id )
-                        INNER JOIN programs ON account_in_program.program_id = programs.program_id )'''
+                        INNER JOIN programs ON account_in_program.program_id = programs.program_id 
+                    )WHERE accounts.active = 1 AND programs.active = 1 '''
         cursor.execute( query )
         result = cursor.fetchall()
         cursor.close()
-        print( result )
+        #print( result )
         create_user_table(result)
 
-        return render_template("user_search.html")
+    return render_template("user_search.html")
+
+
+def deleteAccount( id ):
+    cursor = connection.cursor(prepared=True)
+    query = ''' Update accounts SET active = 0 where account.id = ? '''
+    cursor.execute( query , (id,) )
+    connection.commit()
+    cursor.close()
+
+    cursor = connection.cursor(prepared=True)
+    query = ''' DELETE FROM account_in_program where account.id = ? '''
 
 
 @app.route('/program_search')
@@ -654,16 +668,16 @@ def create_user_table(result):
     # creates table.html
     file = open(file_path, "w")
     table = ""
-    print(result)
+    #print(result)
     #Placing data from result into table.html
-    for i in range(len(result)):
+    for i in result:
         table += "  <tr>\n"
-        for column in range(5):
+        for j in range(8):
             try:
-                table += "    <td>{0}</td>\n".format(result[i][column].decode())
-            except(AttributeError):
-                table += "    <td>{0}</td>\n".format(result[i][column])
-        table += "    <td>{0}/{1}</td>\n".format(result[i][5]-result[i][6], result[i][5])
+                table += "    <td>{0}</td>\n".format( i[j] )
+            except:
+                table += "    <td>{0}</td>\n".format( i[j].decode() )
+        
         table += " </tr>\n"
 
     file.writelines(table)
