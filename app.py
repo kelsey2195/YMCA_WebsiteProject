@@ -84,7 +84,7 @@ def login():
                 # no errors on input -> now check if this is a valid user
                 # fetches the input from the databse
                 cursor = connection.cursor(prepared=True)
-                query = ''' SELECT * FROM users WHERE email = %s AND password = %s AND active = 1'''
+                query = ''' SELECT * FROM users WHERE email = %s AND password = %s AND active = 1; '''
                 cursor.execute(query, ( email, password ))
                 result = cursor.fetchall()
                 cursor.close()
@@ -119,21 +119,21 @@ def login():
                         acts = []
                         for i in range(len(result)):
                             if(type(result[i][1]) == bytearray):
-                                account_info = {
-                                    "account_id": result[i][0],
-                                    "email": result[i][1].decode(),
-                                    "first_name": result[i][2].decode(),
-                                    "last_name": result[i][3].decode(),
-                                    "birthday": result[i][4]
-                                }
+                                account_info = [
+                                    result[i][0],
+                                    result[i][1].decode(),
+                                    result[i][2].decode(),
+                                    result[i][3].decode(),
+                                    result[i][4]
+                                ]
                             else:
-                                account_info = {
-                                    "account_id": result[i][0],
-                                    "email": result[i][1],
-                                    "first_name": result[i][2],
-                                    "last_name": result[i][3],
-                                    "birthday": result[i][4]
-                                }
+                                account_info = [
+                                    result[i][0],
+                                    result[i][1],
+                                    result[i][2],
+                                    result[i][3],
+                                    result[i][4]
+                                ]
                             acts.append(account_info)
                             
                         # TODO eventually this will have to be formated for output in a nice looking way
@@ -620,13 +620,48 @@ def user_profile():
     else:
 
         cursor = connection.cursor(prepared=True)
-        query = ''' SELECT name_program, start_date, end_date, day 
-                        FROM  '''
-        user_program_table(result)
+        query = ''' SELECT name_program, start_date, end_date, description, active
+                        FROM users NATURAL JOIN accounts NATURAL JOIN account_in_program NATURAL JOIN programs
+                        WHERE users.email = '{}'; '''.format(session["user_id"])
+        cursor.execute(query)
+        result = cursor.fetchall()
+        cursor.close()
+        user_programs(result)
         return render_template("user_profile.html", accounts = session['accounts'], num_accounts = len( session['accounts'] ) )
 
 
 
+
+def user_programs(result):
+    file_path = 'templates/data/user_programs.html'
+
+    if(os.path.exists(file_path)):
+        os.remove(file_path)
+
+    file = open(file_path, "w")
+    table = ""
+
+    for i in range(len(result)):
+        table += '''  <tr>\n'''.format()
+        
+        for j in range(4):
+            if(type(result[i][0]) == bytearray):
+                try:
+                    table += "    <td>{}</td>\n".format(result[i][j].decode())
+                except AttributeError:
+                    table += "    <td>{}</td>\n".format(result[i][j])
+            else:
+                table += "    <td>{}</td>\n".format(result[i][j])
+
+        if result[i][4] == 0:
+            table += '''    <td style="color: red;">Cancelled</td>\n'''
+        else:
+            table += '''    <td style="color: green;">Active</td>\n'''
+
+        table += "  </tr>\n"
+
+    file.writelines(table)
+    file.close()
 
 
 def user_program_table(result):
