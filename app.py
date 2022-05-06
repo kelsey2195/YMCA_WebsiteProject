@@ -7,6 +7,7 @@ email_format = re.compile(r'([A-Za-z0-9]+[.-_])*[A-Za-z0-9]+@[A-Za-z0-9-]+(\.[A-
 
 app = Flask(__name__)
 app.secret_key = "27eduCBA09"
+app.config['TEMPLATES_AUTO_RELOAD'] = True
 
 # Connection to the database
 connection = mysql.connector.connect(host='localhost', password = '', user='root', database = 'flask')
@@ -495,7 +496,7 @@ def user_search():
         #print( result )
         create_user_table(result)
 
-    return render_template("user_search.html")
+    return render_template("user_search.html", filePath='data/usertable.html')
 
 def deleteUser( id ):
     cursor = connection.cursor(prepared=True)
@@ -505,7 +506,7 @@ def deleteUser( id ):
     cursor.close()
     #print(result)
     cursor = connection.cursor(prepared=True)
-    query = ''' Update accounts SET active = 0 where accounts.account_id = ? '''
+    query = ''' Update users SET active = 0 where users.email = ? '''
     cursor.execute( query , (id,) )
     connection.commit()
     cursor.close()
@@ -618,7 +619,6 @@ def user_profile():
     if( 'username' not in session ):
         return redirect('/login')  
     else:
-
         cursor = connection.cursor(prepared=True)
         query = ''' SELECT name_program, start_date, end_date, day 
                         FROM  '''

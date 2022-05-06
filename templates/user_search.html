@@ -12,13 +12,13 @@
 
         <form action="/user_search" method="post">
             <label for="aid">Delete Account:</label><br>
-            <input type="text" id="aid" name="aid" placeholder="enter account id" ><br>
+            <input type="text" id="aid" name="aid" placeholder="enter account id" autocomplete="off"><br>
             <input type="submit" name="accountDel" onclick='return confirm("Are you sure you want to delete this account?")' value="Delete">
         </form> 
-
+        <br>
         <form action="/user_search" method="post">
             <label for="uid">Delete User:</label><br>
-            <input type="text" id="uid" name="uid" placeholder="enter user email" ><br>
+            <input type="text" id="uid" name="uid" placeholder="enter user email" autocomplete="off" ><br>
             <input type="submit" name="userDel" onclick='return confirm("Are you sure you want to delete this user?")' value="Delete">
         </form> 
 
@@ -46,7 +46,7 @@
 
             <!-- uses jinja to include html file created by the create_table(result) python method -->
             <!-- table.html is a table including data of all programs {will be updated for advanced queries} -->
-            <tbody> {% include 'data/usertable.html' %} </tbody>
+            <tbody> {% include filePath %} </tbody>
         </table>
     </div>
 
