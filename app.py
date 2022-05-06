@@ -96,9 +96,25 @@ def login():
                         session["username"] = result[0][1].decode()
 
                     session["member_or_not"] = result[0][3]
+                    #cursor.close()
+
+
+                    # collect user information & all their associated accounts
+                    cursor = connection.cursor(prepared=True)
+                    query = ''' SELECT *
+                                FROM accounts 
+                                WHERE associated_user = ?'''
+                    cursor.execute(query, ( session["user_id"], ))
+                    result = cursor.fetchall()
+
+                    accId, email, first, last, birth = zip(*result)
+                    result = list(zip( accId, first, last ))
+
+                    # TODO eventually this will have to be formated for output in a nice looking way
+                    session['accounts'] = result
+                    print(result)
+
                     cursor.close()
-
-
 
                     return redirect("/user_profile")
                 else:
@@ -192,8 +208,6 @@ def register_user():
                 else:
                     membership = 0
 
-                
-
                 # now enter the information into database
                 cursor = connection.cursor(prepared=True)
                 query = ''' INSERT INTO users VALUES(?,?,?,?)'''
@@ -227,24 +241,8 @@ def user_profile():
     if( 'username' not in session ):
         return redirect('/login')  
     else:
-        # collect user information & all their associated accounts
-        cursor = connection.cursor(prepared=True)
-        query = ''' SELECT *
-                    FROM accounts 
-                    WHERE associated_user = ?'''
-        cursor.execute(query, ( session["user_id"], ))
-        result = cursor.fetchall()
-
-        accId, email, first, last, swimLevelNum, birth, temp, swimLevelName = zip(*result)
-        result = list(zip( accId, first, last, swimLevelNum, swimLevelName ))
-
-        # TODO eventually this will have to be formated for output in a nice looking way
-        session['accounts'] = result
-        print(result)
-
-        num = cursor.rowcount
-        cursor.close()
-        return render_template("user_profile.html", accounts = result, num_accounts = num)
+        
+        return render_template("user_profile.html", accounts = session['accounts'], num_accounts = len( session['accounts'] ) )
 
 # Will eventually have the ability to create a program here
 # only manager's should be able to create programs
@@ -435,13 +433,25 @@ def create_user_account():
 
                 # now enter the information into database
                 cursor = connection.cursor(prepared=True)
-                query = ''' INSERT INTO accounts (`associated_user`, `account_first_name`, `account_last_name`, `account_level`, `account_birth_day`) 
-                            VALUES(?,?,?,?,?)'''
-                cursor.execute(query, ( session["user_id"], first, last, child, birthday))
+                query = ''' INSERT INTO accounts (`associated_user`, `account_first_name`, `account_last_name`, `account_birth_day`) 
+                            VALUES(?,?,?,?)'''
+                cursor.execute(query, ( session["user_id"], first, last, birthday))
                 connection.commit()
                 cursor.close()
 
-                query = ''' INSERT INTO program_schedule (`program_id`, `day_of_week`, `start_time`, `end_time`) VALUES '''
+                # collect user information & all their associated accounts
+                cursor = connection.cursor(prepared=True)
+                query = ''' SELECT *
+                            FROM accounts 
+                            WHERE associated_user = ?'''
+                cursor.execute(query, ( session["user_id"], ))
+                result = cursor.fetchall()
+                accId, email, first, last, birth = zip(*result)
+                result = list(zip( accId, first, last ))
+                # TODO eventually this will have to be formated for output in a nice looking way
+                session['accounts'] = result
+                print(result)
+                cursor.close()
 
 
                 # exception handler    
@@ -607,9 +617,12 @@ def createDayAndTime( x, request ):
 
     return ( dayList, startTime, endTime, empty )
 
+def updateProgList():
+    print("Update prog list here")
+
 def dayTimeInsertTuple( x, programId ):
     return [ (programId, i, x[1], x[2]) for i,day in enumerate(x[0]) if day == 'checked' ]
 
-    
+
 if __name__ == "__main__":
     app.run(debug=True)

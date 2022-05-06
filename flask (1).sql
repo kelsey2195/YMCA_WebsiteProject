@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 06, 2022 at 04:44 AM
+-- Generation Time: May 06, 2022 at 05:28 AM
 -- Server version: 10.4.22-MariaDB
 -- PHP Version: 8.0.13
 
@@ -56,6 +56,17 @@ CREATE TABLE `account_in_program` (
   `program_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Dumping data for table `account_in_program`
+--
+
+INSERT INTO `account_in_program` (`account_id`, `program_id`) VALUES
+(1000000, 18),
+(1000000, 17),
+(1000002, 18),
+(1000002, 17),
+(1000002, 16);
+
 -- --------------------------------------------------------
 
 --
@@ -92,7 +103,7 @@ CREATE TABLE `programs` (
   `end_date` date NOT NULL,
   `location` varchar(255) NOT NULL,
   `description` varchar(9999) NOT NULL,
-  `min_swim_level` int(11) DEFAULT NULL,
+  `min_swim_level` varchar(255) DEFAULT NULL,
   `member_price` int(11) NOT NULL,
   `nonmember_price` int(11) NOT NULL,
   `num_total_people` int(11) NOT NULL,
@@ -105,9 +116,9 @@ CREATE TABLE `programs` (
 --
 
 INSERT INTO `programs` (`program_id`, `name_program`, `start_date`, `end_date`, `location`, `description`, `min_swim_level`, `member_price`, `nonmember_price`, `num_total_people`, `num_signed_up`, `active`) VALUES
-(16, 'pike', '2022-04-19', '2022-04-22', 'pool', 'trest description poolllllllll', 4, 4, 4, 2, 0, 0),
-(17, 'shark', '2022-04-19', '2022-05-15', 'YMCA Onalaska Pool', '', 5, 48, 96, 8, 0, 1),
-(18, '0', '2022-04-20', '2022-04-26', 'jjj', 'jjj', 0, 55, 110, 65, 0, 1);
+(16, 'pike', '2022-04-19', '2022-04-22', 'pool', 'trest description poolllllllll', '4', 4, 4, 2, 0, 0),
+(17, 'shark', '2022-04-19', '2022-05-15', 'YMCA Onalaska Pool', '', '5', 48, 96, 8, 0, 1),
+(18, '0', '2022-04-20', '2022-04-26', 'jjj', 'jjj', '0', 55, 110, 65, 0, 1);
 
 -- --------------------------------------------------------
 
