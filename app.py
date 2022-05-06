@@ -632,6 +632,7 @@ def createDayAndTime( x, request ):
 def updateProgList():
      # collect user information & all their associated accounts
     for account in session['accounts']:
+        result = []
         cursor = connection.cursor(prepared=True)
         query = ''' SELECT accounts.account_id, programs.program_id, name_program, start_date, end_date, day_of_week, start_time, end_time
                 FROM account_in_program
