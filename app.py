@@ -484,7 +484,7 @@ def create_user_account():
 
         return render_template("create_account.html", child = child)
 
-@app.route('/user_search')
+@app.route('/user_search', methods= ['POST', 'GET'])
 def user_search():
     if session["user_id"] == "employee" :
         result = "empty"
