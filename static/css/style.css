@@ -57,6 +57,10 @@ nav ul li a{
     margin: -2em;
 }
 
+.highlight:hover {
+    color: #FFFFFF;
+}
+
 button{
     background:white;
     color: black;
@@ -333,7 +337,6 @@ th,
 td {
   padding: 12px 15px;
   word-wrap: break-word;
-  max-width: 150px;
 }
 
 th {

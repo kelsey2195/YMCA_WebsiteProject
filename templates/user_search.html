@@ -42,23 +42,18 @@
             }
         </script>
 
-        <table id="program-table">
+        <table id="user-table">
 
             <!-- Table Header -->
             <thead>
                 <tr>
-                    <th>Program</th>
-                    <th>Start Date</th>
-                    <th>End Date</th>
-                    <th>Description</th>
-                    <th>Price</th>
-                    <th>Available Slots</th>
+                    <!-- <th>header</th> -->
                 </tr>
             </thead>
 
             <!-- uses jinja to include html file created by the create_table(result) python method -->
             <!-- table.html is a table including data of all programs {will be updated for advanced queries} -->
-            <tbody> {% include 'data/table.html' %} </tbody>
+            <tbody> {% include 'data/usertable.html' %} </tbody>
         </table>
     </div>
 
@@ -70,7 +65,7 @@
             // returning the input from the searchbar
             input = document.getElementById("searchbar");
             filter = input.value.toUpperCase();
-            table = document.getElementById("program-table");
+            table = document.getElementById("user-table");
             tr = table.getElementsByTagName("tr");
 
             for(i = 0; i < tr.length; i++) {

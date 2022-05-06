@@ -20,7 +20,10 @@
             </a>
              
                     <ul>
-                        <li id = "highlight"> <a href="/program_search"> Program Search </a></li> 
+                        {% if session["username"] and session["user_id"] == "employee" %}
+                            <li><a href="/user_search" class="highlight">User Search</a></li>
+                        {% endif %}
+                        <li> <a href="/program_search" class="highlight">Program Search</a></li> 
 
                 {% if session["username"] %} 
                 

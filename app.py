@@ -1,7 +1,7 @@
 #from pydoc import render_doc
 from flask import Flask, render_template, redirect, request, session
 import mysql.connector
-import re, os
+import re, os, json
 
 email_format = re.compile(r'([A-Za-z0-9]+[.-_])*[A-Za-z0-9]+@[A-Za-z0-9-]+(\.[A-Z|a-z]{2,})+')
 
@@ -449,6 +449,24 @@ def create_user_account():
 
         return render_template("create_account.html", child = child)
 
+@app.route('/user_search')
+def user_search():
+    if session["user_id"] == "employee" :
+        result = "empty"
+        cursor = connection.cursor(prepared=True)
+        query = ''' SELECT accounts.account_id, account_first_name, account_last_name, name_program, start_date, end_date, description 
+                    FROM (( account_in_program 
+                        INNER JOIN accounts  ON account_in_program.account_id = accounts.account_id )
+                        INNER JOIN programs ON account_in_program.program_id = programs.program_id )'''
+        cursor.execute( query )
+        result = cursor.fetchall()
+        cursor.close()
+        print( result )
+        create_user_table(result)
+
+        return render_template("user_search.html")
+
+
 @app.route('/program_search')
 def program_search():
     # Obtains the correct price for the user depending on if they are a member or not
@@ -467,26 +485,18 @@ def program_search():
     cursor.execute(query)
     result = cursor.fetchall()
     cursor.close()
+    print(result)
     create_table(result)
-
-    if session["user_id"] == "employee" :
-        result = "empty"
-        cursor = connection.cursor(prepared=True)
-        query = ''' SELECT accounts.account_id, account_first_name, account_last_name, name_program, start_date, end_date, description 
-                    FROM (( account_in_program 
-                        INNER JOIN accounts  ON account_in_program.account_id = accounts.account_id )
-                        INNER JOIN programs ON account_in_program.program_id = programs.program_id )'''
-        cursor.execute( query )
-        result = cursor.fetchall()
-        cursor.close()
-        print( result )
-        #create_user_table(result)
 
     return render_template("program_search.html")
     
 
 @app.route('/cancel_program', methods=['POST'])
 def cancel_program():
+    output = request.get_json()
+    result = json.loads(output)
+
+    class_info = result['']
 
     return render_template("program_search.html")
 
@@ -506,11 +516,11 @@ def create_table(result):
     #Placing data from result into table.html
     for i in range(len(result)):
         table += '''  <tr  id="{}">\n'''.format(result[i][7])
-        for column in range(5):
+        for column in range(len(result[i])):
             try:
-                table += '''    <td>{1}</td>\n'''.format(result[i][column].decode())
+                table += '''    <td>{}</td>\n'''.format(result[i][column].decode())
             except(AttributeError):
-                table += "    <td>{0}</td>\n".format(result[i][column])
+                table += "    <td>{}</td>\n".format(result[i][column])
         table += "    <td>{0}/{1}</td>\n".format(result[i][5]-result[i][6], result[i][5])
         table += " </tr>\n"
 
