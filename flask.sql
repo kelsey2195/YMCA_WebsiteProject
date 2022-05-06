@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 06, 2022 at 11:51 AM
+-- Generation Time: May 06, 2022 at 01:55 PM
 -- Server version: 10.4.22-MariaDB
 -- PHP Version: 8.0.13
 
@@ -41,10 +41,9 @@ CREATE TABLE `accounts` (
 --
 
 INSERT INTO `accounts` (`account_id`, `associated_user`, `account_first_name`, `account_last_name`, `account_birth_day`, `active`) VALUES
-(1000000, 'test@abc.com', 'Micheal', 'Ross', '2002-04-01', 1),
-(1000002, 'NEWACC@ill.com', 'Prop', 'Bear', '2022-04-01', 1),
-(1000003, 'test@abc.com', 'TestName', 'TestSurname', '2000-01-01', 1),
-(1000004, 'example@test.com', 'firstName', 'lastName', '2022-04-07', 1);
+(1000005, 'doe@anonmail.com', 'Jane', 'Doe', '1999-01-06', 1),
+(1000007, 'ander@gmail.com', 'Luke', 'Anderson', '2010-02-18', 1),
+(1000008, 'ander@gmail.com', 'Aini', 'Anderson', '2012-05-23', 1);
 
 -- --------------------------------------------------------
 
@@ -62,11 +61,11 @@ CREATE TABLE `account_in_program` (
 --
 
 INSERT INTO `account_in_program` (`account_id`, `program_id`) VALUES
-(1000000, 18),
-(1000000, 17),
-(1000002, 18),
-(1000002, 17),
-(1000002, 16);
+(1000005, 19),
+(1000005, 22),
+(1000007, 20),
+(1000007, 21),
+(1000008, 22);
 
 -- --------------------------------------------------------
 
@@ -117,9 +116,10 @@ CREATE TABLE `programs` (
 --
 
 INSERT INTO `programs` (`program_id`, `name_program`, `start_date`, `end_date`, `location`, `description`, `min_swim_level`, `member_price`, `nonmember_price`, `num_total_people`, `num_signed_up`, `active`) VALUES
-(16, 'pike', '2022-04-19', '2022-04-22', 'pool', 'trest description poolllllllll', '4', 4, 4, 2, 1, 0),
-(17, 'shark', '2022-04-19', '2022-05-15', 'YMCA Onalaska Pool', '', '5', 48, 96, 8, 1, 1),
-(18, 'test prog name', '2022-04-20', '2022-04-26', 'jjj', 'jjj', '0', 55, 110, 65, 1, 1);
+(19, 'Shark', '2022-05-22', '2022-06-26', 'YMCA Onalaska pool', 'Participants must have passed pike level before.', 'Pike', 48, 96, 8, 0, 1),
+(20, 'Shark', '2022-05-22', '2022-06-26', 'YMCA Onalaska pool', 'Participants must have passed pike level before.', 'Pike', 65, 130, 8, 0, 1),
+(21, 'Log Rolling', '2022-05-22', '2022-05-26', 'YMCA Onalaska pool', 'Log Rolling', 'N/A', 100, 200, 1, 0, 1),
+(22, 'Log Rolling', '2022-05-22', '2022-06-26', 'YMCA Onalaska pool', 'Log Rolling', 'N/A', 100, 200, 1, 0, 1);
 
 -- --------------------------------------------------------
 
@@ -139,16 +139,11 @@ CREATE TABLE `program_schedule` (
 --
 
 INSERT INTO `program_schedule` (`program_id`, `day_of_week`, `start_time`, `end_time`) VALUES
-(16, 2, '08:00:00', '12:00:00'),
-(16, 5, '08:00:00', '12:00:00'),
-(16, 1, '11:00:00', '16:00:00'),
-(16, 4, '11:00:00', '16:00:00'),
-(16, 6, '11:00:00', '16:00:00'),
-(16, 0, '05:00:00', '06:00:00'),
-(16, 3, '05:00:00', '06:00:00'),
-(17, 4, '17:00:00', '17:40:00'),
-(18, 2, '08:00:00', '09:00:00'),
-(18, 4, '08:00:00', '09:00:00');
+(19, 0, '17:00:00', '17:40:00'),
+(20, 1, '18:00:00', '18:40:00'),
+(20, 3, '18:00:00', '18:40:00'),
+(21, 0, '17:00:00', '17:40:00'),
+(22, 1, '18:00:00', '18:40:00');
 
 -- --------------------------------------------------------
 
@@ -169,11 +164,8 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`email`, `mem_display_name`, `password`, `member_or_not`, `active`) VALUES
-('demo@email.con', 'demo2', 'password', 1, 1),
-('email@email.com', 'newUser', 'pass', 0, 1),
-('example@test.com', 'test', 'test', 0, 1),
-('NEWACC@ill.com', 'newAccU', 'pass', 1, 1),
-('test@abc.com', 'testAcc', 'password', 1, 1);
+('ander@gmail.com', 'Andersons', 'password', 1, 1),
+('doe@anonmail.com', 'DoeDoe', 'password', 1, 1);
 
 --
 -- Indexes for dumped tables
@@ -211,7 +203,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `accounts`
 --
 ALTER TABLE `accounts`
-  MODIFY `account_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1000005;
+  MODIFY `account_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1000009;
 
 --
 -- AUTO_INCREMENT for table `employees`
@@ -223,7 +215,7 @@ ALTER TABLE `employees`
 -- AUTO_INCREMENT for table `programs`
 --
 ALTER TABLE `programs`
-  MODIFY `program_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `program_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

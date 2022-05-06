@@ -235,8 +235,8 @@ def register_user():
 
                 # now enter the information into database
                 cursor = connection.cursor(prepared=True)
-                query = ''' INSERT INTO users VALUES(?,?,?,?)'''
-                cursor.execute(query, ( email, username, password, membership ))
+                query = ''' INSERT INTO users VALUES(?,?,?,?,?)'''
+                cursor.execute(query, ( email, username, password, membership, 1 ))
                 connection.commit()
                 cursor.close()
             
@@ -457,7 +457,7 @@ def create_user_account():
                             WHERE associated_user = ?'''
                 cursor.execute(query, ( session["user_id"], ))
                 result = cursor.fetchall()
-                accId, email, first, last, birth = zip(*result)
+                accId, email, first, last, birth, active = zip(*result)
                 result = list(zip( accId, first, last ))
                 # TODO eventually this will have to be formated for output in a nice looking way
                 session['accounts'] = result
