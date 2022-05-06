@@ -46,7 +46,7 @@ def login():
                 # Sets session to contain employee information
                 if result:
                     session["user_id"] = "employee"
-                    session["username"] = result[0][1].decode() + result[0][2].decode()
+                    session["username"] = result[0][1] + result[0][2]
                     session["manager_or_not"] = result[0][4]
                     cursor.close()
                     return redirect('/staff_profile')
@@ -240,16 +240,6 @@ def create_program():
     if( session['user_id'] != "employee" or session["manager_or_not"] != 1 ):
         return redirect("/")
     else:
-        cursor = connection.cursor(prepared=True)
-        query = ''' SELECT *
-                    FROM swim_levels'''
-        cursor.execute(query)
-        result = cursor.fetchall()
-        cursor.close()
-        temp, swimlevels = zip(*result)
-        prognamelist = swimlevels[2:]
-        swimlevels = [level.lower() for level in swimlevels] 
-
         dayAndTime = [ (["","","","","","",""],"","",True) ]
         numDayAndTime = 1
 
@@ -290,7 +280,7 @@ def create_program():
                 # captures the remove and add post
                 if not request.form.get('create'):
                     return render_template("create_program.html", 
-                        swimlevels = swimlevels, progname = progname, prognamelist =prognamelist, 
+                        progname = progname,
                         startDate=startDate, endDate=endDate,
                         dayAndTime=dayAndTime, numDayAndTime=numDayAndTime,
                         location=location, description=description, maxParticipants=maxParticipants,
@@ -333,7 +323,7 @@ def create_program():
                         max_error = errorDict.get("max_error",""),
                         price_error = errorDict.get("price_error",""),
                         level_error = errorDict.get("level_error",""),
-                        swimlevels = swimlevels, progname = progname, prognamelist =prognamelist, 
+                        progname = progname,
                         startDate=startDate, endDate=endDate,
                         dayAndTime=dayAndTime, numDayAndTime=numDayAndTime,
                         location=location, description=description, maxParticipants=maxParticipants,
@@ -370,7 +360,7 @@ def create_program():
 
         # Renders inital template
         return render_template("create_program.html", 
-            swimlevels = swimlevels, prognamelist =prognamelist, dayAndTime=dayAndTime, numDayAndTime=numDayAndTime )
+            dayAndTime=dayAndTime, numDayAndTime=numDayAndTime )
 
 # Create account associated with user
 # used initially when creating a new user and when creating a new family account

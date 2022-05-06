@@ -14,15 +14,7 @@
             {{ name_error }} 
         </p>
     {% endif %}
-    <!-- Ignore error with "{{swimlevels|tojson}}", not an actual error -->
-    <input placeholder="Program Name" type="text" name="program" list="progname" id="programName" value="{{ progname }}"
-                        autocomplete="off"
-                        onchange='updateSwimLevel( this, document.getElementById("MinSwimLevel"), {{swimlevels|tojson}} )'/>
-    <datalist id="progname">
-        {% for name in prognamelist %}
-            <option value= "{{ name }}" > {{ name }} </option>
-        {% endfor %}
-    </datalist>
+    <input placeholder="Program Name" type="text" name="program" list="progname" id="programName" value="{{ progname }}" autocomplete="off"/>
 
     <br> 
     <br> 
@@ -68,7 +60,7 @@
         <input type="checkbox" value="0" id="saturday{{ loop.index }}" name="saturday{{ loop.index }}" {{ weekday[6] }}>
         <label for="saturday{{ loop.index }}">saturday</label>
         <input type="time" name="startTime{{ loop.index }}" id="startTime{{ loop.index }}" value="{{startTime}}"
-                onchange='whenChangeStartTime( this, document.getElementById("startTime{{ loop.index }}") )'
+                onchange='whenChangeStartTime( this, document.getElementById("endTime{{ loop.index }}") )'
                 onclick='setTime( this )'>
         <input type="time" name="endTime{{ loop.index }}" id="endTime{{ loop.index }}" value="{{endTime}}"
                 onchange='whenChangeEndTime( document.getElementById("startTime{{ loop.index }}"), this )'
@@ -136,13 +128,7 @@
             {{ level_error }} 
         </p>
     {% endif %}
-    <input placeholder="Min Swim Level" type="text" name="minswimlevel" list="swimlevel" id="MinSwimLevel" value="{{ minswimlevel }}"/>
-    <datalist id="swimlevel">
-        {% for level in swimlevels %}
-            <option value= "{{ level }}" > {{ level }} </option>
-        {% endfor %}
-    </datalist>
-
+    <input placeholder="Min Swim Level" type="text" name="minswimlevel" list="swimlevel" id="MinSwimLevel" value="{{ minswimlevel }}" autocomplete="off"/>
     <br> 
     <br> 
 
