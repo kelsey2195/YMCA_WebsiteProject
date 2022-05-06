@@ -98,6 +98,8 @@ def login():
                     session["member_or_not"] = result[0][3]
                     cursor.close()
 
+
+
                     return redirect("/user_profile")
                 else:
                     # invalid user
@@ -190,6 +192,8 @@ def register_user():
                 else:
                     membership = 0
 
+                
+
                 # now enter the information into database
                 cursor = connection.cursor(prepared=True)
                 query = ''' INSERT INTO users VALUES(?,?,?,?)'''
@@ -226,8 +230,7 @@ def user_profile():
         # collect user information & all their associated accounts
         cursor = connection.cursor(prepared=True)
         query = ''' SELECT *
-                    FROM accounts LEFT OUTER JOIN swim_levels 
-                    ON accounts.account_level = swim_levels.swim_level_id 
+                    FROM accounts 
                     WHERE associated_user = ?'''
         cursor.execute(query, ( session["user_id"], ))
         result = cursor.fetchall()
@@ -607,5 +610,6 @@ def createDayAndTime( x, request ):
 def dayTimeInsertTuple( x, programId ):
     return [ (programId, i, x[1], x[2]) for i,day in enumerate(x[0]) if day == 'checked' ]
 
+    
 if __name__ == "__main__":
     app.run(debug=True)
