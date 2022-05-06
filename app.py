@@ -102,6 +102,8 @@ def login():
         
                     session["member_or_not"] = result[0][3]
                     #cursor.close()
+
+                    
                 
 
                     # collect user information & all their associated accounts
@@ -250,21 +252,7 @@ def register_user():
         
         return render_template("register.html", membership = membership)
 
-# user profile
-@app.route('/user_profile') 
-def user_profile():
-    # checks to make sure that the user isn't an employee
-    if( 'user_id' in session ): # first checks if user_id is in session so you don't get a null error
-        # checks if employee
-        if( session['user_id'] == "employee" ):
-            return redirect("/staff_profile")
 
-    # checks if the user is logged in
-    if( 'username' not in session ):
-        return redirect('/login')  
-    else:
-        
-        return render_template("user_profile.html", accounts = session['accounts'], num_accounts = len( session['accounts'] ) )
 
 # Will eventually have the ability to create a program here
 # only manager's should be able to create programs
@@ -617,6 +605,56 @@ def activate_all():
     return redirect('/program_search')
 
 
+# user profile
+@app.route('/user_profile') 
+def user_profile():
+    # checks to make sure that the user isn't an employee
+    if( 'user_id' in session ): # first checks if user_id is in session so you don't get a null error
+        # checks if employee
+        if( session['user_id'] == "employee" ):
+            return redirect("/staff_profile")
+
+    # checks if the user is logged in
+    if( 'username' not in session ):
+        return redirect('/login')  
+    else:
+
+        cursor = connection.cursor(prepared=True)
+        query = ''' SELECT name_program, start_date, end_date, day 
+                        FROM  '''
+        user_program_table(result)
+        return render_template("user_profile.html", accounts = session['accounts'], num_accounts = len( session['accounts'] ) )
+
+
+
+
+
+def user_program_table(result):
+    file_path = 'templates/data/prog_table.html'
+
+    if os.path.exists(file_path):
+        os.remove(file_path)
+
+    file = open(file_path, "w")
+    cal = ""
+
+    for i in range(len(result)):
+        cal += '''  <div class="event_item">\n'''
+
+        if type(result[i][1]) == bytearray:
+            name = result[i][1].decode()
+            location = result[i][4]
+            description = result[i][5]
+        else:
+            name = result[i][1]
+
+
+        cal += '''  </div>\n'''
+
+    file.writelines(cal)
+    file.close()
+
+
 #Creates html file of table of available programs
 #File placed in data folder as table.html
 def create_table(result):
@@ -666,6 +704,13 @@ def create_user_table(result):
 
     file.writelines(table)
     file.close()
+
+
+
+
+
+
+
 
 def createDayAndTime( x, request ):
     dayList = []

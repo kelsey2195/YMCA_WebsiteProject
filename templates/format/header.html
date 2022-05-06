@@ -35,13 +35,13 @@
                         <!-- TODO maybe make a drop down for opetions as a user like setting and that sort of thing-->
                         <li>
                             <a href="/user_profile">
-                                <button>Account</button>
+                                <button class="header-btn">Account</button>
                             </a>
                         </li>
                     {% else %}
                     <li>
                         <a href="/staff_profile">
-                            <button>Actions</button>
+                            <button class="header-btn">Actions</button>
                         </a>
                     </li>
                     {% endif %}
@@ -50,7 +50,7 @@
                             <button>User Manual</button>
                         </a> 
                         <a href="/logout">
-                            <button>logout</button>
+                            <button class="header-btn">logout</button>
                         </a> 
                     </li> 
 
@@ -58,7 +58,7 @@
                 <li>
                     {% if not session["logging_in"] %}
                        <a href="/login">
-                            <button type="button">login</button>
+                            <button type="button" class="header-btn">login</button>
                         </a>
                 </li>
                     

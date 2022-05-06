@@ -11,7 +11,7 @@
             {% if session["member_or_not"] == 1 %}
                 <h2> Accounts </h2>
                 <!-- TODO Eventually will be a button to create more accounts for when it's a member user -->
-                {% for accId, first, last in accounts %}
+                {% for accId, email, first, last, birthday in accounts %}
                     <div class="card">
                         <br>
                         <p>YMCA id: {{ accId }}</p>
@@ -28,13 +28,27 @@
 
         </div>
 
-        <div class="column calender" style="background-color:#bbb;">
-            <h2>Calender</h2>
-            <!-- 
-            will eventually have a calender here, I am looking at this tutorial for some thing like it? 
-            https://www.liquidlight.co.uk/blog/create-an-event-schedule-with-html-table/ -->
-        </div>
+        <div class="cal-container">
+            
+            <div class="calendar dark">
 
+                <div class="calendar_header">
+                    <h1 class = "header_title">Welcome Back</h1>
+                    <p class="header_copy"> Upcoming Programs</p>
+                </div>
+
+                <div class="calendar_events">
+                    <p class="ce_title"></p>
+                    <div class="event_item">
+                        <div class="ei_Dot dot_active"></div>
+                        <div class="ei_Title">10:30 am</div>
+                        <div class="ei_Copy">Monday briefing with the team</div>
+                    </div>
+                    {% include 'data/prog_table.html' %}
+                </div>
+            </div>
+
+        </div>
     </div>
 
 {% else %}
