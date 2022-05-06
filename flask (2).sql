@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 06, 2022 at 01:20 AM
+-- Generation Time: May 06, 2022 at 04:44 AM
 -- Server version: 10.4.22-MariaDB
 -- PHP Version: 8.0.13
 
@@ -92,20 +92,22 @@ CREATE TABLE `programs` (
   `end_date` date NOT NULL,
   `location` varchar(255) NOT NULL,
   `description` varchar(9999) NOT NULL,
-  `min_swim_level` varchar(255) DEFAULT NULL,
+  `min_swim_level` int(11) DEFAULT NULL,
   `member_price` int(11) NOT NULL,
   `nonmember_price` int(11) NOT NULL,
   `num_total_people` int(11) NOT NULL,
-  `num_signed_up` int(11) NOT NULL
+  `num_signed_up` int(11) NOT NULL,
+  `active` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `programs`
 --
 
-INSERT INTO `programs` (`program_id`, `name_program`, `start_date`, `end_date`, `location`, `description`, `min_swim_level`, `member_price`, `nonmember_price`, `num_total_people`, `num_signed_up`) VALUES
-(16, 'pike', '2022-04-19', '2022-04-22', 'pool', 'trest description poolllllllll', '4', 4, 4, 2, 0),
-(17, 'shark', '2022-04-19', '2022-05-15', 'YMCA Onalaska Pool', '', '5', 48, 96, 8, 0);
+INSERT INTO `programs` (`program_id`, `name_program`, `start_date`, `end_date`, `location`, `description`, `min_swim_level`, `member_price`, `nonmember_price`, `num_total_people`, `num_signed_up`, `active`) VALUES
+(16, 'pike', '2022-04-19', '2022-04-22', 'pool', 'trest description poolllllllll', 4, 4, 4, 2, 0, 0),
+(17, 'shark', '2022-04-19', '2022-05-15', 'YMCA Onalaska Pool', '', 5, 48, 96, 8, 0, 1),
+(18, '0', '2022-04-20', '2022-04-26', 'jjj', 'jjj', 0, 55, 110, 65, 0, 1);
 
 -- --------------------------------------------------------
 
@@ -132,7 +134,9 @@ INSERT INTO `program_schedule` (`program_id`, `day_of_week`, `start_time`, `end_
 (16, 6, '11:00:00', '16:00:00'),
 (16, 0, '05:00:00', '06:00:00'),
 (16, 3, '05:00:00', '06:00:00'),
-(17, 4, '17:00:00', '17:40:00');
+(17, 4, '17:00:00', '17:40:00'),
+(18, 2, '08:00:00', '09:00:00'),
+(18, 4, '08:00:00', '09:00:00');
 
 -- --------------------------------------------------------
 
@@ -206,7 +210,7 @@ ALTER TABLE `employees`
 -- AUTO_INCREMENT for table `programs`
 --
 ALTER TABLE `programs`
-  MODIFY `program_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `program_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
