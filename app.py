@@ -621,8 +621,10 @@ def user_profile():
         return redirect('/login')  
     else:
         cursor = connection.cursor(prepared=True)
-        query = ''' SELECT name_program, start_date, end_date, description, active
-                        FROM users NATURAL JOIN accounts NATURAL JOIN account_in_program NATURAL JOIN programs
+        query = '''SELECT name_program, start_date, end_date, description, programs.active
+    FROM users INNER JOIN accounts on users.email = accounts.associated_user
+    INNER JOIN account_in_program on account_in_program.account_id = accounts.account_id
+    inner join programs on account_in_program.program_id = programs.program_id
                         WHERE users.email = '{}'; '''.format(session["user_id"])
         cursor.execute(query)
         result = cursor.fetchall()

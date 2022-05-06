@@ -61,21 +61,22 @@
                 var table = document.getElementById("program-table");
                 var rows = table.getElementsByTagName("tr");
                 for (i = 0; i < rows.length; i++) {
-                    var currentRow = rows[i];
+                    var currentRow = table.rows[i];
                     if(i > 0)
                         rows[i].style.cursor = "pointer";
+                    var id = currentRow.id;
                     var createClickHandler = function(row) {
-                        var id = currentRow.id;
                         return function() {
                             var cell = row.getElementsByTagName("td")[0];
                             var name = cell.innerHTML;
                             const s = JSON.stringify(id);
+                            console.log(s);
                             if(confirm("Do you really want to cancel " + name)) {
                                 $.ajax({
                                     url:"/cancel_program",
                                     type:"POST",
                                     contentType: "application/json",
-                                    data: s
+                                    data: JSON.stringify(s)
                                 });
                             }
                         };
