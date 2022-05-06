@@ -17,6 +17,10 @@ def home():
     # set session variable sback to false to show various buttons
     return render_template('index.html')
 
+@app.route('/usermanual')
+def usermanual():
+    return render_template('usermanual.html')
+
 @app.route('/staff_profile')
 def staff_profile():
     if( session["user_id"] != 'employee' ):
@@ -45,7 +49,7 @@ def login():
                 result = cursor.fetchall()
                 cursor.close()
                 # Sets session to contain employee information
-                print("Test1")
+
                 if result:
                     session["user_id"] = "employee"
 
@@ -57,7 +61,7 @@ def login():
                     
                     session["manager_or_not"] = result[0][4]
                     return redirect('/staff_profile')
-                print("Test2")
+
 
                 # If it's not an employee login apply rules to check if it's right format ect.
                 # check if it's email in the right format
@@ -107,24 +111,34 @@ def login():
                     query = ''' SELECT *
                                     FROM accounts 
                                     WHERE associated_user = '{}'; '''.format(session["user_id"])
-                    print(session["user_id"])
                     cursor.execute(query)
                     result = cursor.fetchall()
                     cursor.close()  
                
-
-               
                     if result:
-                        accId, email, first, last, birth = zip(*result)
-                        result = list(zip( accId, first, last ))
-                        print(result)
-
+                        acts = []
+                        for i in range(len(result)):
+                            if(type(result[i][1]) == bytearray):
+                                account_info = {
+                                    "account_id": result[i][0],
+                                    "email": result[i][1].decode(),
+                                    "first_name": result[i][2].decode(),
+                                    "last_name": result[i][3].decode(),
+                                    "birthday": result[i][4]
+                                }
+                            else:
+                                account_info = {
+                                    "account_id": result[i][0],
+                                    "email": result[i][1],
+                                    "first_name": result[i][2],
+                                    "last_name": result[i][3],
+                                    "birthday": result[i][4]
+                                }
+                            acts.append(account_info)
+                            
                         # TODO eventually this will have to be formated for output in a nice looking way
-                        session['accounts'] = result
-                        print(result)
-                        #updateProgList()
-
-
+                        print(acts)
+                        session['accounts'] = acts
                     # finish user profile before redirecting to it
                     # return redirect("/user_profile")
                     return redirect('/')
