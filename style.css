@@ -1,0 +1,485 @@
+@import url('https://fonts.googleapis.com/css2?family=Lobster&family=Palette+Mosaic&display=swap');
+* {
+    margin: 0;
+    padding: 0;
+    font-family: 'Antonio', sans-serif;
+}
+
+.container {
+    flex: 1;
+    height: 100vh;
+    width: 100%;
+    background-image: url('/static/images/bg.png');
+    background-position: center;
+    background-size: cover;
+    padding-right: 5%;
+    padding-left: 3%;
+    box-sizing: border-box;
+    position: relative;
+}
+
+.navbar {
+    width: 100%;
+    height: 15vh;
+    margin: auto;
+    display: flex;
+    align-items: center;
+}
+
+.logo {
+    font-size: 50px;
+    color: #eda134;
+    margin-top: 5px;
+    font-family: 'Palette Mosaic', cursive;
+    text-transform: uppercase;
+    cursor: pointer;
+}
+
+nav {
+    flex: 1;
+    padding-left: 660px;
+}
+
+nav ul li {
+    display: inline-block;
+    list-style: none;
+    margin: 0 15px;
+}
+
+nav ul li a {
+    text-decoration: none;
+    color: #fff;
+    text-transform: uppercase;
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.content {
+    position: relative;
+}
+
+h2 {
+    font-family: 'Lobster', cursive;
+    text-transform: uppercase;
+    font-weight: 800;
+    margin-top: 100px;
+    letter-spacing: .1em;
+    font-size: 70px;
+    color: #1b1b1b;
+}
+
+h2 .style {
+    color: #eda134;
+    font-size: 80px;
+    font-weight: 800;
+    font-family: 'Lobster', cursive;
+}
+
+.imagee {
+    position: absolute;
+    width: auto;
+    bottom: 0;
+    height: 60%;
+    margin-left: 410px;
+    margin-bottom: 120px;
+    background-color: transparent;
+}
+
+.highlight:hover {
+    color: #FFFFFF;
+}
+
+button {
+    background: white;
+    color: black;
+    height: 30px;
+    width: 60px;
+    border-radius: 20px;
+    border: 0;
+    outline: 0;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: black;
+    color: white;
+}
+
+div.starttext {
+    padding-right: 280px;
+    position: relative;
+    bottom: 10;
+}
+
+.starttext h1 {
+    font-size: 100px;
+    font-weight: 400;
+    text-align: right;
+}
+
+.starttext {
+    position: absolute;
+    top: 10;
+    left: 58%;
+    width: 200px;
+    margin-top: 15%;
+}
+
+.loginbox {
+    width: 320px;
+    height: 420px;
+    background: #000;
+    color: #fff;
+    top: 50%;
+    left: 50%;
+    position: absolute;
+    transform: translate(-50%, -50%);
+    box-sizing: border-box;
+    padding: 70px 30px;
+    border-radius: 25px;
+    box-shadow: 2px 2px rgba(0, 0, 0, 0.5);
+    opacity: 0.8;
+}
+
+.loginbox h1 {
+    margin: 0;
+    padding: 0 0 20px;
+    text-align: center;
+    font-size: 22px;
+}
+
+.loginbox p {
+    margin: 0;
+    padding: 0;
+    font-weight: bold;
+}
+
+.loginbox input {
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.loginbox input[type="text"],
+input[type="password"] {
+    border: none;
+    border-bottom: 1px solid #fff;
+    background: transparent;
+    outline: none;
+    height: 40px;
+    color: #fff;
+    font-size: 16px;
+}
+
+.loginbox input[type="submit"] {
+    border: none;
+    outline: none;
+    height: 40px;
+    background: lightskyblue;
+    color: #fff;
+    font-size: 18px;
+    border-radius: 20px;
+}
+
+.loginbox input[type="submit"]:hover {
+    cursor: pointer;
+    background: white;
+    color: #000;
+}
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    min-width: 100px;
+    padding: 12px 16px;
+    z-index: 1;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+    cursor: pointer;
+}
+
+.newuser {
+    border: none;
+    outline: none;
+    height: 40px;
+    background: white;
+    color: #fff;
+    font-size: 18px;
+    border-radius: 20px;
+}
+
+.register {
+    width: 320px;
+    height: 480px;
+    background: #000;
+    color: #fff;
+    top: 50%;
+    left: 50%;
+    position: absolute;
+    transform: translate(-50%, -50%);
+    box-sizing: border-box;
+    padding: 38px 30px;
+    border-radius: 25px;
+    box-shadow: 2px 2px rgba(0, 0, 0, 0.5);
+    opacity: 0.8;
+}
+
+h1 .register {
+    margin: 0;
+    padding: 0 0 20px;
+    text-align: center;
+    font-size: 22px;
+}
+
+.register p {
+    margin: 0;
+    padding: 0;
+    font-weight: bold;
+}
+
+.register input {
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.register input[type="text"],
+input[type="password"] {
+    border: none;
+    border-bottom: 1px solid #fff;
+    background: transparent;
+    outline: none;
+    height: 40px;
+    color: #fff;
+    font-size: 16px;
+}
+
+.register input[type="submit"] {
+    border: none;
+    outline: none;
+    height: 40px;
+    background: lightskyblue;
+    color: #fff;
+    font-size: 18px;
+    border-radius: 20px;
+}
+
+.register input[type="submit"]:hover {
+    cursor: pointer;
+    background: black;
+    color: white;
+}
+
+footer {
+    padding: 15px;
+    background: lightskyblue;
+    color: black;
+}
+
+
+/* Styling for user profile*/
+
+
+/* Create three unequal columns that floats next to each other */
+
+* {
+    box-sizing: border-box;
+}
+
+.column {
+    float: left;
+    padding: 20px;
+}
+
+.accounts {
+    width: 25%;
+}
+
+.calender {
+    width: 75%;
+}
+
+
+/* Clear floats after the columns */
+
+.row:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+
+/* Cards for account user profile */
+
+.card {
+    /* Add shadows to create the "card" effect */
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    transition: 0.3s;
+}
+
+
+/* On mouse-over, add a deeper shadow */
+
+.card:hover {
+    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+}
+
+
+/* Add some padding inside the card container */
+
+
+/* ------- PROGRAM SEARCH TABLE ------- */
+
+#searchbar {
+    background-position: 10px 12px;
+    /* Position the search icon */
+    background-repeat: no-repeat;
+    /* Do not repeat the icon image */
+    width: 40%;
+    /* Full-width */
+    font-size: 16px;
+    /* Increase font-size */
+    padding: 12px 20px 12px 40px;
+    /* Add some padding */
+    margin-bottom: 12px;
+    /* Add some space below the input */
+    color: grey;
+    border: none;
+    background-color: #000;
+    opacity: 90%;
+}
+
+#accountsearchbar {
+    background-position: 10px 12px;
+    /* Position the search icon */
+    background-repeat: no-repeat;
+    /* Do not repeat the icon image */
+    width: 40%;
+    /* Full-width */
+    font-size: 16px;
+    /* Increase font-size */
+    padding: 12px 20px 12px 40px;
+    /* Add some padding */
+    margin-bottom: 12px;
+    /* Add some space below the input */
+    color: grey;
+    border: none;
+    background-color: #000;
+    opacity: 90%;
+}
+
+.tableFixHead {
+    overflow-y: auto;
+    /* Makes the table scrollable */
+    border-collapse: collapse;
+    margin: 25px 0;
+    font-size: 0.9em;
+    font-family: sans-serif;
+    margin-left: 150px;
+    text-align: left;
+    height: 50%;
+    width: 80%;
+}
+
+.tableFixHead thead th {
+    position: sticky;
+    top: 0;
+    background-color: #009879;
+    color: #ffffff;
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+th,
+td {
+    padding: 12px 15px;
+    word-wrap: break-word;
+}
+
+th {
+    background: #eee;
+}
+
+td:nth-child(5):before {
+    content: '$';
+}
+
+.tableFixHead tbody tr {
+    border-bottom: thin solid #dddddd;
+    background-color: #000;
+    color: #efefef;
+    border-bottom: thin solid #009879;
+    opacity: 80%;
+}
+
+.tableFixHead tbody tr:last-child td:first-child {
+    border-bottom-left-radius: 15px;
+}
+
+.tableFixHead tbody tr:last-of-type {
+    border-bottom: none;
+}
+
+.tableFixHead tbody tr:hover {
+    background-color: #949494;
+    color: #000;
+    /* cursor:pointer; */
+}
+
+.cancel-btn,
+.active-btn,
+.reg-btn {
+    float: right;
+    width: 5%;
+    border-radius: 8px;
+    border-style: none;
+    box-sizing: border-box;
+    color: #FFFFFF;
+    cursor: pointer;
+    font-family: "Haas Grot Text R Web", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 1em;
+    font-weight: 600;
+    height: 40px;
+    text-decoration: none;
+    transition: color 100ms;
+    vertical-align: baseline;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+}
+
+.cancel-btn:hover,
+.active-btn:hover,
+.reg-btn:hover {
+    cursor: pointer;
+}
+
+.cancel-btn,
+.active-btn {
+    background-color: #830019;
+}
+
+.cancel-btn:hover,
+.active-btn:hover {
+    background-color: #690215;
+}
+
+.active-btn {
+    margin-right: 20px;
+    width: 7%;
+}
+
+.reg-btn {
+    background-color: #87cefa;
+}
+
+
+/* ------- PROGRAM SEARCH TABLE ------- */
