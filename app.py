@@ -110,14 +110,8 @@ def login():
                     print(session["user_id"])
                     cursor.execute(query)
                     result = cursor.fetchall()
-<<<<<<< HEAD
-                    cursor.close()
-                    print(result)
-
-=======
                     cursor.close()  
                
->>>>>>> fba3a9cb9347584b606325771ddac6b7901dda78
                     if result:
                         accId, email, first, last, birth = zip(*result)
                         result = list(zip( accId, first, last ))
@@ -126,14 +120,9 @@ def login():
                         # TODO eventually this will have to be formated for output in a nice looking way
                         session['accounts'] = result
                         print(result)
-<<<<<<< HEAD
-                        updateProgList()
-
-=======
                         #updateProgList()
->>>>>>> fba3a9cb9347584b606325771ddac6b7901dda78
 
-            
+                        
                     # finish user profile before redirecting to it
                     # return redirect("/user_profile")
                     return redirect('/')
