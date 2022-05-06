@@ -440,10 +440,6 @@ def create_user_account():
 
 @app.route('/program_search')
 def program_search():
-    # User must be logged in to access
-    if( 'username' not in session ):
-        return redirect('/login')
-
     # Obtains the correct price for the user depending on if they are a member or not
     if not session["user_id"] != "employee" or session["member_or_not"] == 0:
             price_type = "nonmember_price"
