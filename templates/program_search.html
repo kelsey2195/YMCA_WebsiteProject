@@ -9,18 +9,19 @@
         <input type="text" id="searchbar" onkeyup="program_search()" placeholder="Search for programs..">
 
         <button class="cancel-btn" id="cancel-btn" onclick="cancel_on_click()">Cancel</button>
+        <button class="active-btn" id="active-btn" onclick="activate_all()">Activate All</button>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
         <script>
+
+
             function cancel_on_click() {
                 var table = document.getElementById("program-table");
                 var rows = table.getElementsByTagName("tr");
                 for (i = 0; i < rows.length; i++) {
                     var currentRow = table.rows[i];
-
                     if(i > 0)
                         rows[i].style.cursor = "pointer";
                     var id = currentRow.id;
-                        
                     var createClickHandler = function(row) {
                         return function() {
                             var cell = row.getElementsByTagName("td")[0];
@@ -40,6 +41,16 @@
                     currentRow.onclick = createClickHandler(currentRow);
                 }
             }
+
+            function activate_all() {
+                if(confirm("Do you really want to activate all programs?")) {
+                    $.ajax({
+                    url:"/activate_all",
+                    type:"POST"
+                });
+                }
+            }
+
         </script>
 
         <table id="program-table">

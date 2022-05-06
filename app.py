@@ -345,8 +345,8 @@ def create_program():
                     cursor = connection.cursor(prepared=True)
                     query = ''' INSERT INTO programs 
                                     ( `name_program`, `start_date`, `end_date`, `location`, `description`, 
-                                        `min_swim_level`, `member_price`, `nonmember_price`, `num_total_people`, `num_signed_up`)
-                                    VALUES (?,?,?,?,?,?,?,?,?,0); '''
+                                        `min_swim_level`, `member_price`, `nonmember_price`, `num_total_people`, `num_signed_up`, `active`)
+                                    VALUES (?,?,?,?,?,?,?,?,?,0,1); '''
                     cursor.execute(query, ( progname, startDate, endDate, location, description, 
                                         minswimlevel, memberPrice, nonMemberPrice, maxParticipants))
         
@@ -508,10 +508,20 @@ def program_search():
 def cancel_program():
     output = request.get_json()
     result = json.loads(output)
+    program_id = int(result)
+    cursor = connection.cursor(prepared=True)
+    query = ''' UPDATE programs SET active = 0 WHERE program_id = {}; '''.format(program_id)
+    cursor.execute(query)
+    cursor.close()
+    return redirect('/program_search')
 
-    class_info = result['']
-
-    return render_template("program_search.html")
+@app.route('/activate_all', methods=['POST'])
+def activate_all():
+    cursor = connection.cursor(prepared=True)
+    query = ''' UPDATE programs SET active = 1; '''
+    cursor.execute(query)
+    cursor.close()
+    return redirect('/program_search')
 
 
 #Creates html file of table of available programs
