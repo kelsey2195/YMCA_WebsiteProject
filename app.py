@@ -485,12 +485,15 @@ def user_search():
 
 @app.route('/program_search')
 def program_search():
-    # Obtains the correct price for the user depending on if they are a member or not
-    if not session["user_id"] != "employee" or session["member_or_not"] == 0:
-            price_type = "nonmember_price"
-    else:
-            price_type = "member_price"
 
+    if not session["user_id"]:
+        price_type = "nonmember_price"
+    else:
+        # Obtains the correct price for the user depending on if they are a member or not
+        if not session["user_id"] != "employee" or session["member_or_not"] == 0:
+                price_type = "nonmember_price"
+        else:
+                price_type = "member_price"
 
     # Queries the db for all programs
     # TODO: Implement advanced queries
