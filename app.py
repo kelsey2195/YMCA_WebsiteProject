@@ -49,11 +49,6 @@ def login():
                 result = cursor.fetchall()
                 cursor.close()
                 # Sets session to contain employee information
-<<<<<<< HEAD
-                
-=======
-
->>>>>>> 33555b64d0ad8b40d27532fdd67e56c64f8e5e2b
                 if result:
                     session["user_id"] = "employee"
 
@@ -65,11 +60,6 @@ def login():
                     
                     session["manager_or_not"] = result[0][4]
                     return redirect('/staff_profile')
-<<<<<<< HEAD
-              
-=======
-
->>>>>>> 33555b64d0ad8b40d27532fdd67e56c64f8e5e2b
 
                 # If it's not an employee login apply rules to check if it's right format ect.
                 # check if it's email in the right format
@@ -145,16 +135,8 @@ def login():
                             acts.append(account_info)
                             
                         # TODO eventually this will have to be formated for output in a nice looking way
-<<<<<<< HEAD
-                        session['accounts'] = result
-                        #print(result)
-                        #updateProgList()
-
-
-=======
                         print(acts)
                         session['accounts'] = acts
->>>>>>> 33555b64d0ad8b40d27532fdd67e56c64f8e5e2b
                     # finish user profile before redirecting to it
                     # return redirect("/user_profile")
                     return redirect('/')
