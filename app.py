@@ -46,7 +46,13 @@ def login():
                 # Sets session to contain employee information
                 if result:
                     session["user_id"] = "employee"
+                    try:
+                        session["username"] = result[0][1]
+                        session["username"] += result[0][2]
+                    except TypeError as error:
+                        session["username"] = result[0][1].decode() + result[0][2].decode()
                     session["username"] = result[0][1].decode() + result[0][2].decode()
+                    
                     session["manager_or_not"] = result[0][4]
                     cursor.close()
                     return redirect('/staff_profile')
@@ -82,8 +88,13 @@ def login():
                 # if there is a result then that means it's a valid user
                 if result :
                     # fill session info with user information
-                    session["user_id"] = result[0][0]
-                    session["username"] = result[0][1]
+                    try:
+                        session["user_id"] = result[0][0]
+                        session["username"] = result[0][1]
+                    except TypeError as error:
+                        session["user_id"] = result[0][0].decode()
+                        session["username"] = result[0][1].decode()
+
                     session["member_or_not"] = result[0][3]
                     cursor.close()
 
@@ -240,22 +251,6 @@ def create_program():
     if( session['user_id'] != "employee" or session["manager_or_not"] != 1 ):
         return redirect("/")
     else:
-        cursor = connection.cursor(prepared=True)
-        query = ''' SELECT *
-                    FROM swim_levels'''
-        cursor.execute(query)
-        result = cursor.fetchall()
-        cursor.close()
-        # temp, swimlevels = zip(*result)
-        # prognamelist = swimlevels[2:]
-        # swimlevels = [level.lower() for level in swimlevels] 
-        # changes so I can run the code on my machine
-        swimlevels = {}
-        prognamelist = {}
-        for i in range(len(result)):
-            swimlevels[i] = result[i][0]
-            prognamelist[i] = result[i][1].decode()
-
         dayAndTime = [ (["","","","","","",""],"","",True) ]
         numDayAndTime = 1
 
@@ -296,7 +291,7 @@ def create_program():
                 # captures the remove and add post
                 if not request.form.get('create'):
                     return render_template("create_program.html", 
-                        swimlevels = swimlevels, progname = progname, prognamelist =prognamelist, 
+                        progname = progname,
                         startDate=startDate, endDate=endDate,
                         dayAndTime=dayAndTime, numDayAndTime=numDayAndTime,
                         location=location, description=description, maxParticipants=maxParticipants,
@@ -339,7 +334,7 @@ def create_program():
                         max_error = errorDict.get("max_error",""),
                         price_error = errorDict.get("price_error",""),
                         level_error = errorDict.get("level_error",""),
-                        swimlevels = swimlevels, progname = progname, prognamelist =prognamelist, 
+                        progname = progname,
                         startDate=startDate, endDate=endDate,
                         dayAndTime=dayAndTime, numDayAndTime=numDayAndTime,
                         location=location, description=description, maxParticipants=maxParticipants,
@@ -376,7 +371,7 @@ def create_program():
 
         # Renders inital template
         return render_template("create_program.html", 
-            swimlevels = swimlevels, prognamelist =prognamelist, dayAndTime=dayAndTime, numDayAndTime=numDayAndTime )
+            dayAndTime=dayAndTime, numDayAndTime=numDayAndTime )
 
 # Create account associated with user
 # used initially when creating a new user and when creating a new family account
@@ -456,23 +451,43 @@ def create_user_account():
 
 @app.route('/program_search')
 def program_search():
-    # User must be logged in to access
-    if( 'username' not in session ):
-        return redirect('/login')
-
     # Obtains the correct price for the user depending on if they are a member or not
     if not session["user_id"] != "employee" or session["member_or_not"] == 0:
             price_type = "nonmember_price"
     else:
             price_type = "member_price"
 
+
     # Queries the db for all programs
     # TODO: Implement advanced queries
     cursor = connection.cursor(prepared=True)
-    cursor.execute("SELECT name_program, start_date, end_date, description, %s, num_total_people, num_signed_up FROM programs" %(price_type))
+    query = ''' SELECT name_program, start_date, end_date, description, {}, num_total_people, num_signed_up, program_id 
+                    FROM programs
+                    WHERE active = 1; '''.format(price_type)
+    cursor.execute(query)
     result = cursor.fetchall()
     cursor.close()
     create_table(result)
+
+    if session["user_id"] == "employee" :
+        result = "empty"
+        cursor = connection.cursor(prepared=True)
+        query = ''' SELECT accounts.account_id, account_first_name, account_last_name, name_program, start_date, end_date, description 
+                    FROM (( account_in_program 
+                        INNER JOIN accounts  ON account_in_program.account_id = accounts.account_id )
+                        INNER JOIN programs ON account_in_program.program_id = programs.program_id )'''
+        cursor.execute( query )
+        result = cursor.fetchall()
+        cursor.close()
+        print( result )
+        #create_user_table(result)
+
+    return render_template("program_search.html")
+    
+
+@app.route('/cancel_program', methods=['POST'])
+def cancel_program():
+
     return render_template("program_search.html")
 
 
@@ -480,6 +495,30 @@ def program_search():
 #File placed in data folder as table.html
 def create_table(result):
     file_path = 'templates/data/table.html'
+    # Ensure that table.html has the correct data
+    if os.path.exists(file_path):
+        os.remove(file_path)
+
+    # creates table.html
+    file = open(file_path, "w")
+    table = ""
+
+    #Placing data from result into table.html
+    for i in range(len(result)):
+        table += '''  <tr  id="{}">\n'''.format(result[i][7])
+        for column in range(5):
+            try:
+                table += '''    <td>{1}</td>\n'''.format(result[i][column].decode())
+            except(AttributeError):
+                table += "    <td>{0}</td>\n".format(result[i][column])
+        table += "    <td>{0}/{1}</td>\n".format(result[i][5]-result[i][6], result[i][5])
+        table += " </tr>\n"
+
+    file.writelines(table)
+    file.close()
+
+def create_user_table(result):
+    file_path = 'templates/data/usertable.html'
     # Ensure that table.html has the correct data
     if os.path.exists(file_path):
         os.remove(file_path)
