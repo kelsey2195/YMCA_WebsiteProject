@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 06, 2022 at 10:51 AM
+-- Generation Time: May 06, 2022 at 11:51 AM
 -- Server version: 10.4.22-MariaDB
 -- PHP Version: 8.0.13
 
@@ -160,19 +160,20 @@ CREATE TABLE `users` (
   `email` varchar(255) NOT NULL,
   `mem_display_name` varchar(255) NOT NULL,
   `password` varchar(255) NOT NULL,
-  `member_or_not` tinyint(1) NOT NULL DEFAULT 0
+  `member_or_not` tinyint(1) NOT NULL DEFAULT 0,
+  `active` int(11) NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`email`, `mem_display_name`, `password`, `member_or_not`) VALUES
-('demo@email.con', 'demo2', 'password', 1),
-('email@email.com', 'newUser', 'pass', 0),
-('example@test.com', 'test', 'test', 0),
-('NEWACC@ill.com', 'newAccU', 'pass', 1),
-('test@abc.com', 'testAcc', 'password', 1);
+INSERT INTO `users` (`email`, `mem_display_name`, `password`, `member_or_not`, `active`) VALUES
+('demo@email.con', 'demo2', 'password', 1, 1),
+('email@email.com', 'newUser', 'pass', 0, 1),
+('example@test.com', 'test', 'test', 0, 1),
+('NEWACC@ill.com', 'newAccU', 'pass', 1, 1),
+('test@abc.com', 'testAcc', 'password', 1, 1);
 
 --
 -- Indexes for dumped tables
