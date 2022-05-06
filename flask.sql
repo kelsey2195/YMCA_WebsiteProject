@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 06, 2022 at 01:55 PM
+-- Generation Time: May 06, 2022 at 02:01 PM
 -- Server version: 10.4.22-MariaDB
 -- PHP Version: 8.0.13
 
@@ -116,10 +116,10 @@ CREATE TABLE `programs` (
 --
 
 INSERT INTO `programs` (`program_id`, `name_program`, `start_date`, `end_date`, `location`, `description`, `min_swim_level`, `member_price`, `nonmember_price`, `num_total_people`, `num_signed_up`, `active`) VALUES
-(19, 'Shark', '2022-05-22', '2022-06-26', 'YMCA Onalaska pool', 'Participants must have passed pike level before.', 'Pike', 48, 96, 8, 0, 1),
-(20, 'Shark', '2022-05-22', '2022-06-26', 'YMCA Onalaska pool', 'Participants must have passed pike level before.', 'Pike', 65, 130, 8, 0, 1),
-(21, 'Log Rolling', '2022-05-22', '2022-05-26', 'YMCA Onalaska pool', 'Log Rolling', 'N/A', 100, 200, 1, 0, 1),
-(22, 'Log Rolling', '2022-05-22', '2022-06-26', 'YMCA Onalaska pool', 'Log Rolling', 'N/A', 100, 200, 1, 0, 1);
+(19, 'Shark', '2022-05-22', '2022-06-26', 'YMCA Onalaska pool', 'Participants must have passed pike level before.', 'Pike', 48, 96, 8, 1, 1),
+(20, 'Shark', '2022-05-22', '2022-06-26', 'YMCA Onalaska pool', 'Participants must have passed pike level before.', 'Pike', 65, 130, 8, 1, 1),
+(21, 'Log Rolling', '2022-05-22', '2022-05-26', 'YMCA Onalaska pool', 'Log Rolling', 'N/A', 100, 200, 1, 1, 1),
+(22, 'Log Rolling', '2022-05-22', '2022-06-26', 'YMCA Onalaska pool', 'Log Rolling', 'N/A', 100, 200, 2, 2, 1);
 
 -- --------------------------------------------------------
 
