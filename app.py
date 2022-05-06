@@ -112,6 +112,7 @@ def login():
                     result = cursor.fetchall()
                     cursor.close()  
                
+
                
                     if result:
                         accId, email, first, last, birth = zip(*result)
