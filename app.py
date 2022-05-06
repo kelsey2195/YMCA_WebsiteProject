@@ -44,6 +44,7 @@ def login():
                 cursor.execute(query, ( email, password ))
                 result = cursor.fetchall()
                 # Sets session to contain employee information
+                print("Test1")
                 if result:
                     session["user_id"] = "employee"
 
@@ -56,6 +57,7 @@ def login():
                     session["manager_or_not"] = result[0][4]
                     cursor.close()
                     return redirect('/staff_profile')
+                print("Test2")
 
                 # If it's not an employee login apply rules to check if it's right format ect.
                 # check if it's email in the right format
@@ -95,7 +97,7 @@ def login():
                         session["user_id"] = result[0][0]
                         session["username"] = result[0][1]
                         
-
+        
                     session["member_or_not"] = result[0][3]
                     #cursor.close()
 
@@ -107,7 +109,8 @@ def login():
                                 WHERE associated_user = ?'''
                     cursor.execute(query, ( session["user_id"], ))
                     result = cursor.fetchall()
-
+                    cursor.close()  
+               
                     if result:
                         accId, email, first, last, birth = zip(*result)
                         result = list(zip( accId, first, last ))
@@ -115,10 +118,9 @@ def login():
                         # TODO eventually this will have to be formated for output in a nice looking way
                         session['accounts'] = result
                         print(result)
-                        updateProgList()
+                        #updateProgList()
 
-                    cursor.close()
-
+            
                     # finish user profile before redirecting to it
                     # return redirect("/user_profile")
                     return redirect('/')
@@ -488,7 +490,7 @@ def user_search():
 @app.route('/program_search')
 def program_search():
 
-    if not session["user_id"]:
+    if 'user_id' not in session :
         price_type = "nonmember_price"
     else:
         # Obtains the correct price for the user depending on if they are a member or not
@@ -653,7 +655,7 @@ def updateProgList():
             temp.append(row)
             #print(row)
 
-        print(temp)
+        #print(temp)
         new.append( (account[0], temp) )
 
     #print()
